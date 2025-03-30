@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
-import { Search, MapPin, Award, ShoppingBag, Gift, TrendingUp } from "lucide-react";
+import { Search, MapPin, Award, ShoppingBag, Gift, TrendingUp, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Link } from "wouter";
 
 export default function Spend() {
   const { wallet } = useWallet();
@@ -216,7 +217,12 @@ export default function Spend() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Rewards Balance</CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle>Rewards Balance</CardTitle>
+            <Link href="/spend/rewards" className="flex items-center text-sm text-primary font-medium">
+              View All Rewards <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

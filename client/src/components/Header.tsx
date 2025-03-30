@@ -15,7 +15,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
   const { t } = useLanguage();
   
   const navItems = [
-    { path: "/", label: t("Dashboard") },
+    { path: "/dashboard", label: t("Dashboard") },
     { path: "/accounts", label: t("Accounts") },
     { path: "/savings", label: t("Savings") },
     { path: "/investments", label: t("Investments") },
@@ -36,10 +36,10 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         </button>
         
         {/* Logo (mobile only) */}
-        <div className="lg:hidden flex items-center">
+        <Link href="/" className="lg:hidden flex items-center">
           <TaharaLogo small />
           <span className="ml-2 font-bold text-lg text-primary">Tahara</span>
-        </div>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex space-x-8">

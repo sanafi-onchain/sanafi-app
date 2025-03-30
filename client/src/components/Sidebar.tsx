@@ -17,7 +17,7 @@ export default function Sidebar() {
   const { t } = useLanguage();
   
   const navItems = [
-    { path: "/", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
+    { path: "/dashboard", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
     { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
     { path: "/savings", label: t("Savings"), icon: <PiggyBank className="h-5 w-5 mr-3" /> },
     { path: "/investments", label: t("Investments"), icon: <TrendingUp className="h-5 w-5 mr-3" /> },
@@ -29,10 +29,10 @@ export default function Sidebar() {
     <aside className="hidden lg:flex flex-col w-64 bg-primary text-primary-foreground">
       {/* Logo */}
       <div className="p-4 mb-6">
-        <div className="flex items-center space-x-3 py-3">
+        <Link href="/" className="flex items-center space-x-3 py-3">
           <TaharaLogo />
           <span className="font-bold text-xl">Tahara</span>
-        </div>
+        </Link>
       </div>
       
       {/* Navigation */}

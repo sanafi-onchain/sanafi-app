@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
-import { Search, MapPin, Award, ShoppingBag, Gift, TrendingUp } from "lucide-react";
+import { Search, MapPin, Award, ShoppingBag, Gift, TrendingUp, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Link } from "wouter";
 
-export default function Spend() {
+export default function SpendRewards() {
   const { wallet } = useWallet();
   
   const { data: rewardsData, isLoading } = useQuery({
@@ -80,6 +81,14 @@ export default function Spend() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center text-sm mb-6 text-muted-foreground">
+        <Link href="/spend" className="hover:text-primary transition-colors">
+          Spend
+        </Link>
+        <ChevronRight className="h-4 w-4 mx-2" />
+        <span className="text-foreground font-medium">Rewards</span>
+      </div>
+      
       <Card>
         <CardHeader>
           <CardTitle>Card Usage</CardTitle>
