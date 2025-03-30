@@ -8,6 +8,8 @@ export type TranslationKey =
   | "Learn" 
   | "Settings"
   | "Sign In"
+  | "Sign Out"
+  | "Wallet Details"
   | "Welcome"
   | "Did you know you can earn rewards with every spend?"
   | "Total Balance"
@@ -117,6 +119,8 @@ const enTranslations: Record<TranslationKey, string> = {
   "Learn": "Learn",
   "Settings": "Settings",
   "Sign In": "Sign In",
+  "Sign Out": "Sign Out",
+  "Wallet Details": "Wallet Details",
   "Welcome": "Welcome",
   "Did you know you can earn rewards with every spend?": "Did you know you can earn rewards with every spend?",
   "Total Balance": "Total Balance",
@@ -227,6 +231,8 @@ const arTranslations: Record<TranslationKey, string> = {
   "Learn": "تعلم",
   "Settings": "الإعدادات",
   "Sign In": "تسجيل الدخول",
+  "Sign Out": "تسجيل الخروج",
+  "Wallet Details": "تفاصيل المحفظة",
   "Welcome": "مرحباً",
   "Did you know you can earn rewards with every spend?": "هل تعلم أنك يمكن أن تكسب مكافآت مع كل عملية إنفاق؟",
   "Total Balance": "الرصيد الإجمالي",
