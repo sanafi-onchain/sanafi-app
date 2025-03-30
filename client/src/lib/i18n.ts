@@ -4,7 +4,7 @@ export type TranslationKey =
   | "Accounts" 
   | "Savings" 
   | "Investments" 
-  | "Spend/Rewards" 
+  | "Spend" 
   | "Learn" 
   | "Settings"
   | "Sign In"
@@ -113,7 +113,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Accounts": "Accounts",
   "Savings": "Savings",
   "Investments": "Investments",
-  "Spend/Rewards": "Spend/Rewards",
+  "Spend": "Spend",
   "Learn": "Learn",
   "Settings": "Settings",
   "Sign In": "Sign In",
@@ -223,7 +223,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Accounts": "الحسابات",
   "Savings": "المدخرات",
   "Investments": "الاستثمارات",
-  "Spend/Rewards": "الإنفاق/المكافآت",
+  "Spend": "الإنفاق",
   "Learn": "تعلم",
   "Settings": "الإعدادات",
   "Sign In": "تسجيل الدخول",

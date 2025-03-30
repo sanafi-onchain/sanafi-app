@@ -22,7 +22,8 @@ import {
   ShieldCheck,
   Wallet,
   PiggyBank,
-  TrendingUp
+  TrendingUp,
+  CreditCard
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";

@@ -21,7 +21,7 @@ export default function Sidebar() {
     { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
     { path: "/savings", label: t("Savings"), icon: <PiggyBank className="h-5 w-5 mr-3" /> },
     { path: "/investments", label: t("Investments"), icon: <TrendingUp className="h-5 w-5 mr-3" /> },
-    { path: "/spend-rewards", label: t("Spend/Rewards"), icon: <CreditCard className="h-5 w-5 mr-3" /> },
+    { path: "/spend", label: t("Spend"), icon: <CreditCard className="h-5 w-5 mr-3" /> },
     { path: "/learn", label: t("Learn"), icon: <BookOpen className="h-5 w-5 mr-3" /> }
   ];
 

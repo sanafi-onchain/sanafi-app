@@ -19,7 +19,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
     { path: "/accounts", label: t("Accounts") },
     { path: "/savings", label: t("Savings") },
     { path: "/investments", label: t("Investments") },
-    { path: "/spend-rewards", label: t("Spend/Rewards") },
+    { path: "/spend", label: t("Spend") },
     { path: "/learn", label: t("Learn") }
   ];
 
