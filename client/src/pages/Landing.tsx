@@ -73,7 +73,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Ethical Financial Solutions Based on Islamic Principles
+              100% Onchain 100% Halal
             </h1>
             <p className="text-lg text-gray-700 mb-8">
               Tahara provides Sharia-compliant investment opportunities, savings, and financial services for Muslims and values-driven investors.
