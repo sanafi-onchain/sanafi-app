@@ -27,10 +27,10 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
     {
       id: "1",
       type: "deposit",
-      title: "Deposited SOL",
+      title: t("Deposited USDC"),
       date: "Oct 20, 2023",
-      status: "Successful",
-      amount: "+1 SOL",
+      status: t("Successful"),
+      amount: "+30 USDC",
       icon: <ArrowDown className="h-5 w-5 text-primary" />,
       iconBg: "bg-primary/10",
       explorerUrl: "https://explorer.solana.com/tx/123"
@@ -38,10 +38,10 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
     {
       id: "2",
       type: "investment",
-      title: "Invested in Sukuk Fund",
+      title: t("Invested in Sukuk Fund"),
       date: "Oct 18, 2023",
-      status: "Successful",
-      amount: "-0.5 SOL",
+      status: t("Successful"),
+      amount: "-15 USDC",
       icon: <TrendingUp className="h-5 w-5 text-secondary" />,
       iconBg: "bg-secondary/10",
       explorerUrl: "https://explorer.solana.com/tx/456"
@@ -49,11 +49,11 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
     {
       id: "3",
       type: "spend",
-      title: "Halal Grocery Purchase",
+      title: t("Halal Grocery Purchase"),
       date: "Oct 15, 2023",
-      status: "Completed",
-      amount: "-0.1 SOL",
-      reward: "+0.01 SOL",
+      status: t("Completed"),
+      amount: "-3 USDC",
+      reward: "+0.3 USDC",
       icon: <ShoppingBag className="h-5 w-5 text-yellow-600" />,
       iconBg: "bg-yellow-50",
       explorerUrl: null
@@ -61,10 +61,10 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
     {
       id: "4",
       type: "savings",
-      title: "Savings Deposit",
+      title: t("Savings Deposit"),
       date: "Oct 10, 2023",
-      status: "Successful",
-      amount: "-1 SOL",
+      status: t("Successful"),
+      amount: "-30 USDC",
       icon: <PiggyBank className="h-5 w-5 text-secondary" />,
       iconBg: "bg-secondary/10",
       explorerUrl: "https://explorer.solana.com/tx/789"
@@ -72,10 +72,10 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
     {
       id: "5",
       type: "profit",
-      title: "Savings Profit Distribution",
+      title: t("Savings Profit Distribution"),
       date: "Oct 1, 2023",
-      status: "Completed",
-      amount: "+0.04 SOL",
+      status: t("Completed"),
+      amount: "+1.2 USDC",
       icon: <DollarSign className="h-5 w-5 text-primary" />,
       iconBg: "bg-primary/10",
       explorerUrl: "https://explorer.solana.com/tx/101112"
@@ -91,7 +91,7 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
         <div className="p-4 max-h-96 overflow-y-auto">
           {!walletConnected && (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">Sign in to view your recent activity</p>
+              <p className="text-muted-foreground">{t("Sign in to view your recent activity")}</p>
             </div>
           )}
           

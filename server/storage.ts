@@ -172,7 +172,7 @@ export class MemStorage implements IStorage {
       {
         id: this.currentTransactionId++,
         type: "deposit",
-        title: "Deposited SOL",
+        title: "Deposited USDC",
         amount: 1,
         walletAddress: user1.walletAddress,
         date: new Date("2023-10-20").toISOString(),

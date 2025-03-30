@@ -65,11 +65,11 @@ export default function Investments() {
     return (
       <Card className="p-6 my-8">
         <div className="text-center py-10">
-          <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
+          <h2 className="text-2xl font-bold mb-2">Sign In</h2>
           <p className="text-muted-foreground mb-6">
-            Please connect your wallet to view investment options
+            Please sign in to view investment options
           </p>
-          <Button className="bg-primary">Connect Wallet</Button>
+          <Button className="bg-primary">Sign In</Button>
         </div>
       </Card>
     );
@@ -193,7 +193,7 @@ export default function Investments() {
                         <div className="mb-6">
                           <h3 className="font-medium mb-2">Invest</h3>
                           <div className="mb-4">
-                            <label className="text-sm font-medium mb-2 block">Amount (SOL)</label>
+                            <label className="text-sm font-medium mb-2 block">Amount (USDC)</label>
                             <Input 
                               type="number" 
                               min="0.01" 
@@ -209,7 +209,7 @@ export default function Investments() {
                               <div className="flex justify-between text-sm mb-1">
                                 <span>Expected Annual Return</span>
                                 <span className="font-medium text-primary">
-                                  {parseFloat(investAmount) * parseFloat(option.expectedReturn) / 100} SOL
+                                  {parseFloat(investAmount) * parseFloat(option.expectedReturn) / 100} USDC
                                 </span>
                               </div>
                               <div className="flex justify-between text-xs text-muted-foreground">
@@ -250,7 +250,7 @@ export default function Investments() {
                 <PieChart className="h-12 w-12 text-muted-foreground/50" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xl font-bold">1.5 SOL</div>
+                    <div className="text-xl font-bold">45 USDC</div>
                     <div className="text-xs text-muted-foreground">Total Value</div>
                   </div>
                 </div>
@@ -293,20 +293,20 @@ export default function Investments() {
                 <div className="divide-y">
                   <div className="grid grid-cols-4 text-sm p-3">
                     <div>Real Estate Sukuk</div>
-                    <div className="text-right">0.6 SOL</div>
-                    <div className="text-right text-primary">+0.03 SOL</div>
+                    <div className="text-right">18 USDC</div>
+                    <div className="text-right text-primary">+0.94 USDC</div>
                     <div className="text-right text-primary">+5.2%</div>
                   </div>
                   <div className="grid grid-cols-4 text-sm p-3">
                     <div>Ethical Tech Fund</div>
-                    <div className="text-right">0.45 SOL</div>
-                    <div className="text-right text-primary">+0.01 SOL</div>
+                    <div className="text-right">13.5 USDC</div>
+                    <div className="text-right text-primary">+0.28 USDC</div>
                     <div className="text-right text-primary">+2.1%</div>
                   </div>
                   <div className="grid grid-cols-4 text-sm p-3">
                     <div>Halal SME Financing</div>
-                    <div className="text-right">0.45 SOL</div>
-                    <div className="text-right text-primary">+0.02 SOL</div>
+                    <div className="text-right">13.5 USDC</div>
+                    <div className="text-right text-primary">+0.58 USDC</div>
                     <div className="text-right text-primary">+4.3%</div>
                   </div>
                 </div>

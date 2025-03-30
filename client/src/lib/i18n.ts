@@ -16,10 +16,11 @@ export type TranslationKey =
   | "Last earned"
   | "Today"
   | "Rewards"
-  | "Sign In"
   | "Sign in to view your balance and account information"
+  | "Connect your wallet to view your balance and account information"
   | "Recent Activity"
   | "Sign in to view your recent activity"
+  | "Connect your wallet to view your recent activity"
   | "View on Explorer"
   | "reward"
   | "View All Transactions"
@@ -63,7 +64,7 @@ export type TranslationKey =
   | "Performance"
   | "Performance chart placeholder"
   | "Invest"
-  | "Amount (SOL)"
+  | "Amount (USDC)"
   | "Expected Annual Return"
   | "Based on"
   | "annual rate"
@@ -86,7 +87,7 @@ export type TranslationKey =
   | "Islamic Finance FAQ"
   | "Blockchain and Sharia Compliance"
   | "Explore Learning Center"
-  | "Connect Your Wallet"
+
   | "Connect your wallet to access Tahara's Sharia-compliant financial services."
   | "Connect with Privy"
   | "Phantom Wallet"
@@ -98,7 +99,7 @@ export type TranslationKey =
   | "Connection Failed"
   | "Failed to connect wallet. Please try again."
   | "Please connect your wallet to invest"
-  | "Deposited SOL"
+  | "Deposited USDC"
   | "Invested in Sukuk Fund"
   | "Halal Grocery Purchase"
   | "Savings Deposit"
@@ -124,9 +125,11 @@ const enTranslations: Record<TranslationKey, string> = {
   "Last earned": "Last earned",
   "Today": "Today",
   "Rewards": "Rewards",
-  "Connect Your Wallet": "Connect Your Wallet",
+  
+  "Sign in to view your balance and account information": "Sign in to view your balance and account information",
   "Connect your wallet to view your balance and account information": "Connect your wallet to view your balance and account information",
   "Recent Activity": "Recent Activity",
+  "Sign in to view your recent activity": "Sign in to view your recent activity",
   "Connect your wallet to view your recent activity": "Connect your wallet to view your recent activity",
   "View on Explorer": "View on Explorer",
   "reward": "reward",
@@ -171,7 +174,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Performance": "Performance",
   "Performance chart placeholder": "Performance chart placeholder",
   "Invest": "Invest",
-  "Amount (SOL)": "Amount (SOL)",
+  "Amount (USDC)": "Amount (USDC)",
   "Expected Annual Return": "Expected Annual Return",
   "Based on": "Based on",
   "annual rate": "annual rate",
@@ -205,7 +208,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Connection Failed": "Connection Failed",
   "Failed to connect wallet. Please try again.": "Failed to connect wallet. Please try again.",
   "Please connect your wallet to invest": "Please connect your wallet to invest",
-  "Deposited SOL": "Deposited SOL",
+  "Deposited USDC": "Deposited USDC",
   "Invested in Sukuk Fund": "Invested in Sukuk Fund",
   "Halal Grocery Purchase": "Halal Grocery Purchase",
   "Savings Deposit": "Savings Deposit",
@@ -232,9 +235,11 @@ const arTranslations: Record<TranslationKey, string> = {
   "Last earned": "آخر مكافأة",
   "Today": "اليوم",
   "Rewards": "المكافآت",
-  "Connect Your Wallet": "ربط محفظتك",
+  
+  "Sign in to view your balance and account information": "قم بتسجيل الدخول لعرض رصيدك ومعلومات حسابك",
   "Connect your wallet to view your balance and account information": "قم بربط محفظتك لعرض رصيدك ومعلومات حسابك",
   "Recent Activity": "النشاط الأخير",
+  "Sign in to view your recent activity": "قم بتسجيل الدخول لعرض نشاطك الأخير",
   "Connect your wallet to view your recent activity": "قم بربط محفظتك لعرض نشاطك الأخير",
   "View on Explorer": "عرض في المستكشف",
   "reward": "مكافأة",
@@ -279,7 +284,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Performance": "الأداء",
   "Performance chart placeholder": "مخطط الأداء",
   "Invest": "استثمر",
-  "Amount (SOL)": "المبلغ (SOL)",
+  "Amount (USDC)": "المبلغ (USDC)",
   "Expected Annual Return": "العائد السنوي المتوقع",
   "Based on": "بناءً على",
   "annual rate": "معدل سنوي",
@@ -313,7 +318,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Connection Failed": "فشل الاتصال",
   "Failed to connect wallet. Please try again.": "فشل ربط المحفظة. يرجى المحاولة مرة أخرى.",
   "Please connect your wallet to invest": "يرجى ربط محفظتك للاستثمار",
-  "Deposited SOL": "تم إيداع SOL",
+  "Deposited USDC": "تم إيداع USDC",
   "Invested in Sukuk Fund": "استثمار في صندوق الصكوك",
   "Halal Grocery Purchase": "شراء بقالة حلال",
   "Savings Deposit": "إيداع مدخرات",

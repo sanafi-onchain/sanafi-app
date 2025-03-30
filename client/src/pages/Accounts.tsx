@@ -33,11 +33,11 @@ export default function Accounts() {
     return (
       <Card className="p-6 my-8">
         <div className="text-center py-10">
-          <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
+          <h2 className="text-2xl font-bold mb-2">Sign In</h2>
           <p className="text-muted-foreground mb-6">
-            Please connect your wallet to view your account details
+            Please sign in to view your account details
           </p>
-          <Button className="bg-primary">Connect Wallet</Button>
+          <Button className="bg-primary">Sign In</Button>
         </div>
       </Card>
     );
@@ -64,7 +64,7 @@ export default function Accounts() {
             </div>
             <div>
               <h3 className="text-sm font-light uppercase mb-2 text-muted-foreground">Balance</h3>
-              <div className="text-xl font-bold">{isLoading ? "Loading..." : "5.2 SOL"}</div>
+              <div className="text-xl font-bold">{isLoading ? "Loading..." : "150 USDC"}</div>
               <div className="text-sm text-muted-foreground">$150 USD</div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function Accounts() {
             <div className="flex justify-between mb-8">
               <div>
                 <div className="text-xs opacity-80 mb-1">Card Balance</div>
-                <div className="text-xl font-bold">2.1 SOL</div>
+                <div className="text-xl font-bold">60 USDC</div>
               </div>
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">

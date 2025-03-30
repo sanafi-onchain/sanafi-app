@@ -39,7 +39,7 @@ export default function StatsOverview({
           </>
         ) : (
           <>
-            <div className="text-2xl font-bold mb-1">5.2 SOL</div>
+            <div className="text-2xl font-bold mb-1">150 USDC</div>
             <div className="text-sm opacity-90">$150 USD</div>
           </>
         )}
@@ -58,7 +58,7 @@ export default function StatsOverview({
           </>
         ) : (
           <>
-            <div className="text-xl font-bold mb-1">2.1 SOL</div>
+            <div className="text-xl font-bold mb-1">60 USDC</div>
             <div className="text-xs text-muted-foreground">4% {t("annualized return")}</div>
           </>
         )}
@@ -77,7 +77,7 @@ export default function StatsOverview({
           </>
         ) : (
           <>
-            <div className="text-xl font-bold mb-1">1.5 SOL</div>
+            <div className="text-xl font-bold mb-1">45 USDC</div>
             <div className="text-xs text-primary">+2.3% {t("today")}</div>
           </>
         )}
@@ -96,7 +96,7 @@ export default function StatsOverview({
           </>
         ) : (
           <>
-            <div className="text-xl font-bold mb-1">0.3 SOL</div>
+            <div className="text-xl font-bold mb-1">8.5 USDC</div>
             <div className="text-xs text-muted-foreground">{t("Last earned")}: {t("Today")}</div>
           </>
         )}
