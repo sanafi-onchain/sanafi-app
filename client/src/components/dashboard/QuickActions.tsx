@@ -20,8 +20,8 @@ export default function QuickActions() {
   const handleDepositFunds = () => {
     if (!wallet?.isConnected) {
       toast({
-        title: t("Wallet Not Connected"),
-        description: t("Please connect your wallet first"),
+        title: "Not Signed In",
+        description: "Please sign in first",
         variant: "destructive"
       });
       return;

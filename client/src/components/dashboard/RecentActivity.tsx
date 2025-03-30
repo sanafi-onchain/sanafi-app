@@ -122,8 +122,8 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
                   {tx.icon}
                 </div>
                 <div>
-                  <div className="font-medium">{t(tx.title)}</div>
-                  <div className="text-xs text-muted-foreground">{tx.date} • {t(tx.status)}</div>
+                  <div className="font-medium">{tx.title}</div>
+                  <div className="text-xs text-muted-foreground">{tx.date} • {tx.status}</div>
                 </div>
               </div>
               <div className="text-right">

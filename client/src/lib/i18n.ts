@@ -7,7 +7,7 @@ export type TranslationKey =
   | "Spend/Rewards" 
   | "Learn" 
   | "Settings"
-  | "Connect Wallet"
+  | "Sign In"
   | "Welcome"
   | "Did you know you can earn rewards with every spend?"
   | "Total Balance"
@@ -16,10 +16,10 @@ export type TranslationKey =
   | "Last earned"
   | "Today"
   | "Rewards"
-  | "Connect Your Wallet"
-  | "Connect your wallet to view your balance and account information"
+  | "Sign In"
+  | "Sign in to view your balance and account information"
   | "Recent Activity"
-  | "Connect your wallet to view your recent activity"
+  | "Sign in to view your recent activity"
   | "View on Explorer"
   | "reward"
   | "View All Transactions"
@@ -115,7 +115,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Spend/Rewards": "Spend/Rewards",
   "Learn": "Learn",
   "Settings": "Settings",
-  "Connect Wallet": "Connect Wallet",
+  "Sign In": "Sign In",
   "Welcome": "Welcome",
   "Did you know you can earn rewards with every spend?": "Did you know you can earn rewards with every spend?",
   "Total Balance": "Total Balance",
@@ -223,7 +223,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Spend/Rewards": "الإنفاق/المكافآت",
   "Learn": "تعلم",
   "Settings": "الإعدادات",
-  "Connect Wallet": "ربط المحفظة",
+  "Sign In": "تسجيل الدخول",
   "Welcome": "مرحباً",
   "Did you know you can earn rewards with every spend?": "هل تعلم أنك يمكن أن تكسب مكافآت مع كل عملية إنفاق؟",
   "Total Balance": "الرصيد الإجمالي",
