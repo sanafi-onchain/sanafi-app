@@ -15,7 +15,14 @@ import {
   FileText, 
   LightbulbIcon, 
   HelpCircle,
-  BookIcon
+  BookIcon,
+  Search,
+  Clock,
+  ChevronRight,
+  ShieldCheck,
+  Wallet,
+  PiggyBank,
+  TrendingUp
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
