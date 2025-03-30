@@ -47,17 +47,17 @@ export default function Landing() {
           </Button>
           <Button
             variant="ghost"
-            onClick={() => navigate("/about")}
+            onClick={() => navigate("/savings")}
             className="hidden sm:flex"
           >
-            About
+            {t("Savings")}
           </Button>
           <Button
             variant="ghost"
-            onClick={() => navigate("/contact")}
+            onClick={() => navigate("/accounts")}
             className="hidden sm:flex"
           >
-            Contact
+            {t("Accounts")}
           </Button>
           <Button
             className="bg-primary hover:bg-primary/90"
@@ -393,10 +393,9 @@ export default function Landing() {
             <div>
               <h3 className="font-bold text-lg mb-4">Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">About Us</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white">Shariah Board</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Contact</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white">FAQ</a></li>
               </ul>
             </div>
           </div>
