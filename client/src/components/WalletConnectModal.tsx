@@ -49,9 +49,9 @@ export default function WalletConnectModal({ open, onClose }: WalletConnectModal
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("Connect Your Wallet")}</DialogTitle>
+          <DialogTitle>Sign In</DialogTitle>
           <DialogDescription>
-            {t("Connect your wallet to access Tahara's Sharia-compliant financial services.")}
+            Sign in to access Tahara's Sharia-compliant financial services.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3 py-4">

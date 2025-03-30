@@ -91,7 +91,7 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
         <div className="p-4 max-h-96 overflow-y-auto">
           {!walletConnected && (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">{t("Connect your wallet to view your recent activity")}</p>
+              <p className="text-muted-foreground">Sign in to view your recent activity</p>
             </div>
           )}
           

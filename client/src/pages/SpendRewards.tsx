@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
-import { Search, MapPin, Award, ShoppingBag, Gift } from "lucide-react";
+import { Search, MapPin, Award, ShoppingBag, Gift, TrendingUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export default function SpendRewards() {
@@ -68,11 +68,11 @@ export default function SpendRewards() {
     return (
       <Card className="p-6 my-8">
         <div className="text-center py-10">
-          <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
+          <h2 className="text-2xl font-bold mb-2">Sign In</h2>
           <p className="text-muted-foreground mb-6">
-            Please connect your wallet to view your spend and rewards
+            Please sign in to view your spend and rewards
           </p>
-          <Button className="bg-primary">Connect Wallet</Button>
+          <Button className="bg-primary">Sign In</Button>
         </div>
       </Card>
     );

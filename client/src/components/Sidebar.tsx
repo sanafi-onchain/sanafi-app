@@ -40,16 +40,14 @@ export default function Sidebar() {
         <ul className="space-y-1 px-3">
           {navItems.map((item) => (
             <li key={item.path}>
-              <Link href={item.path}>
-                <a className={cn(
-                  "flex items-center px-4 py-3 rounded-lg",
-                  location === item.path 
-                    ? "bg-white bg-opacity-10" 
-                    : "hover:bg-white hover:bg-opacity-10"
-                )}>
-                  {item.icon}
-                  <span>{item.label}</span>
-                </a>
+              <Link href={item.path} className={cn(
+                "flex items-center px-4 py-3 rounded-lg",
+                location === item.path 
+                  ? "bg-white bg-opacity-10" 
+                  : "hover:bg-white hover:bg-opacity-10"
+              )}>
+                {item.icon}
+                <span>{item.label}</span>
               </Link>
             </li>
           ))}
@@ -58,11 +56,9 @@ export default function Sidebar() {
       
       {/* User Settings */}
       <div className="p-4 border-t border-white border-opacity-20">
-        <Link href="/settings">
-          <a className="flex items-center px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-lg">
-            <Settings className="h-5 w-5 mr-3" />
-            <span>{t("Settings")}</span>
-          </a>
+        <Link href="/settings" className="flex items-center px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-lg">
+          <Settings className="h-5 w-5 mr-3" />
+          <span>{t("Settings")}</span>
         </Link>
       </div>
     </aside>

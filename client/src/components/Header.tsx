@@ -44,14 +44,16 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex space-x-8">
           {navItems.map((item) => (
-            <Link key={item.path} href={item.path}>
-              <a className={`${
+            <Link 
+              key={item.path} 
+              href={item.path}
+              className={`${
                 location === item.path 
                   ? "text-primary border-b-2 border-primary" 
                   : "text-muted-foreground hover:text-primary"
-              } px-1 py-4 font-medium`}>
-                {item.label}
-              </a>
+              } px-1 py-4 font-medium`}
+            >
+              {item.label}
             </Link>
           ))}
         </nav>
