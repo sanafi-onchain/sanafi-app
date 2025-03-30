@@ -1,0 +1,193 @@
+Below is an expanded exploration of the **UI specifications** for Tahara, a Sharia-compliant financial platform. This detailed breakdown covers **user flow**, **user experience (UX)**, **navigation**, and additional elements necessary to showcase all of Tahara’s features, including Accounts, Savings, Investments, Spend/Rewards, and Learn. The goal is to ensure the interface is intuitive, engaging, and aligned with Tahara’s mission of delivering a seamless, value-driven financial experience.
+
+---
+
+## UI Specifications for Tahara
+
+### 1. User Flow and Navigation
+Tahara’s navigation and user flows are designed to provide clarity and ease of access to its comprehensive suite of financial tools. The structure centers around a **dashboard** that serves as the hub for all features, ensuring users can explore and utilize Accounts, Savings, Investments, Spend/Rewards, and Learn with minimal friction.
+
+#### 1.1 Global Navigation
+- **Header** (Fixed across all pages):
+  - **Logo**: Positioned on the left; clickable to return to the dashboard.
+  - **Menu**: Centrally aligned tabs: *Dashboard*, *Accounts*, *Savings*, *Investments*, *Spend/Rewards*, *Learn*, *Settings*.
+  - **Wallet Connect**: Right-aligned button to connect or disconnect a wallet (e.g., via Privy.io).
+  - **Language Toggle**: Right-aligned dropdown (e.g., English, Arabic) for multilingual support.
+- **Sidebar** (Desktop only):
+  - Collapsible vertical menu mirroring header tabs for quick navigation.
+  - Includes icons for each section (e.g., wallet for Accounts, piggy bank for Savings).
+- **Mobile Navigation**:
+  - Hamburger menu icon in the top-right corner; expands into a full-screen dropdown listing all navigation options.
+  - Sticky bottom navigation bar with icons for *Dashboard*, *Accounts*, *Investments*, and *Spend/Rewards* for one-tap access.
+
+#### 1.2 Detailed User Flow Examples
+Here are two key user flows to illustrate how users interact with Tahara’s features:
+
+##### Onboarding to Dashboard
+1. **Landing Page**:
+   - Hero section with a prominent "Connect Wallet" call-to-action (CTA) and a tagline (e.g., "Sharia-compliant finance, powered by blockchain").
+   - Brief overview of features with animated cards (e.g., "Invest in Sukuk," "Earn Rewards").
+2. **Wallet Connection**:
+   - Clicking "Connect Wallet" opens a modal with options (e.g., Privy.io, MetaMask).
+   - Post-connection, users see a "Wallet Connected" confirmation with their address truncated (e.g., 0x123…abc).
+3. **Account Setup**:
+   - Optional KYC modal (name, email, ID upload) for compliance, skippable for basic features.
+   - Welcome screen with a 30-second interactive tour highlighting the dashboard, wallet balance, and quick actions.
+4. **Dashboard Access**:
+   - Users land on a personalized dashboard displaying total balance, recent activity, and quick-action buttons.
+
+##### Exploring and Making an Investment
+1. **Dashboard**:
+   - User clicks "Explore Investments" from the quick actions section.
+2. **Investments Section**:
+   - Displays a filterable list of assets (e.g., equities, sukuk, real estate).
+   - User applies filters (e.g., "Low Risk," "Sharia-Compliant") and selects an asset.
+3. **Asset Details**:
+   - Detailed view with asset name, Sharia compliance badge, historical ROI, and a performance chart.
+   - "Invest Now" button prompts an input field for investment amount and an estimated return calculator.
+4. **Transaction Confirmation**:
+   - Modal confirms investment details (amount, asset, fees) with a "Confirm" button.
+   - Post-confirmation, a success notification appears, and the dashboard updates with the new investment.
+
+These flows ensure users can onboard and engage with Tahara’s features effortlessly, with clear guidance at each step.
+
+---
+
+### 2. User Experience (UX) Principles
+Tahara’s UX is anchored in **simplicity**, **transparency**, and **education**, creating a trustworthy and empowering environment for users, especially those new to Islamic finance or blockchain.
+
+#### 2.1 Simplicity
+- **Clean Layouts**: Use ample white space, consistent typography (e.g., 16px body text), and a limited color palette (green for actions, blue for info).
+- **Progressive Disclosure**: Hide advanced settings (e.g., slippage tolerance for swaps) behind an "Advanced" toggle to avoid overwhelming beginners.
+- **Guided Interactions**: Tooltips and micro-animations (e.g., a checkmark animation on deposit) guide users through key actions.
+
+#### 2.2 Transparency
+- **Real-Time Updates**: Show live data for balances, transaction statuses, and asset performance (e.g., "+2.3% today").
+- **Blockchain Verification**: Include clickable links to Solana’s blockchain explorer for every transaction.
+- **Sharia Compliance**: Display certification badges and explanations (e.g., "AAOIFI-compliant") on asset and savings pages.
+
+#### 2.3 Education
+- **In-App Tutorials**: Offer step-by-step guides for first-time actions (e.g., "Your First Sukuk Investment").
+- **Contextual Help**: Hover-over tooltips define terms like "mudarabah" or "sukuk" with simple explanations.
+- **Learn Hub**: A dedicated section with articles, videos, and FAQs on Sharia finance and blockchain technology.
+
+---
+
+### 3. Detailed Screen Breakdown
+Each screen is crafted to deliver a focused experience while maintaining a cohesive design language across the platform.
+
+#### 3.1 Dashboard
+- **Welcome Banner**: "Welcome, [User Name]!" with a dismissible tip of the day (e.g., "Did you know you can earn rewards with every spend?").
+- **Stats Overview**:
+  - Total Balance: Displayed in SOL and fiat (e.g., "5.2 SOL / $150 USD").
+  - Cards for Savings (e.g., "2.1 SOL"), Investments (e.g., "1.5 SOL"), Rewards (e.g., "0.3 SOL").
+- **Recent Activity**:
+  - Scrollable list of the last 5 transactions (e.g., "Deposited 1 SOL - Oct 20, 2023").
+- **Quick Actions**:
+  - Buttons: "Deposit Funds," "View Portfolio," "Explore Investments," styled in green with hover effects.
+- **Notifications**: Top-right banner for updates (e.g., "New sukuk asset listed!").
+
+#### 3.2 Accounts
+- **Account Summary**:
+  - Wallet balance in SOL and fiat, with a "Copy Address" button.
+  - Debit card status (e.g., "Active - Ending in 1234").
+- **Transaction History**:
+  - Table with filters (All, Deposits, Withdrawals, Card Spends) and columns: Date, Type, Amount, Status.
+  - Export option (CSV) for record-keeping.
+- **Card Management**:
+  - Buttons to activate, freeze, or cancel the card.
+  - "Order Physical Card" CTA linking to a Stripe-powered checkout.
+
+#### 3.3 Savings
+- **Savings Pool**:
+  - Current balance and projected profit-sharing return (e.g., "4% annualized").
+  - Optional savings goal tracker with a progress bar (e.g., "50% to 10 SOL").
+- **Profit-Sharing Details**:
+  - Breakdown of ventures (e.g., "60% Real Estate, 40% SMEs") and past returns.
+  - Mudarabah explainer video (30 seconds).
+- **Actions**:
+  - "Deposit" and "Withdraw" buttons with input fields and confirmation modals.
+
+#### 3.4 Investments
+- **Asset Browser**:
+  - Filter bar: Asset Type (e.g., Sukuk, Crypto), Risk Level, Sector.
+  - Cards with asset name, ROI (e.g., "5.2%"), compliance badge, and "Invest" button.
+- **Asset Details Page**:
+  - Overview: Description, Sharia compliance details, 1-year performance chart.
+  - Investment Form: Input amount, live return estimate, "Invest Now" CTA.
+- **Portfolio View**:
+  - Pie chart of holdings (e.g., "40% Sukuk, 30% Equities").
+  - Graph toggle (1M, 3M, 1Y) and table with Value, Profit/Loss, % Change.
+
+#### 3.5 Spend/Rewards
+- **Card Usage**:
+  - List of recent spends (e.g., "Halal Grocery - 0.1 SOL - 0.01 SOL reward").
+- **Merchant Directory**:
+  - Searchable list of partnered halal merchants with reward percentages.
+  - Optional map view for nearby options (powered by a geolocation API).
+- **Rewards Balance**:
+  - Total rewards with redemption options (e.g., "Redeem for Fee Discount" or "Invest Rewards").
+
+#### 3.6 Learn
+- **Content Categories**:
+  - Sections: "Sharia Finance Basics," "Blockchain 101," "Tahara Tutorials."
+- **Interactive Features**:
+  - Quizzes (e.g., "Test Your Sukuk Knowledge") with progress badges.
+- **Resources**:
+  - Searchable library of articles and videos (e.g., "What is Mudarabah? - 3 min").
+
+---
+
+### 4. Interaction Design
+Tahara’s interactions are **responsive**, **feedback-rich**, and **accessible** to ensure a smooth experience.
+
+#### 4.1 Buttons and CTAs
+- **Primary CTAs**: Green (#2E7D32), 16px, rounded corners (e.g., "Invest," "Deposit").
+- **Secondary CTAs**: Blue (#1976D2), 16px (e.g., "Learn More," "Back").
+- **Disabled State**: Gray (#B0BEC5) with no interactivity.
+
+#### 4.2 Modals
+- **Wallet Connection**: Lists wallet options with a "Connecting…" spinner.
+- **Transaction Confirmation**: Shows amount, asset, fees, and compliance status; requires user confirmation.
+- **Help Pop-ups**: Triggered on first use (e.g., "How swaps work" during a token swap).
+
+#### 4.3 Feedback Mechanisms
+- **Success**: Green toast (e.g., "Deposit successful! Balance updated").
+- **Error**: Red toast (e.g., "Transaction failed: Insufficient funds").
+- **Loading**: Blue spinner with a subtle pulse effect.
+
+---
+
+### 5. Accessibility and Localization
+Tahara ensures inclusivity and global usability:
+- **Accessibility**:
+  - WCAG 2.1 AA compliance for contrast and readability.
+  - Full keyboard navigation with visible focus indicators.
+  - ARIA labels for screen readers (e.g., "Button: Deposit Funds").
+- **Localization**:
+  - RTL support for Arabic with adjusted layouts.
+  - Localized currencies and content for key markets (e.g., USD, AED).
+
+---
+
+### 6. Third-Party Integrations in UI
+Tahara integrates external services seamlessly:
+- **Privy.io**: Wallet connection modal with Privy.io branding.
+- **Dinari.com API**: Real-time tokenized stock data in investment cards.
+- **Stripe**: Card issuance interface for ordering physical cards.
+- **Moonpay**: Fiat on/off-ramp widget embedded in the Accounts section.
+- **Jupiter API**: Swap interface with token dropdowns and live pricing.
+
+---
+
+### 7. Additional UX Enhancements
+To elevate the experience:
+- **Personalization**: Dashboard prioritizes frequently used features (e.g., Investments for active investors).
+- **Dark Mode**: Toggle in Settings for user preference.
+- **Notifications**: Push alerts for transactions, rewards, or market updates.
+- **Gamification**: Earn badges for milestones (e.g., "First Investment" or "Savings Pro").
+
+---
+
+### 8. Conclusion
+Tahara’s UI specifications create a **cohesive, intuitive, and empowering platform** that balances simplicity with robust functionality. By integrating detailed user flows, transparent design, and educational tools, Tahara ensures users can confidently manage their finances while adhering to Sharia principles. The navigation, screen designs, and third-party integrations work together to deliver a standout experience in the Islamic fintech space.

@@ -1,0 +1,40 @@
+Below is a detailed Brand Guideline and UI Specs for the Tahara product, a Sharia-compliant financial platform built on the Solana blockchain. These guidelines ensure that Tahara’s visual identity and user interface reflect its mission of providing accessible, transparent, and ethical financial services to Muslim and values-driven investors globally.
+
+Brand Guideline for Tahara
+1. Brand Overview
+Tahara is a Sharia-compliant financial platform designed to offer ethical and halal financial services. Built on the Solana blockchain, it merges Islamic finance principles with modern technology. The brand embodies purity, trust, and innovation, appealing to a global audience seeking transparent and values-driven financial solutions.
+
+2. Logo
+Design: The logo features a stylized "T" with a flowing, water-like curve to symbolize purity and growth, accented by a subtle crescent moon to reflect Islamic heritage.
+Usage Rules:
+Use the full-color logo (green and white) on light backgrounds.
+Use the monochrome version (white or green) on dark backgrounds.
+Maintain a clear space around the logo equal to the height of the "T" for visual clarity.
+3. Color Palette
+Primary Colors:
+Green (#2E7D32): Represents Islamic heritage, growth, and trust.
+White (#FFFFFF): Symbolizes purity and simplicity.
+Secondary Colors:
+Blue (#1976D2): Conveys reliability and technology, inspired by Solana.
+Gray (#757575): A neutral tone for text and borders.
+Accent Color:
+Gold (#FFD700): Highlights premium features or success (e.g., profits).
+4. Typography
+Primary Font: Roboto (clean, modern, and widely supported).
+Headings: Roboto Bold, 24px–32px.
+Body Text: Roboto Regular, 16px.
+Subtext: Roboto Light, 14px.
+Arabic Support: Noto Sans Arabic for multilingual accessibility.
+Usage: Apply Roboto consistently across all digital and print materials, ensuring sufficient contrast for readability.
+5. Iconography
+Use minimalist, flat icons (e.g., Material Design Icons) for consistency.
+Include custom icons for Islamic finance concepts, such as a crescent for compliance or scales for fairness.
+Ensure all icons are uniform in style and size across the platform.
+6. Tone of Voice
+Professional yet Approachable: Communicate clearly and avoid complex jargon.
+Trustworthy: Highlight transparency, security, and ethical alignment.
+Educational: Simplify complex financial and blockchain concepts with supportive language.
+7. Imagery
+Use high-quality, culturally relevant images that reflect diversity and inclusivity.
+Avoid imagery that could be considered haram or culturally insensitive.
+Favor abstract or nature-inspired visuals (e.g., water, growth) to align with the theme of purity.
