@@ -1,9 +1,16 @@
 import { Router } from 'express';
-import servicesRoutes from './services';
+import servicesRouter from './services';
+import jupiterRouter from './jupiter';
 
 const router = Router();
 
-// Register API routes
-router.use('/services', servicesRoutes);
+// Health check endpoint
+router.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Register all API routes
+router.use('/services', servicesRouter);
+router.use('/jupiter', jupiterRouter);
 
 export default router;
