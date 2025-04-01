@@ -12,7 +12,22 @@ router.get('/tokens', async (req: Request, res: Response) => {
       return res.status(500).json({ error: 'Jupiter service not available' });
     }
     
-    const tokens = await jupiterService.getTopTokens(100); // Get top 100 tokens
+    const data = await jupiterService.getTopTokens(100); // Get top 100 tokens
+    
+    // Format the response to match our expected format
+    // Jupiter API returns an object with mint addresses as keys
+    const tokens = Object.entries(data).map(([address, tokenInfo]: [string, any]) => {
+      if (!tokenInfo) return null;
+      
+      return {
+        address,
+        symbol: tokenInfo.symbol || 'Unknown',
+        name: tokenInfo.name || tokenInfo.symbol || 'Unknown Token',
+        decimals: tokenInfo.decimals || 9,
+        logoURI: tokenInfo.logoURI,
+      };
+    }).filter(Boolean); // Remove any null entries
+    
     return res.json({ tokens });
   } catch (error) {
     console.error('Error fetching token list:', error);

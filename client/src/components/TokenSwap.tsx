@@ -55,10 +55,14 @@ interface QuoteResponse {
   };
 }
 
+// Solana mainnet token addresses
+const USDC_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const SOL_ADDRESS = 'So11111111111111111111111111111111111111112';
+
 export function TokenSwap() {
   // Token states
-  const [fromToken, setFromToken] = useState<string>('');
-  const [toToken, setToToken] = useState<string>('');
+  const [fromToken, setFromToken] = useState<string>(USDC_ADDRESS);
+  const [toToken, setToToken] = useState<string>(SOL_ADDRESS);
   const [amount, setAmount] = useState<string>('1000000'); // 1 USDC (6 decimals)
   const [quote, setQuote] = useState<any>(null);
   const [isSwapping, setIsSwapping] = useState(false);
@@ -87,15 +91,17 @@ export function TokenSwap() {
   
   // Set USDC and SOL as default tokens when available
   useEffect(() => {
-    if (tokensData?.tokens && tokensData.tokens.length > 0) {
+    if (tokensData?.tokens && Array.isArray(tokensData.tokens) && tokensData.tokens.length > 0) {
       // Try to find USDC
       const usdcToken = tokensData.tokens.find(
-        (t: Token) => t.symbol.toUpperCase() === 'USDC'
+        (t: Token) => t && t.symbol && t.symbol.toUpperCase() === 'USDC'
       );
       
       // Try to find SOL
       const solToken = tokensData.tokens.find(
-        (t: Token) => t.symbol.toUpperCase() === 'SOL' || t.address === 'So11111111111111111111111111111111111111112'
+        (t: Token) => 
+          (t && t.symbol && t.symbol.toUpperCase() === 'SOL') || 
+          (t && t.address === 'So11111111111111111111111111111111111111112')
       );
       
       if (usdcToken && !fromToken) {
@@ -132,7 +138,10 @@ export function TokenSwap() {
   
   // Get token data by address
   const getTokenByAddress = (address: string): Token | undefined => {
-    return tokensData?.tokens?.find((t: Token) => t.address === address);
+    if (!address || !tokensData?.tokens || !Array.isArray(tokensData.tokens)) {
+      return undefined;
+    }
+    return tokensData.tokens.find((t: Token) => t && t.address === address);
   };
   
   // Format token amount based on decimals
@@ -198,7 +207,9 @@ export function TokenSwap() {
     );
   }
   
-  const tokens: Token[] = tokensData?.tokens || [];
+  const tokens: Token[] = Array.isArray(tokensData?.tokens) 
+    ? tokensData.tokens.filter((t): t is Token => !!t && !!t.address && !!t.symbol)
+    : [];
   const fromTokenData = getTokenByAddress(fromToken);
   const toTokenData = getTokenByAddress(toToken);
   
