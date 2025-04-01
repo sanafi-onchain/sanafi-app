@@ -26,14 +26,28 @@ function App() {
   return (
     <Layout>
       <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/accounts" component={Accounts} />
-        <Route path="/savings" component={Savings} />
-        <Route path="/investments" component={Investments} />
-        <Route path="/spend" component={Spend} />
-        <Route path="/spend/rewards" component={SpendRewards} />
+        <Route path="/dashboard" component={() => (
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        )} />
+        <Route path="/accounts" component={() => (
+          <ProtectedRoute><Accounts /></ProtectedRoute>
+        )} />
+        <Route path="/savings" component={() => (
+          <ProtectedRoute><Savings /></ProtectedRoute>
+        )} />
+        <Route path="/investments" component={() => (
+          <ProtectedRoute><Investments /></ProtectedRoute>
+        )} />
+        <Route path="/spend" component={() => (
+          <ProtectedRoute><Spend /></ProtectedRoute>
+        )} />
+        <Route path="/spend/rewards" component={() => (
+          <ProtectedRoute><SpendRewards /></ProtectedRoute>
+        )} />
         <Route path="/learn" component={Learn} />
-        <Route path="/settings" component={Settings} />
+        <Route path="/settings" component={() => (
+          <ProtectedRoute><Settings /></ProtectedRoute>
+        )} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
