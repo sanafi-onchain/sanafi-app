@@ -3,8 +3,19 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { userSchema, transactionSchema, investmentSchema } from "@shared/schema";
+import apiRoutes from "./routes/api";
+import { serviceManager } from "./services";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize service manager
+  try {
+    await serviceManager.initialize();
+  } catch (error) {
+    console.error('Error initializing service manager:', error);
+  }
+  
+  // Register API routes
+  app.use('/api', apiRoutes);
   // User Routes
   app.get('/api/user/profile', async (req, res) => {
     // In a real app, we would get this from the session

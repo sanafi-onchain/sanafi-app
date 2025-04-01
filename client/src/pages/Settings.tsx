@@ -1,240 +1,405 @@
-import { useWallet } from "@/contexts/WalletContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { useState } from 'react';
+import { ServiceStatus } from '@/components/ServiceStatus';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useQuery } from "@tanstack/react-query";
-import { UserCircle, Bell, Lock, Globe, Moon, Sun } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { useState } from "react";
+  UserRound, 
+  Bell, 
+  Shield, 
+  Globe,
+  Moon,
+  PanelLeft, 
+  Languages,
+  CircleDollarSign,
+  HelpCircle
+} from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Settings() {
-  const { wallet } = useWallet();
-  const { language, setLanguage } = useLanguage();
-  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [theme, setTheme] = useState('light');
   
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Settings</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="profile">
-            <TabsList className="mb-6">
-              <TabsTrigger value="profile" className="flex items-center">
-                <UserCircle className="h-4 w-4 mr-2" />
-                Profile
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="flex items-center">
-                <Bell className="h-4 w-4 mr-2" />
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="security" className="flex items-center">
-                <Lock className="h-4 w-4 mr-2" />
-                Security
-              </TabsTrigger>
-              <TabsTrigger value="appearance" className="flex items-center">
-                <Globe className="h-4 w-4 mr-2" />
-                Appearance
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="profile" className="mt-0">
+    <div className="container mx-auto py-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-primary">Settings</h1>
+          <p className="text-muted-foreground">Manage your account settings and preferences</p>
+        </div>
+      </div>
+      
+      <Tabs defaultValue="general" className="space-y-4">
+        <TabsList className="grid grid-cols-4 md:grid-cols-8 lg:w-2/3">
+          <TabsTrigger value="general" className="flex items-center gap-2">
+            <UserRound className="h-4 w-4" />
+            <span className="hidden md:inline">General</span>
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex items-center gap-2">
+            <Bell className="h-4 w-4" />
+            <span className="hidden md:inline">Notifications</span>
+          </TabsTrigger>
+          <TabsTrigger value="security" className="flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            <span className="hidden md:inline">Security</span>
+          </TabsTrigger>
+          <TabsTrigger value="appearance" className="flex items-center gap-2">
+            <PanelLeft className="h-4 w-4" />
+            <span className="hidden md:inline">Appearance</span>
+          </TabsTrigger>
+          <TabsTrigger value="language" className="flex items-center gap-2">
+            <Languages className="h-4 w-4" />
+            <span className="hidden md:inline">Language</span>
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="flex items-center gap-2">
+            <CircleDollarSign className="h-4 w-4" />
+            <span className="hidden md:inline">Billing</span>
+          </TabsTrigger>
+          <TabsTrigger value="services" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            <span className="hidden md:inline">Services</span>
+          </TabsTrigger>
+          <TabsTrigger value="support" className="flex items-center gap-2">
+            <HelpCircle className="h-4 w-4" />
+            <span className="hidden md:inline">Support</span>
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="general" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Personal Information</CardTitle>
+              <CardDescription>Update your personal information and how we can reach you</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Form content would go here */}
+              <p className="text-muted-foreground">Personal information settings will be implemented in a future update.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="notifications" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Notification Preferences</CardTitle>
+              <CardDescription>Manage how you receive notifications</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <h3 className="text-lg font-medium">Personal Information</h3>
-                  <p className="text-sm text-muted-foreground">Update your account details</p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Full Name</label>
-                    <Input defaultValue={wallet?.isConnected ? "Test User" : ""} disabled={!wallet?.isConnected} />
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="transactions">Transaction Alerts</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Receive notifications for important transaction updates
+                    </p>
                   </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Email</label>
-                    <Input defaultValue={wallet?.isConnected ? "user@example.com" : ""} disabled={!wallet?.isConnected} />
+                  <Switch id="transactions" defaultChecked />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="marketing">Marketing Updates</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Receive emails about new features and promotional offers
+                    </p>
                   </div>
+                  <Switch id="marketing" />
                 </div>
-                
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Wallet Address</label>
-                  <Input 
-                    value={wallet?.address || "Not connected"} 
-                    disabled 
-                    className="font-mono text-sm"
-                  />
-                </div>
-                
-                <div className="pt-4">
-                  <Button disabled={!wallet?.isConnected}>
-                    Save Changes
-                  </Button>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="security">Security Alerts</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified about security-related events with your account
+                    </p>
+                  </div>
+                  <Switch id="security" defaultChecked />
                 </div>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="notifications" className="mt-0">
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="security" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Security Settings</CardTitle>
+              <CardDescription>Manage your account security preferences</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="2fa">Two-Factor Authentication</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Add an extra layer of security to your account
+                    </p>
+                  </div>
+                  <Switch id="2fa" />
+                </div>
+                <Separator />
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">Notification Preferences</h3>
-                  <p className="text-sm text-muted-foreground">Manage how you receive notifications</p>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Transaction Updates</h4>
-                      <p className="text-sm text-muted-foreground">Notifications for deposits, withdrawals, and transfers</p>
-                    </div>
-                    <Switch defaultChecked />
+                  <Label>Password</Label>
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm text-muted-foreground">
+                      Last changed: 30 days ago
+                    </p>
+                    <Button variant="outline" size="sm">Change Password</Button>
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Investment Updates</h4>
-                      <p className="text-sm text-muted-foreground">Notifications for performance and new opportunities</p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Profit Distributions</h4>
-                      <p className="text-sm text-muted-foreground">Notifications when profits are distributed</p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Reward Alerts</h4>
-                      <p className="text-sm text-muted-foreground">Notifications when you earn rewards from spending</p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Educational Content</h4>
-                      <p className="text-sm text-muted-foreground">Updates about new learning materials</p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button disabled={!wallet?.isConnected}>
-                    Save Preferences
-                  </Button>
                 </div>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="security" className="mt-0">
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="appearance" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Appearance</CardTitle>
+              <CardDescription>Customize how Tahara looks on your device</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <h3 className="text-lg font-medium">Security Settings</h3>
-                  <p className="text-sm text-muted-foreground">Manage your account security</p>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Two-Factor Authentication</h4>
-                      <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
-                    </div>
-                    <Switch />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Transaction Notifications</h4>
-                      <p className="text-sm text-muted-foreground">Get notified for all transactions</p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Wallet Connection Alerts</h4>
-                      <p className="text-sm text-muted-foreground">Get alerted when your wallet connects</p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button disabled={!wallet?.isConnected}>
-                    Save Security Settings
-                  </Button>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="appearance" className="mt-0">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <h3 className="text-lg font-medium">Appearance Settings</h3>
-                  <p className="text-sm text-muted-foreground">Customize how Tahara looks</p>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Language</h4>
-                      <p className="text-sm text-muted-foreground">Select your preferred language</p>
-                    </div>
-                    <Select 
-                      value={language} 
-                      onValueChange={(value) => setLanguage(value as "en" | "ar")}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select language" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ar">العربية (Arabic)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Theme</h4>
-                      <p className="text-sm text-muted-foreground">Choose light or dark mode</p>
+                  <Label>Theme</Label>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="radio" 
+                        id="theme-light" 
+                        name="theme" 
+                        value="light"
+                        checked={theme === 'light'}
+                        onChange={() => setTheme('light')}
+                        className="h-4 w-4 text-primary"
+                      />
+                      <Label htmlFor="theme-light" className="cursor-pointer">Light</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Sun className={`h-5 w-5 ${!darkMode ? 'text-primary' : 'text-muted-foreground'}`} />
-                      <Switch 
-                        checked={darkMode}
-                        onCheckedChange={setDarkMode}
+                      <input 
+                        type="radio" 
+                        id="theme-dark" 
+                        name="theme" 
+                        value="dark"
+                        checked={theme === 'dark'}
+                        onChange={() => setTheme('dark')}
+                        className="h-4 w-4 text-primary"
                       />
-                      <Moon className={`h-5 w-5 ${darkMode ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <Label htmlFor="theme-dark" className="cursor-pointer">Dark</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="radio" 
+                        id="theme-system" 
+                        name="theme" 
+                        value="system"
+                        checked={theme === 'system'}
+                        onChange={() => setTheme('system')}
+                        className="h-4 w-4 text-primary"
+                      />
+                      <Label htmlFor="theme-system" className="cursor-pointer">System</Label>
                     </div>
                   </div>
                 </div>
                 
-                <div className="pt-4">
-                  <Button>
-                    Save Appearance Settings
-                  </Button>
+                <Separator />
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="reduce-motion">Reduce Motion</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Minimize animations throughout the interface
+                    </p>
+                  </div>
+                  <Switch id="reduce-motion" />
+                </div>
+                
+                <Separator />
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="large-text">Larger Text</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Increase the text size for better readability
+                    </p>
+                  </div>
+                  <Switch id="large-text" />
                 </div>
               </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="language" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Language Settings</CardTitle>
+              <CardDescription>Choose your preferred language and region</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="language-select">Display Language</Label>
+                  <Select 
+                    value={language} 
+                    onValueChange={setLanguage}
+                  >
+                    <SelectTrigger id="language-select" className="w-full sm:w-[240px]">
+                      <SelectValue placeholder="Select Language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="ar">Arabic</SelectItem>
+                      <SelectItem value="fr">French</SelectItem>
+                      <SelectItem value="es">Spanish</SelectItem>
+                      <SelectItem value="id">Indonesian</SelectItem>
+                      <SelectItem value="ms">Malay</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    This will change the language throughout the application
+                  </p>
+                </div>
+                
+                <Separator />
+                
+                <div className="space-y-2">
+                  <Label htmlFor="currency-select">Display Currency</Label>
+                  <Select defaultValue="usd">
+                    <SelectTrigger id="currency-select" className="w-full sm:w-[240px]">
+                      <SelectValue placeholder="Select Currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="usd">USD ($)</SelectItem>
+                      <SelectItem value="eur">EUR (€)</SelectItem>
+                      <SelectItem value="gbp">GBP (£)</SelectItem>
+                      <SelectItem value="aed">AED (د.إ)</SelectItem>
+                      <SelectItem value="sar">SAR (ر.س)</SelectItem>
+                      <SelectItem value="myr">MYR (RM)</SelectItem>
+                      <SelectItem value="idr">IDR (Rp)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    This determines how monetary values are displayed
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="billing" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Billing Information</CardTitle>
+              <CardDescription>Manage your payment methods and billing preferences</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Current Plan</Label>
+                  <div className="flex justify-between items-center border rounded p-4">
+                    <div>
+                      <h4 className="font-medium">Basic Plan</h4>
+                      <p className="text-sm text-muted-foreground">All essential features</p>
+                    </div>
+                    <Button variant="outline" size="sm">Upgrade</Button>
+                  </div>
+                </div>
+                
+                <Separator />
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label>Payment Methods</Label>
+                    <Button variant="outline" size="sm">Add Method</Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    No payment methods currently on file
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="services" className="space-y-6">
+          <ServiceStatus />
+          <Card>
+            <CardHeader>
+              <CardTitle>Integration Settings</CardTitle>
+              <CardDescription>Manage third-party services and API integrations</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="api-access">API Access</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Enable access to your account via the API
+                    </p>
+                  </div>
+                  <Switch id="api-access" />
+                </div>
+                
+                <Separator />
+                
+                <div className="space-y-2">
+                  <Label>API Keys</Label>
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm text-muted-foreground">
+                      Manage your API keys for external services
+                    </p>
+                    <Button variant="outline" size="sm">Manage Keys</Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="support" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Help & Support</CardTitle>
+              <CardDescription>Get help with your account and find resources</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border rounded-lg p-4 space-y-2">
+                  <h3 className="font-medium flex items-center">
+                    <HelpCircle className="h-4 w-4 mr-2" />
+                    Customer Support
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Have a question or need help with your account? Our support team is here to help.
+                  </p>
+                  <Button variant="outline" size="sm">Contact Support</Button>
+                </div>
+                
+                <div className="border rounded-lg p-4 space-y-2">
+                  <h3 className="font-medium">Documentation</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Explore our documentation for detailed guides on using Tahara's features.
+                  </p>
+                  <Button variant="outline" size="sm">View Documentation</Button>
+                </div>
+                
+                <div className="border rounded-lg p-4 space-y-2">
+                  <h3 className="font-medium">FAQ</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Find answers to commonly asked questions about our service.
+                  </p>
+                  <Button variant="outline" size="sm">View FAQ</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
