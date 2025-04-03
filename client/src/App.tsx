@@ -2,6 +2,7 @@ import { Route, Switch, useLocation } from "wouter";
 import Layout from "@/components/Layout";
 import Landing from "@/pages/Landing";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { SignIn } from "@/pages/SignIn";
 import Dashboard from "@/pages/Dashboard";
 import Accounts from "@/pages/Accounts";
 import Savings from "@/pages/Savings";
