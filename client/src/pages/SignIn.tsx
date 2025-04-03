@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { 
@@ -11,9 +12,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
 import { ArrowRight, Mail, Wallet } from "lucide-react";
+import { TaharaLogo } from "@/components/icons/TaharaLogo";
 
 export function SignIn() {
-  const [location, navigate] = useLocation();
+  const [, navigate] = useLocation();
   const { isAuthenticated, login } = usePrivyAuth();
 
   // Redirect to dashboard if already authenticated
@@ -26,13 +28,14 @@ export function SignIn() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-green-50 to-white">
       <div className="mb-8 text-center">
+        <TaharaLogo className="w-12 h-12 mx-auto mb-4" />
         <h1 className="text-4xl font-bold text-primary mb-2">Tahara</h1>
         <p className="text-muted-foreground">Sharia-compliant financial services</p>
       </div>
 
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Welcome to Tahara</CardTitle>
+          <CardTitle>Welcome Back</CardTitle>
           <CardDescription>
             Sign in to access your Sharia-compliant financial platform
           </CardDescription>
@@ -40,7 +43,7 @@ export function SignIn() {
         <CardContent className="space-y-4">
           <div className="text-center p-6">
             <p className="mb-6 text-muted-foreground">
-              Tahara provides ethical, Sharia-compliant financial services built on Solana.
+              Choose your preferred sign in method
             </p>
             <div className="flex flex-col space-y-3">
               <Button
@@ -62,7 +65,7 @@ export function SignIn() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex flex-col space-y-4 text-center">
           <p className="text-xs text-muted-foreground">
             By signing in, you agree to our Terms of Service and Privacy Policy
           </p>

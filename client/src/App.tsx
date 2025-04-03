@@ -27,6 +27,7 @@ function App() {
   return (
     <Layout>
       <Switch>
+        <Route path="/signin" component={SignIn} />
         <Route path="/dashboard" component={() => (
           <ProtectedRoute><Dashboard /></ProtectedRoute>
         )} />
