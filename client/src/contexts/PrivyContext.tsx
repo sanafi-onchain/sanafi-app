@@ -1,5 +1,6 @@
+
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext, useContext, ReactNode, useEffect, useState } from "react";
 
 interface PrivyContextType {
   isReady: boolean;
@@ -63,6 +64,12 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
         },
         defaultChain: 'solana:mainnet',
         supportedChains: ['solana:mainnet', 'solana:devnet'],
+        wallets: {
+          solana: {
+            enablePreferredWallet: true,
+            wallets: ['phantom', 'backpack', 'solflare'],
+          }
+        }
       }}
     >
       <PrivyProviderInner>{children}</PrivyProviderInner>
