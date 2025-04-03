@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
 import { ArrowRight, Mail, Wallet } from "lucide-react";
-import { TaharaLogo } from "@/components/icons/TaharaLogo";
+import TaharaLogo from "@/components/icons/TaharaLogo";
 
 export function SignIn() {
   const [, navigate] = useLocation();
