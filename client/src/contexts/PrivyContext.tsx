@@ -1,7 +1,6 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
 
-// Create context for Privy
 interface PrivyContextType {
   isReady: boolean;
   isAuthenticated: boolean;
@@ -16,7 +15,6 @@ interface PrivyContextType {
 
 const PrivyContext = createContext<PrivyContextType | undefined>(undefined);
 
-// Hook for using the Privy context
 export const usePrivyAuth = () => {
   const context = useContext(PrivyContext);
   if (context === undefined) {
@@ -25,44 +23,28 @@ export const usePrivyAuth = () => {
   return context;
 };
 
-// Provider component for Privy authentication
 export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
   const [appId, setAppId] = useState<string>("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchConfig = async () => {
       try {
         const response = await fetch('/api/config');
-        if (!response.ok) {
-          throw new Error(`Config API error: ${response.status}`);
-        }
         const data = await response.json();
-        if (data?.privy?.appId) {
-          setAppId(data.privy.appId);
-        } else {
-          setAppId("clte20i1200psmn0fapdi5k6w");
-          console.warn("Using fallback Privy App ID for development");
-        }
+        setAppId(data?.privy?.appId || "clte20i1200psmn0fapdi5k6w");
       } catch (err) {
         console.error("Failed to fetch config:", err);
-        setError("Failed to load authentication configuration");
         setAppId("clte20i1200psmn0fapdi5k6w");
       } finally {
         setLoading(false);
       }
     };
-
     fetchConfig();
   }, []);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading authentication...</div>;
-  }
-
-  if (error) {
-    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
 
   return (
@@ -76,25 +58,26 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
           logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
         },
         embeddedWallets: {
-          noPrompt: false,
-          requireUserPasswordConfirmation: true,
+          noPrompt: true,
+          createOnLogin: true,
         },
+        defaultChain: 'solana:mainnet',
         supportedChains: ['solana:mainnet', 'solana:devnet'],
       }}
     >
-      <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
+      <PrivyProviderInner>{children}</PrivyProviderInner>
     </PrivyProvider>
   );
 };
 
-const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
+const PrivyProviderInner = ({ children }: { children: ReactNode }) => {
   const privy = usePrivy();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
 
-  const updateWalletInfo = useCallback(async () => {
-    if (privy.user?.wallet?.address) {
+  useEffect(() => {
+    if (privy.ready && privy.user?.wallet?.address) {
       setWalletAddress(privy.user.wallet.address);
       setWalletConnected(true);
       setWalletBalance("0.00");
@@ -103,13 +86,7 @@ const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
       setWalletBalance(null);
       setWalletConnected(false);
     }
-  }, [privy.user]);
-
-  useEffect(() => {
-    if (privy.ready) {
-      updateWalletInfo();
-    }
-  }, [privy.ready, privy.user, updateWalletInfo]);
+  }, [privy.ready, privy.user]);
 
   const value = {
     isReady: privy.ready,
