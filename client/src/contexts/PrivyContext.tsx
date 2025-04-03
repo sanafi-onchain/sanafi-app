@@ -31,7 +31,6 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch configuration from the server
   useEffect(() => {
     const fetchConfig = async () => {
       try {
@@ -43,14 +42,12 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
         if (data?.privy?.appId) {
           setAppId(data.privy.appId);
         } else {
-          // Fallback for development
           setAppId("clte20i1200psmn0fapdi5k6w");
           console.warn("Using fallback Privy App ID for development");
         }
       } catch (err) {
         console.error("Failed to fetch config:", err);
         setError("Failed to load authentication configuration");
-        // Fallback for development
         setAppId("clte20i1200psmn0fapdi5k6w");
       } finally {
         setLoading(false);
@@ -60,12 +57,10 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
     fetchConfig();
   }, []);
 
-  // Show loading state while fetching config
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading authentication...</div>;
   }
 
-  // Show error if config fetch failed
   if (error) {
     return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
@@ -74,20 +69,17 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
     <PrivyProvider
       appId={appId}
       config={{
-        loginMethods: ['wallet'],
+        loginMethods: ['wallet', 'email'],
         appearance: {
           theme: 'light',
           accentColor: '#2E7D32',
           logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
         },
-        defaultChain: 'solana:mainnet',
-        supportedChains: ['solana:mainnet', 'solana:devnet'],
-        walletConnectV2: {
-          projectId: 'clte20i1200psmn0fapdi5k6w'
+        embeddedWallets: {
+          noPrompt: false,
+          requireUserPasswordConfirmation: true,
         },
-        solana: {
-          connectWallet: true
-        }
+        supportedChains: ['solana:mainnet', 'solana:devnet'],
       }}
     >
       <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
@@ -95,21 +87,16 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Inner provider component that uses the Privy hooks
 const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
   const privy = usePrivy();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
 
-  // Handle wallet connection
   const updateWalletInfo = useCallback(async () => {
     if (privy.user?.wallet?.address) {
       setWalletAddress(privy.user.wallet.address);
       setWalletConnected(true);
-
-      // This would be where we'd fetch the wallet balance in a real implementation
-      // For now, just set a placeholder
       setWalletBalance("0.00");
     } else {
       setWalletAddress(null);
@@ -118,36 +105,19 @@ const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
     }
   }, [privy.user]);
 
-  // Update wallet info when user changes
   useEffect(() => {
     if (privy.ready) {
       updateWalletInfo();
     }
   }, [privy.ready, privy.user, updateWalletInfo]);
 
-  // Login function
-  const login = useCallback(() => {
-    privy.login();
-  }, [privy]);
-
-  // Logout function
-  const logout = useCallback(() => {
-    privy.logout();
-  }, [privy]);
-
-  // Connect wallet function
-  const connectWallet = useCallback(() => {
-    privy.connectWallet();
-  }, [privy]);
-
-  // Create the context value
   const value = {
     isReady: privy.ready,
     isAuthenticated: privy.authenticated,
     user: privy.user,
-    login,
-    logout,
-    connectWallet,
+    login: privy.login,
+    logout: privy.logout,
+    connectWallet: privy.connectWallet,
     walletAddress,
     walletBalance,
     walletConnected,
