@@ -1,7 +1,7 @@
-
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { createContext, useContext, ReactNode, useEffect, useState } from "react";
+import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
 
+// Create context for Privy
 interface PrivyContextType {
   isReady: boolean;
   isAuthenticated: boolean;
@@ -16,6 +16,7 @@ interface PrivyContextType {
 
 const PrivyContext = createContext<PrivyContextType | undefined>(undefined);
 
+// Hook for using the Privy context
 export const usePrivyAuth = () => {
   const context = useContext(PrivyContext);
   if (context === undefined) {
@@ -24,82 +25,121 @@ export const usePrivyAuth = () => {
   return context;
 };
 
+// Provider component for Privy authentication
 export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
   const [appId, setAppId] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch configuration from the server
   useEffect(() => {
     const fetchConfig = async () => {
       try {
         const response = await fetch('/api/config');
+        if (!response.ok) {
+          throw new Error(`Config API error: ${response.status}`);
+        }
         const data = await response.json();
-        setAppId(data?.privy?.appId || "clte20i1200psmn0fapdi5k6w");
+        if (data?.privy?.appId) {
+          setAppId(data.privy.appId);
+        } else {
+          // Fallback for development
+          setAppId("clte20i1200psmn0fapdi5k6w");
+          console.warn("Using fallback Privy App ID for development");
+        }
       } catch (err) {
         console.error("Failed to fetch config:", err);
+        setError("Failed to load authentication configuration");
+        // Fallback for development
         setAppId("clte20i1200psmn0fapdi5k6w");
       } finally {
         setLoading(false);
       }
     };
+
     fetchConfig();
   }, []);
 
+  // Show loading state while fetching config
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading authentication...</div>;
+  }
+
+  // Show error if config fetch failed
+  if (error) {
+    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
 
   return (
     <PrivyProvider
       appId={appId}
       config={{
-        loginMethods: ['wallet'],
+        loginMethods: ['email', 'wallet'],
         appearance: {
           theme: 'light',
-          accentColor: '#2E7D32',
-          logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
-        },
-        embeddedWallets: {
-          createOnLogin: false
-        },
-        defaultChain: 'solana:mainnet',
-        supportedChains: ['solana:mainnet', 'solana:devnet'],
-        wallets: {
-          solana: {
-            wallets: ['phantom', 'backpack', 'solflare']
-          }
+          accentColor: '#2E7D32', // Matching our green theme
+          logo: 'https://assets.replit.com/images/icons/icon-512x512.png', // Placeholder logo
         }
       }}
     >
-      <PrivyProviderInner>{children}</PrivyProviderInner>
+      <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
     </PrivyProvider>
   );
 };
 
-const PrivyProviderInner = ({ children }: { children: ReactNode }) => {
+// Inner provider component that uses the Privy hooks
+const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
   const privy = usePrivy();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (privy.ready && privy.user?.wallet?.address) {
+  // Handle wallet connection
+  const updateWalletInfo = useCallback(async () => {
+    if (privy.user?.wallet?.address) {
       setWalletAddress(privy.user.wallet.address);
       setWalletConnected(true);
+
+      // This would be where we'd fetch the wallet balance in a real implementation
+      // For now, just set a placeholder
       setWalletBalance("0.00");
     } else {
       setWalletAddress(null);
       setWalletBalance(null);
       setWalletConnected(false);
     }
-  }, [privy.ready, privy.user]);
+  }, [privy.user]);
 
+  // Update wallet info when user changes
+  useEffect(() => {
+    if (privy.ready) {
+      updateWalletInfo();
+    }
+  }, [privy.ready, privy.user, updateWalletInfo]);
+
+  // Login function
+  const login = useCallback(() => {
+    privy.login();
+  }, [privy]);
+
+  // Logout function
+  const logout = useCallback(() => {
+    privy.logout();
+  }, [privy]);
+
+  // Connect wallet function
+  const connectWallet = useCallback(() => {
+    privy.connectWallet();
+  }, [privy]);
+
+  // Create the context value
   const value = {
     isReady: privy.ready,
     isAuthenticated: privy.authenticated,
     user: privy.user,
-    login: privy.login,
-    logout: privy.logout,
-    connectWallet: privy.connectWallet,
+    login,
+    logout,
+    connectWallet,
     walletAddress,
     walletBalance,
     walletConnected,

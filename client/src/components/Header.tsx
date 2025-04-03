@@ -4,7 +4,6 @@ import LanguageSelector from "./LanguageSelector";
 import TaharaLogo from "./icons/TaharaLogo";
 import { Menu } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { usePrivyAuth } from "@/contexts/PrivyContext";
 
 interface HeaderProps {
   toggleMobileMenu: () => void;
@@ -65,10 +64,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
           <LanguageSelector />
           
           {/* Wallet Connect Button */}
-          <WalletConnectButton onClick={() => {
-            const { login } = usePrivyAuth();
-            login();
-          }} />
+          <WalletConnectButton onClick={toggleWalletModal} />
         </div>
       </div>
     </header>
