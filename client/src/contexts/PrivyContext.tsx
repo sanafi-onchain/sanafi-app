@@ -52,22 +52,20 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
     <PrivyProvider
       appId={appId}
       config={{
-        loginMethods: ['wallet', 'email'],
+        loginMethods: ['wallet'],
         appearance: {
           theme: 'light',
           accentColor: '#2E7D32',
           logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
         },
         embeddedWallets: {
-          noPrompt: true,
-          createOnLogin: true,
+          createOnLogin: false
         },
         defaultChain: 'solana:mainnet',
         supportedChains: ['solana:mainnet', 'solana:devnet'],
         wallets: {
           solana: {
-            enablePreferredWallet: true,
-            wallets: ['phantom', 'backpack', 'solflare'],
+            wallets: ['phantom', 'backpack', 'solflare']
           }
         }
       }}
