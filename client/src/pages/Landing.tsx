@@ -100,12 +100,9 @@ export default function Landing() {
               <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/20 rounded-full z-0"></div>
               <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="p-6 bg-primary text-white">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>
-                      <p className="text-sm opacity-80">Total Balance</p>
-                      <h3 className="text-2xl font-bold">2,450 USDC</h3>
-                    </div>
-                    <SanafiLogo small variant="inverse" />
+                  <div className="mb-6">
+                    <p className="text-sm opacity-80">Total Balance</p>
+                    <h3 className="text-2xl font-bold">2,450 USDC</h3>
                   </div>
                   <div className="flex justify-between">
                     <div>
