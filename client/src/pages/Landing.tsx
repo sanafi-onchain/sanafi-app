@@ -105,7 +105,7 @@ export default function Landing() {
                       <p className="text-sm opacity-80">Total Balance</p>
                       <h3 className="text-2xl font-bold">2,450 USDC</h3>
                     </div>
-                    <SanafiLogo small inverse={false} />
+                    <SanafiLogo small inverse={true} />
                   </div>
                   <div className="flex justify-between">
                     <div>
