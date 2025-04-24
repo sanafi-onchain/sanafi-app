@@ -298,7 +298,7 @@ export default function Learn() {
                       </div>
                       <div>
                         <h4 className="font-medium mb-1">Your First Deposit</h4>
-                        <p className="text-sm text-muted-foreground mb-2">How to deposit funds into your Tahara account.</p>
+                        <p className="text-sm text-muted-foreground mb-2">How to deposit funds into your Sanafi account.</p>
                         <Button size="sm" variant="ghost" className="text-secondary">
                           View Tutorial
                         </Button>
@@ -327,7 +327,7 @@ export default function Learn() {
                         <CreditCard className="h-5 w-5 text-secondary" />
                       </div>
                       <div>
-                        <h4 className="font-medium mb-1">Using Your Tahara Card</h4>
+                        <h4 className="font-medium mb-1">Using Your Sanafi Card</h4>
                         <p className="text-sm text-muted-foreground mb-2">How to spend and earn rewards with your card.</p>
                         <Button size="sm" variant="ghost" className="text-secondary">
                           View Tutorial
@@ -361,7 +361,7 @@ export default function Learn() {
                   
                   <div className="mb-6">
                     <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium">Tahara Platform Guide</span>
+                      <span className="text-sm font-medium">Sanafi Platform Guide</span>
                       <span className="text-sm">2/3 completed</span>
                     </div>
                     <Progress value={67} className="h-2" />

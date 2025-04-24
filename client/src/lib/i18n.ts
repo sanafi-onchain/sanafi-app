@@ -90,7 +90,7 @@ export type TranslationKey =
   | "Blockchain and Sharia Compliance"
   | "Explore Learning Center"
 
-  | "Connect your wallet to access Tahara's Sharia-compliant financial services."
+  | "Connect your wallet to access Sanafi's Sharia-compliant financial services."
   | "Connect with Privy"
   | "Phantom Wallet"
   | "Solflare Wallet"

@@ -321,7 +321,7 @@ export function Onboarding() {
               <div>
                 <h3 className="font-medium">Sharia Compliance Statement</h3>
                 <p className="text-muted-foreground mt-1">
-                  Tahara services are designed to be fully Sharia-compliant. We prohibit interest (riba), excessive uncertainty (gharar), and prohibited industries.
+                  Sanafi services are designed to be fully Sharia-compliant. We prohibit interest (riba), excessive uncertainty (gharar), and prohibited industries.
                 </p>
               </div>
 
