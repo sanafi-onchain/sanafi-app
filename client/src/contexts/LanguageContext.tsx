@@ -18,7 +18,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
 
   // Load language preference from localStorage on mount
   useEffect(() => {
-    const storedLanguage = localStorage.getItem("taharaLanguage");
+    const storedLanguage = localStorage.getItem("sanafiLanguage");
     if (storedLanguage === "en" || storedLanguage === "ar") {
       setLanguageState(storedLanguage);
       document.documentElement.setAttribute("dir", storedLanguage === "ar" ? "rtl" : "ltr");
@@ -33,7 +33,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   // Set language and update localStorage
   const setLanguage = (lang: "en" | "ar") => {
     setLanguageState(lang);
-    localStorage.setItem("taharaLanguage", lang);
+    localStorage.setItem("sanafiLanguage", lang);
     
     // Update document direction for RTL support
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
