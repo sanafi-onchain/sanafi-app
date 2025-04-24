@@ -1,6 +1,6 @@
 # Sanafi Onchain
 
-![Sanafi Logo]() <!-- Placeholder for logo -->
+![Sanafi Logo](generated-icon.png) <!-- Placeholder for logo -->
 
 **Sanafi - Halal Onchain Banking** is a Sharia-compliant financial platform built on the Solana blockchain, designed to empower Muslim and ethical investors with transparent, secure, and halal financial services. With a tagline of "100% Onchain, 100% Halal," Sanafi provides a unified ecosystem for managing finances in alignment with Islamic principles.
 
