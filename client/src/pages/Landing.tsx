@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
-import TaharaLogo from "@/components/icons/TaharaLogo";
+import SanafiLogo from "@/components/icons/SanafiLogo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -27,8 +27,8 @@ export default function Landing() {
       {/* Header */}
       <header className="bg-white border-b border-gray-100 py-4 px-6 flex items-center justify-between">
         <div className="flex items-center">
-          <TaharaLogo />
-          <span className="ml-2 font-bold text-2xl text-primary">Tahara</span>
+          <SanafiLogo />
+          <span className="ml-2 font-bold text-2xl text-primary">Sanafi</span>
         </div>
         <div className="flex items-center space-x-4">
           <Button
@@ -76,7 +76,7 @@ export default function Landing() {
               100% Onchain 100% Halal
             </h1>
             <p className="text-lg text-gray-700 mb-8">
-              Tahara provides Sharia-compliant investment opportunities, savings, and financial services for Muslims and values-driven investors.
+              Sanafi provides Sharia-compliant investment opportunities, savings, and financial services for Muslims and values-driven investors.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -105,7 +105,7 @@ export default function Landing() {
                       <p className="text-sm opacity-80">Total Balance</p>
                       <h3 className="text-2xl font-bold">2,450 USDC</h3>
                     </div>
-                    <TaharaLogo small />
+                    <SanafiLogo small />
                   </div>
                   <div className="flex justify-between">
                     <div>
@@ -195,10 +195,10 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Tahara
+              Why Choose Sanafi
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Tahara combines Islamic financial principles with modern technology to provide an accessible, transparent platform for ethical investing.
+              Sanafi combines Islamic financial principles with modern technology to provide an accessible, transparent platform for ethical investing.
             </p>
           </div>
 
@@ -262,7 +262,7 @@ export default function Landing() {
               What Our Users Say
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Join thousands of Muslims and ethical investors who have chosen Tahara for their financial needs.
+              Join thousands of Muslims and ethical investors who have chosen Sanafi for their financial needs.
             </p>
           </div>
 
@@ -279,7 +279,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <p className="text-gray-600">
-                  "Tahara has transformed how I invest my money. For the first time, I feel confident that my investments are truly Sharia-compliant while still giving me competitive returns."
+                  "Sanafi has transformed how I invest my money. For the first time, I feel confident that my investments are truly Sharia-compliant while still giving me competitive returns."
                 </p>
               </CardContent>
             </Card>
@@ -313,7 +313,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <p className="text-gray-600">
-                  "The transparency of Tahara's platform gives me peace of mind. I can see exactly where my money is invested and how it aligns with Islamic principles."
+                  "The transparency of Sanafi's platform gives me peace of mind. I can see exactly where my money is invested and how it aligns with Islamic principles."
                 </p>
               </CardContent>
             </Card>
@@ -328,7 +328,7 @@ export default function Landing() {
             Ready to Start Your Halal Financial Journey?
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto opacity-90">
-            Join Tahara today and take the first step towards an ethical financial future that aligns with your values and faith.
+            Join Sanafi today and take the first step towards an ethical financial future that aligns with your values and faith.
           </p>
           <Button 
             className="bg-white text-primary hover:bg-white/90 px-8 py-6 text-lg"
@@ -345,8 +345,8 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <TaharaLogo />
-                <span className="ml-2 font-bold text-xl">Tahara</span>
+                <SanafiLogo />
+                <span className="ml-2 font-bold text-xl">Sanafi</span>
               </div>
               <p className="text-gray-400 mb-4">
                 Sharia-compliant financial services for the modern Muslim.
@@ -402,7 +402,7 @@ export default function Landing() {
           
           <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Tahara. All rights reserved.
+              &copy; {new Date().getFullYear()} Sanafi. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>

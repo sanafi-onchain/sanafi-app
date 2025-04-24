@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import WalletConnectButton from "./WalletConnectButton";
 import LanguageSelector from "./LanguageSelector";
-import TaharaLogo from "./icons/TaharaLogo";
+import SanafiLogo from "./icons/SanafiLogo";
 import { Menu } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -37,8 +37,8 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         
         {/* Logo (mobile only) */}
         <Link href="/" className="lg:hidden flex items-center">
-          <TaharaLogo small />
-          <span className="ml-2 font-bold text-lg text-primary">Tahara</span>
+          <SanafiLogo small />
+          <span className="ml-2 font-bold text-lg text-primary">Sanafi</span>
         </Link>
         
         {/* Desktop Navigation */}

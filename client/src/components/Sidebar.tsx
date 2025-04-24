@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import TaharaLogo from "./icons/TaharaLogo";
+import SanafiLogo from "./icons/SanafiLogo";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -30,8 +30,8 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-4 mb-6">
         <Link href="/" className="flex items-center space-x-3 py-3">
-          <TaharaLogo />
-          <span className="font-bold text-xl">Tahara</span>
+          <SanafiLogo />
+          <span className="font-bold text-xl">Sanafi</span>
         </Link>
       </div>
       

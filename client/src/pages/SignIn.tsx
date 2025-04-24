@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
 import { ArrowRight, Mail, Wallet } from "lucide-react";
-import TaharaLogo from "@/components/icons/TaharaLogo";
+import SanafiLogo from "@/components/icons/SanafiLogo";
 
 export function SignIn() {
   const [, navigate] = useLocation();
@@ -28,8 +28,8 @@ export function SignIn() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-green-50 to-white">
       <div className="mb-8 text-center">
-        <TaharaLogo className="w-12 h-12 mx-auto mb-4" />
-        <h1 className="text-4xl font-bold text-primary mb-2">Tahara</h1>
+        <SanafiLogo className="w-12 h-12 mx-auto mb-4" />
+        <h1 className="text-4xl font-bold text-primary mb-2">Sanafi</h1>
         <p className="text-muted-foreground">Sharia-compliant financial services</p>
       </div>
 
