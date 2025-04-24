@@ -27,7 +27,7 @@ export default function Landing() {
       {/* Header */}
       <header className="bg-white border-b border-gray-100 py-4 px-6 flex items-center justify-between">
         <div className="flex items-center">
-          <SanafiLogo />
+          <SanafiLogo inverse />
           <span className="ml-2 font-bold text-2xl text-primary">Sanafi</span>
         </div>
         <div className="flex items-center space-x-4">
@@ -105,7 +105,7 @@ export default function Landing() {
                       <p className="text-sm opacity-80">Total Balance</p>
                       <h3 className="text-2xl font-bold">2,450 USDC</h3>
                     </div>
-                    <SanafiLogo small />
+                    <SanafiLogo small inverse={false} />
                   </div>
                   <div className="flex justify-between">
                     <div>
@@ -345,7 +345,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <SanafiLogo />
+                <SanafiLogo inverse />
                 <span className="ml-2 font-bold text-xl">Sanafi</span>
               </div>
               <p className="text-gray-400 mb-4">
