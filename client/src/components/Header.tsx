@@ -37,7 +37,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         
         {/* Logo (mobile only) */}
         <Link href="/" className="lg:hidden flex items-center">
-          <SanafiLogo small inverse />
+          <SanafiLogo small variant="inverse" />
           <span className="ml-2 font-bold text-lg text-primary">Sanafi</span>
         </Link>
         
