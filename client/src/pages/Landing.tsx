@@ -345,7 +345,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <SanafiLogo variant="dark" />
+                <SanafiLogo variant="default" />
                 <span className="ml-2 font-bold text-xl">Sanafi</span>
               </div>
               <p className="text-gray-400 mb-4">
