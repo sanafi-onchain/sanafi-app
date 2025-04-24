@@ -30,7 +30,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-4 mb-6">
         <Link href="/" className="flex items-center space-x-3 py-3">
-          <SanafiLogo inverse={false} />
+          <SanafiLogo variant="default" />
           <span className="font-bold text-xl">Sanafi</span>
         </Link>
       </div>

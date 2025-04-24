@@ -25,7 +25,7 @@ export default function SanafiLogo({
       bgColor = 'bg-primary';
       textColor = 'text-white';
       break;
-    case 'dark': // Dark mode: white background, green text (for dark backgrounds)
+    case 'dark': // Dark mode: white circle with green text (for dark backgrounds)
       bgColor = 'bg-white';
       textColor = 'text-primary';
       break;
