@@ -1,5 +1,6 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext, useContext, ReactNode, useCallback, useEffect, useState, useMemo } from "react";
+import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 
 // Create context for Privy
 interface PrivyContextType {
