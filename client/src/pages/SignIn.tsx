@@ -60,7 +60,7 @@ export function SignIn() {
                 className="flex items-center justify-center gap-2"
               >
                 <Wallet className="h-4 w-4" />
-                Connect Wallet
+                Connect Solana Wallet
               </Button>
             </div>
           </div>

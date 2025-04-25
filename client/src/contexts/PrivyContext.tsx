@@ -137,7 +137,8 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
           theme: 'light',
           accentColor: '#2E7D32',
           logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
-        }
+        },
+
       }}
     >
       <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
