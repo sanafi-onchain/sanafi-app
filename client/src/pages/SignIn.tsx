@@ -49,7 +49,7 @@ export function SignIn() {
             </p>
             <div className="flex flex-col space-y-3">
               <Button
-                onClick={() => login({ loginMethods: ['email'] })}
+                onClick={() => login()}
                 className="flex items-center justify-center gap-2"
                 disabled={!ready || authenticated}
               >
@@ -58,7 +58,7 @@ export function SignIn() {
               </Button>
 
               <Button
-                onClick={() => login({ loginMethods: ['wallet'] })}
+                onClick={() => connectWallet()}
                 variant="outline"
                 className="flex items-center justify-center gap-2"
                 disabled={!ready || authenticated}

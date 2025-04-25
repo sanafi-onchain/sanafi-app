@@ -1,13 +1,12 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { createContext, useContext, ReactNode, useCallback, useEffect, useState, useMemo } from "react";
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
 
 // Create context for Privy
 interface PrivyContextType {
   isReady: boolean;
   isAuthenticated: boolean;
   user: any;
-  login: () => void;
+  login: (options?: any) => void;
   logout: () => void;
   connectWallet: () => void;
   walletAddress: string | null;
@@ -53,8 +52,8 @@ const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
   }, [privy.ready, privy.user, updateWalletInfo]);
 
   // Login function
-  const login = useCallback(() => {
-    privy.login();
+  const login = useCallback((options?: any) => {
+    privy.login(options);
   }, [privy]);
 
   // Logout function
