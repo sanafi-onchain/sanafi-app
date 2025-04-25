@@ -11,21 +11,22 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
-import { usePrivy } from "@privy-io/react-auth";
-import { ArrowRight, Mail, Wallet } from "lucide-react";
+import { useSolanaWallet } from "@/contexts/SolanaWalletProvider";
+import { ArrowRight, Mail } from "lucide-react";
 import SanafiLogo from "@/components/icons/SanafiLogo";
+import { SolanaWalletConnectButton } from "@/components/SolanaWalletConnectButton";
 
 export function SignIn() {
   const [, navigate] = useLocation();
-  const { isAuthenticated } = usePrivyAuth();
-  const { ready, authenticated, login, connectWallet } = usePrivy();
+  const { isAuthenticated, isReady, login } = usePrivyAuth();
+  const { connected } = useSolanaWallet();
 
-  // Redirect to dashboard if already authenticated
+  // Redirect to dashboard if already authenticated via Privy or directly connected Solana wallet
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated || connected) {
       navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, connected, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-green-50 to-white">
@@ -51,21 +52,16 @@ export function SignIn() {
               <Button
                 onClick={() => login()}
                 className="flex items-center justify-center gap-2"
-                disabled={!ready || authenticated}
+                disabled={!isReady}
               >
                 <Mail className="h-4 w-4" />
                 Sign in with Email
               </Button>
 
-              <Button
-                onClick={() => connectWallet()}
+              <SolanaWalletConnectButton
                 variant="outline"
-                className="flex items-center justify-center gap-2"
-                disabled={!ready || authenticated}
-              >
-                <Wallet className="h-4 w-4" />
-                Connect Solana Wallet
-              </Button>
+                className="w-full justify-center"
+              />
             </div>
           </div>
         </CardContent>
