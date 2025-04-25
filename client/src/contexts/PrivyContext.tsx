@@ -25,6 +25,14 @@ const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
 
   // Handle wallet connection
   const updateWalletInfo = useCallback(async () => {
+    if (!privy.ready || !privy.authenticated) {
+      setWalletAddress(null);
+      setWalletBalance(null);
+      setWalletConnected(false);
+      return;
+    }
+
+    // Check for wallet
     if (privy.user?.wallet?.address) {
       setWalletAddress(privy.user.wallet.address);
       setWalletConnected(true);
@@ -34,7 +42,7 @@ const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
       setWalletBalance(null);
       setWalletConnected(false);
     }
-  }, [privy.user]);
+  }, [privy.ready, privy.authenticated, privy.user]);
 
   // Update wallet info when user changes
   useEffect(() => {
