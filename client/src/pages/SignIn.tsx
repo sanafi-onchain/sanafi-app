@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
+import { usePrivy } from "@privy-io/react-auth";
 import { ArrowRight, Mail, Wallet } from "lucide-react";
 import SanafiLogo from "@/components/icons/SanafiLogo";
 
 export function SignIn() {
   const [, navigate] = useLocation();
-  const { isAuthenticated, login } = usePrivyAuth();
+  const { isAuthenticated } = usePrivyAuth();
+  const { ready, authenticated, login } = usePrivy();
 
   // Redirect to dashboard if already authenticated
   useEffect(() => {
@@ -47,17 +49,22 @@ export function SignIn() {
             </p>
             <div className="flex flex-col space-y-3">
               <Button
-                onClick={login}
+                onClick={() => login({ loginMethods: ['email'] })}
                 className="flex items-center justify-center gap-2"
+                disabled={!ready || authenticated}
               >
                 <Mail className="h-4 w-4" />
                 Sign in with Email
               </Button>
 
               <Button
-                onClick={login}
+                onClick={() => login({ 
+                  loginMethods: ['wallet'],
+                  walletChainType: 'solana-only'
+                })}
                 variant="outline"
                 className="flex items-center justify-center gap-2"
+                disabled={!ready || authenticated}
               >
                 <Wallet className="h-4 w-4" />
                 Connect Solana Wallet
