@@ -1,6 +1,5 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 
 // Create context for Privy
 interface PrivyContextType {
@@ -129,9 +128,6 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
     return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
 
-  // Initialize Solana wallet adapters
-  const phantomWallet = new PhantomWalletAdapter();
-
   return (
     <PrivyProvider
       appId={appId}
@@ -142,6 +138,7 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
           accentColor: '#2E7D32',
           logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
         },
+
       }}
     >
       <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
