@@ -16,6 +16,64 @@ interface PrivyContextType {
 
 const PrivyContext = createContext<PrivyContextType | undefined>(undefined);
 
+// Inner provider component that uses the Privy hooks
+const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
+  const privy = usePrivy();
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletBalance, setWalletBalance] = useState<string | null>(null);
+  const [walletConnected, setWalletConnected] = useState<boolean>(false);
+
+  // Handle wallet connection
+  const updateWalletInfo = useCallback(async () => {
+    if (privy.user?.wallet?.address) {
+      setWalletAddress(privy.user.wallet.address);
+      setWalletConnected(true);
+      setWalletBalance("0.00"); // Placeholder
+    } else {
+      setWalletAddress(null);
+      setWalletBalance(null);
+      setWalletConnected(false);
+    }
+  }, [privy.user]);
+
+  // Update wallet info when user changes
+  useEffect(() => {
+    if (privy.ready) {
+      updateWalletInfo();
+    }
+  }, [privy.ready, privy.user, updateWalletInfo]);
+
+  // Login function
+  const login = useCallback(() => {
+    privy.login();
+  }, [privy]);
+
+  // Logout function
+  const logout = useCallback(() => {
+    privy.logout();
+  }, [privy]);
+
+  // Connect wallet function
+  const connectWallet = useCallback(() => {
+    privy.connectWallet();
+  }, [privy]);
+
+  // Create the context value
+  const value = {
+    isReady: privy.ready,
+    isAuthenticated: privy.authenticated,
+    user: privy.user,
+    login,
+    logout,
+    connectWallet,
+    walletAddress,
+    walletBalance,
+    walletConnected,
+  };
+
+  return <PrivyContext.Provider value={value}>{children}</PrivyContext.Provider>;
+};
+
 // Hook for using the Privy context
 export const usePrivyAuth = () => {
   const context = useContext(PrivyContext);
@@ -77,73 +135,12 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
         loginMethods: ['email', 'wallet'],
         appearance: {
           theme: 'light',
-          accentColor: '#2E7D32', // Matching our green theme
-          logo: 'https://assets.replit.com/images/icons/icon-512x512.png', // Placeholder logo
+          accentColor: '#2E7D32',
+          logo: 'https://assets.replit.com/images/icons/icon-512x512.png',
         }
       }}
     >
       <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
     </PrivyProvider>
   );
-};
-
-// Inner provider component that uses the Privy hooks
-const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
-  const privy = usePrivy();
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [walletBalance, setWalletBalance] = useState<string | null>(null);
-  const [walletConnected, setWalletConnected] = useState<boolean>(false);
-
-  // Handle wallet connection
-  const updateWalletInfo = useCallback(async () => {
-    if (privy.user?.wallet?.address) {
-      setWalletAddress(privy.user.wallet.address);
-      setWalletConnected(true);
-
-      // This would be where we'd fetch the wallet balance in a real implementation
-      // For now, just set a placeholder
-      setWalletBalance("0.00");
-    } else {
-      setWalletAddress(null);
-      setWalletBalance(null);
-      setWalletConnected(false);
-    }
-  }, [privy.user]);
-
-  // Update wallet info when user changes
-  useEffect(() => {
-    if (privy.ready) {
-      updateWalletInfo();
-    }
-  }, [privy.ready, privy.user, updateWalletInfo]);
-
-  // Login function
-  const login = useCallback(() => {
-    privy.login();
-  }, [privy]);
-
-  // Logout function
-  const logout = useCallback(() => {
-    privy.logout();
-  }, [privy]);
-
-  // Connect wallet function
-  const connectWallet = useCallback(() => {
-    privy.connectWallet();
-  }, [privy]);
-
-  // Create the context value
-  const value = {
-    isReady: privy.ready,
-    isAuthenticated: privy.authenticated,
-    user: privy.user,
-    login,
-    logout,
-    connectWallet,
-    walletAddress,
-    walletBalance,
-    walletConnected,
-  };
-
-  return <PrivyContext.Provider value={value}>{children}</PrivyContext.Provider>;
 };
