@@ -18,7 +18,7 @@ import SanafiLogo from "@/components/icons/SanafiLogo";
 export function SignIn() {
   const [, navigate] = useLocation();
   const { isAuthenticated } = usePrivyAuth();
-  const { ready, authenticated, login } = usePrivy();
+  const { ready, authenticated, login, connectWallet } = usePrivy();
 
   // Redirect to dashboard if already authenticated
   useEffect(() => {
