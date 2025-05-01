@@ -11,6 +11,13 @@ import {
   Users,
   CheckCircle,
   Globe,
+  ChevronRight,
+  Wallet,
+  BarChart3,
+  CreditCard,
+  Gift,
+  MessageSquare,
+  Check,
 } from "lucide-react";
 
 export default function Landing() {
@@ -23,11 +30,11 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-cream">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 py-4 px-6 flex items-center justify-between">
+      <header className="bg-white border-b border-border py-4 px-6 flex items-center justify-between">
         <div className="flex items-center">
-          <SanafiLogo variant="inverse" />
+          <SanafiLogo variant="inverse" size="sm" />
           <span className="ml-2 font-bold text-2xl text-primary">Sanafi</span>
         </div>
         <div className="flex items-center space-x-4">
@@ -61,7 +68,7 @@ export default function Landing() {
           </Button>
           <Button
             className="bg-primary hover:bg-primary/90"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/signin")}
           >
             {t("Sign In")}
           </Button>
@@ -69,65 +76,89 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-50 to-green-100 py-20 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between">
-          <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              100% Onchain 100% Halal
-            </h1>
-            <p className="text-lg text-gray-700 mb-8">
-              Sanafi provides Sharia-compliant investment opportunities, savings, and financial services for Muslims and values-driven investors.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg"
-                onClick={() => navigate("/dashboard")}
-              >
-                Get Started
-              </Button>
-              <Button
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary/5 px-8 py-6 text-lg"
-                onClick={() => navigate("/learn")}
-              >
-                Learn More
-              </Button>
+      <section className="bg-cream halal-pattern py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col items-center justify-center text-center mb-16">
+            <SanafiLogo variant="full" size="lg" className="mb-8" />
+            <div className="mt-4 flex items-center justify-center gap-2 mb-8">
+              <span className="text-primary font-medium">100% Onchain</span>
+              <span className="inline-block w-1 h-1 rounded-full bg-primary"></span>
+              <span className="text-primary font-medium">100% Halal</span>
+            </div>
+            <div className="max-w-2xl">
+              <div className="w-16 h-1 bg-primary mx-auto mb-8"></div>
             </div>
           </div>
-          <div className="lg:w-1/2 flex justify-center">
-            <div className="relative w-full max-w-md">
-              <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full z-0"></div>
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/20 rounded-full z-0"></div>
-              <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden">
-                <div className="p-6 bg-primary text-white">
-                  <div className="mb-6">
-                    <p className="text-sm opacity-80">Total Balance</p>
-                    <h3 className="text-2xl font-bold">2,450 USDC</h3>
+          
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+            <div className="lg:w-1/2 mb-10 lg:mb-0">
+              <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+                Halal Onchain Banking
+              </h1>
+              <p className="text-lg text-foreground mb-8">
+                Sanafi provides Sharia-compliant investment opportunities, savings, and financial services for Muslims and values-driven investors, powered by Solana blockchain.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg"
+                  onClick={() => navigate("/signin")}
+                >
+                  Get Started
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary/5 px-8 py-6 text-lg"
+                  onClick={() => navigate("/learn")}
+                >
+                  Learn More
+                </Button>
+              </div>
+            </div>
+            <div className="lg:w-1/2 flex justify-center">
+              <div className="dashboard-card w-full max-w-md">
+                <div className="bg-primary text-white p-5 rounded-t-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-medium">Sanafi Dashboard</span>
+                    <span>Welcome, Ahmed</span>
                   </div>
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-sm opacity-80">Investments</p>
-                      <p className="font-medium">1,800 USDC</p>
-                    </div>
-                    <div>
-                      <p className="text-sm opacity-80">Returns</p>
-                      <p className="font-medium">+12% annual</p>
-                    </div>
+                  <div className="mb-6">
+                    <p className="text-sm opacity-80 mb-1">Total Balance</p>
+                    <h3 className="text-3xl font-bold">4,520 USDC</h3>
+                    <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full mt-1 inline-block">+5.2% this month</span>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h4 className="font-medium mb-3">Featured Investment</h4>
-                  <div className="flex items-start mb-4">
-                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                      <TrendingUp className="h-6 w-6 text-primary" />
+                <div className="p-5 bg-white rounded-b-xl">
+                  <h4 className="font-medium text-lg mb-3">Halal Investments</h4>
+                  <div className="space-y-3 mb-4">
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">Tech Sukuk</span>
+                        <span className="text-sm text-green-600">+4.8%</span>
+                      </div>
+                      <div className="h-2 bg-primary/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: '48%' }}></div>
+                      </div>
                     </div>
                     <div>
-                      <h5 className="font-medium">Real Estate Sukuk</h5>
-                      <p className="text-sm text-gray-500">AAOIFI-Compliant</p>
-                      <p className="text-sm font-medium text-primary mt-1">7-9% Expected Return</p>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">Real Estate Fund</span>
+                        <span className="text-sm text-green-600">+3.2%</span>
+                      </div>
+                      <div className="h-2 bg-primary/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: '32%' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">SanaSOL Staking</span>
+                        <span className="text-sm text-green-600">+5.1%</span>
+                      </div>
+                      <div className="h-2 bg-primary/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: '51%' }}></div>
+                      </div>
                     </div>
                   </div>
-                  <Button className="w-full bg-primary">Invest Now</Button>
+                  <Button className="w-full bg-primary">View Dashboard</Button>
                 </div>
               </div>
             </div>
