@@ -1,6 +1,6 @@
 import { Route, Switch, useLocation } from "wouter";
 import Layout from "@/components/Layout";
-import Landing from "@/pages/Landing";
+import SimpleLanding from "@/pages/SimpleLanding";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { SignIn } from "@/pages/SignIn";
 import Dashboard from "@/pages/Dashboard";
@@ -20,7 +20,7 @@ function App() {
   if (location === '/') {
     return (
       <Switch>
-        <Route path="/" component={Landing} />
+        <Route path="/" component={SimpleLanding} />
       </Switch>
     );
   }
