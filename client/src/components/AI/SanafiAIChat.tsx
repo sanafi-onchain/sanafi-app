@@ -65,25 +65,7 @@ export function SanafiAIChat() {
     setIsLoading(true);
     
     try {
-      // This will be replaced with actual API call when key is provided
-      // For now, simulate response
-      setTimeout(() => {
-        const mockResponse: ChatMessage = {
-          role: 'assistant',
-          content: generatePlaceholderResponse(userMessage),
-          timestamp: new Date(),
-          citations: [
-            "https://example.com/islamic-finance-resource",
-            "https://example.com/sharia-compliant-investing"
-          ]
-        };
-        
-        setMessages((prev) => [...prev, mockResponse]);
-        setIsLoading(false);
-      }, 1500);
-      
-      // Actual API integration will look like this:
-      /*
+      // Send the message to our API endpoint
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,16 +77,20 @@ export function SanafiAIChat() {
         }),
       });
       
-      if (!response.ok) throw new Error('Failed to get response');
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API error:', errorData);
+        throw new Error(errorData.message || 'Failed to get response');
+      }
       
       const data = await response.json();
+      
       setMessages((prev) => [...prev, {
         role: 'assistant',
         content: data.content,
         timestamp: new Date(),
         citations: data.citations || []
       }]);
-      */
       
     } catch (error) {
       console.error('Error sending message:', error);
@@ -295,23 +281,3 @@ export function SanafiAIChat() {
   );
 }
 
-// Temporary function to generate placeholder responses without API key
-function generatePlaceholderResponse(message: string): string {
-  const lowerMessage = message.toLowerCase();
-  
-  if (lowerMessage.includes('mudarabah')) {
-    return "Mudarabah is a partnership arrangement in Islamic finance where one party provides the capital (Rab-ul-Mal) while the other (Mudarib) provides expertise and management. Profits are shared at a predetermined ratio, but losses are borne by the capital provider only.";
-  } else if (lowerMessage.includes('conventional') && lowerMessage.includes('islamic')) {
-    return "The key difference between Islamic and conventional banking is that Islamic banking follows Sharia principles, which prohibits charging interest (riba), speculative investments (gharar), and investing in prohibited industries. Instead, Islamic banks use profit-sharing arrangements, partnerships, and asset-backed transactions.";
-  } else if (lowerMessage.includes('sukuk')) {
-    return "Sukuk are Islamic financial certificates that represent a proportional ownership in an underlying asset or investment. Unlike conventional bonds, which are debt obligations with interest, Sukuk give the investor partial ownership in the underlying asset, with returns derived from the asset's performance rather than interest.";
-  } else if (lowerMessage.includes('halal') || lowerMessage.includes('haram')) {
-    return "In Islamic finance, Halal investments comply with Sharia principles, which means they avoid industries involving alcohol, gambling, pork, conventional finance (with interest), weapons, adult entertainment, and excessive uncertainty. Halal investments must also have a proper risk-sharing structure rather than simple interest-based returns.";
-  } else if (lowerMessage.includes('profit') && lowerMessage.includes('shar')) {
-    return "Profit-sharing is a cornerstone of Islamic finance where parties share returns based on actual profits generated, rather than guaranteed returns regardless of performance. This aligns with Islamic principles of fairness and risk-sharing. Common profit-sharing contracts include Mudarabah and Musharakah.";
-  } else if (lowerMessage.includes('riba')) {
-    return "Riba (interest) is strictly prohibited in Islamic finance. The prohibition is based on the principle that money itself has no intrinsic value and should not generate more money without being tied to an actual economic activity or asset. Instead, Islamic finance encourages profit-sharing, partnerships, and trade-based financing.";
-  } else {
-    return "Thank you for your question about Islamic finance. Once the Perplexity API key is integrated, I'll be able to provide detailed, accurate information on this topic. For now, I can offer general information about major Islamic finance concepts like Mudarabah, Sukuk, Halal investments, and Riba.";
-  }
-}
