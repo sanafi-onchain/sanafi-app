@@ -185,9 +185,9 @@ export function SanafiAIChat() {
                     message.role === 'user' ? "bg-[#f5f0e5]" : "bg-[#1b4d3e]"
                   )}>
                     {message.role === 'user' ? (
-                      <User className={cn("h-3 w-3", message.role === 'user' ? "text-[#1b4d3e]" : "text-[#f5f0e5]")} />
+                      <User className="h-3 w-3 text-[#1b4d3e]" />
                     ) : (
-                      <Bot className={cn("h-3 w-3", message.role === 'user' ? "text-[#1b4d3e]" : "text-[#f5f0e5]")} />
+                      <Bot className="h-3 w-3 text-[#f5f0e5]" />
                     )}
                   </div>
                   <div className="space-y-2 flex-1">

@@ -1,6 +1,5 @@
-import { Route, Switch, useLocation } from "wouter";
+import { Route, Switch, useLocation, Redirect } from "wouter";
 import Layout from "@/components/Layout";
-import Landing from "@/pages/Landing";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { SignIn } from "@/pages/SignIn";
 import Dashboard from "@/pages/Dashboard";
@@ -14,23 +13,15 @@ import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
 
 function App() {
-  const [location] = useLocation();
-  
-  // Don't use Layout for landing page
-  if (location === '/') {
-    return (
-      <Switch>
-        <Route path="/" component={Landing} />
-      </Switch>
-    );
-  }
-  
   return (
     <Layout>
       <Switch>
+        <Route path="/" component={() => (
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        )} />
         <Route path="/signin" component={SignIn} />
         <Route path="/dashboard" component={() => (
-          <ProtectedRoute><Dashboard /></ProtectedRoute>
+          <Redirect to="/" />
         )} />
         <Route path="/accounts" component={() => (
           <ProtectedRoute><Accounts /></ProtectedRoute>

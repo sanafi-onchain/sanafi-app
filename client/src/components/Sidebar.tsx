@@ -17,7 +17,7 @@ export default function Sidebar() {
   const { t } = useLanguage();
   
   const navItems = [
-    { path: "/dashboard", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
+    { path: "/", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
     { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
     { path: "/savings", label: t("Savings"), icon: <PiggyBank className="h-5 w-5 mr-3" /> },
     { path: "/investments", label: t("Investments"), icon: <TrendingUp className="h-5 w-5 mr-3" /> },
