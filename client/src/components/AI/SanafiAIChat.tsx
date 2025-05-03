@@ -151,8 +151,6 @@ export function SanafiAIChat() {
           </div>
         </CardHeader>
         
-        <div className="elegant-pattern absolute inset-0 pointer-events-none"></div>
-        
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 relative">
           <div className="space-y-6 pb-2">
             {messages.map((message, index) => (
