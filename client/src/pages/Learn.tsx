@@ -12,7 +12,7 @@ export default function Learn() {
     <div className="h-[calc(100vh-11rem)]">
       <Card className="border-none h-full bg-transparent shadow-none">
         <CardHeader className="pb-2">
-          <CardTitle>Sanafi Learn</CardTitle>
+          <CardTitle>Sanafi AI</CardTitle>
           <CardDescription>
             Ask our AI assistant anything about Islamic finance and Sharia-compliant investing
           </CardDescription>
