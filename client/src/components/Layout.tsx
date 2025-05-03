@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const { wallet } = useWallet();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -49,13 +49,13 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <nav className="px-4 py-2">
                 <ul className="space-y-3">
-                  <li><a href="/learn" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">Sanafi AI</a></li>
-                  <li><a href="/" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Dashboard</a></li>
-                  <li><a href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Accounts</a></li>
-                  <li><a href="/savings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Savings</a></li>
-                  <li><a href="/investments" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Investments</a></li>
-                  <li><a href="/spend" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Spend</a></li>
-                  <li><a href="/settings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">Settings</a></li>
+                  <li><a href="/learn" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">{t("Sanafi AI")}</a></li>
+                  <li><a href="/" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Dashboard")}</a></li>
+                  <li><a href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Accounts")}</a></li>
+                  <li><a href="/savings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Savings")}</a></li>
+                  <li><a href="/investments" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Investments")}</a></li>
+                  <li><a href="/spend" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Spend")}</a></li>
+                  <li><a href="/settings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Settings")}</a></li>
                 </ul>
               </nav>
             </div>
