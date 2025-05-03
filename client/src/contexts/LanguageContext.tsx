@@ -14,34 +14,18 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
+  // Force English only
   const [language, setLanguageState] = useState<"en" | "ar">("en");
 
-  // Load language preference from localStorage on mount
-  useEffect(() => {
-    const storedLanguage = localStorage.getItem("sanafiLanguage");
-    if (storedLanguage === "en" || storedLanguage === "ar") {
-      setLanguageState(storedLanguage);
-      document.documentElement.setAttribute("dir", storedLanguage === "ar" ? "rtl" : "ltr");
-      if (storedLanguage === "ar") {
-        document.body.setAttribute("dir", "rtl");
-      } else {
-        document.body.removeAttribute("dir");
-      }
-    }
-  }, []);
-
-  // Set language and update localStorage
+  // Set language function - kept for compatibility but only allows English
   const setLanguage = (lang: "en" | "ar") => {
-    setLanguageState(lang);
-    localStorage.setItem("sanafiLanguage", lang);
+    // Always use English regardless of what's requested
+    setLanguageState("en");
+    localStorage.setItem("sanafiLanguage", "en");
     
-    // Update document direction for RTL support
-    document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    if (lang === "ar") {
-      document.body.setAttribute("dir", "rtl");
-    } else {
-      document.body.removeAttribute("dir");
-    }
+    // Ensure LTR direction
+    document.documentElement.setAttribute("dir", "ltr");
+    document.body.removeAttribute("dir");
   };
 
   // Translation function

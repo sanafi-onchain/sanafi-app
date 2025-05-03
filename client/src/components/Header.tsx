@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
 import WalletConnectButton from "./WalletConnectButton";
-import LanguageSelector from "./LanguageSelector";
 import SanafiLogo from "./icons/SanafiLogo";
 import { Menu } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,12 +14,12 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
   const { t } = useLanguage();
   
   const navItems = [
+    { path: "/learn", label: t("Sanafi AI") },
     { path: "/", label: t("Dashboard") },
     { path: "/accounts", label: t("Accounts") },
     { path: "/savings", label: t("Savings") },
     { path: "/investments", label: t("Investments") },
-    { path: "/spend", label: t("Spend") },
-    { path: "/learn", label: t("Learn") }
+    { path: "/spend", label: t("Spend") }
   ];
 
   return (
@@ -60,9 +59,6 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         
         {/* Right side controls */}
         <div className="flex items-center space-x-4">
-          {/* Language Toggle */}
-          <LanguageSelector />
-          
           {/* Wallet Connect Button */}
           <WalletConnectButton onClick={toggleWalletModal} />
         </div>

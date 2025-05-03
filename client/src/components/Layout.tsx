@@ -24,7 +24,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className={language === "ar" ? "rtl" : ""} dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="" dir="ltr">
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar - Desktop only */}
         <Sidebar />
