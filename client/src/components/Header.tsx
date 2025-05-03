@@ -15,7 +15,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
   const { t } = useLanguage();
   
   const navItems = [
-    { path: "/dashboard", label: t("Dashboard") },
+    { path: "/", label: t("Dashboard") },
     { path: "/accounts", label: t("Accounts") },
     { path: "/savings", label: t("Savings") },
     { path: "/investments", label: t("Investments") },
