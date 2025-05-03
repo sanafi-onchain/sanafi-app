@@ -1,33 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
  
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    /* New Sanafi brand colors */
+    --background: 45 36% 89%;  /* Cream background #f5f0e5 */
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 122 45% 34%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 210 79% 46%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 96.1%;
+    --primary: 161 48% 21%;  /* Primary Green #1b4d3e */
+    --primary-foreground: 45 36% 89%;  /* Cream color for text on primary */
+    --secondary: 41 45% 85%;  /* Lighter cream #e9e1ca */
+    --secondary-foreground: 161 48% 21%;
+    --muted: 41 45% 85%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 51 100% 50%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 41 45% 85%;
+    --accent-foreground: 161 48% 21%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 122 45% 34%;
+    --border: 41 45% 85%;
+    --input: 41 45% 85%;
+    --ring: 161 48% 21%;
     --radius: 0.5rem;
 
-    --chart-1: 122 45% 34%;
-    --chart-2: 210 79% 46%;
-    --chart-3: 51 100% 50%;
+    --chart-1: 161 48% 21%;
+    --chart-2: 163 48% 31%;
+    --chart-3: 41 45% 85%;
     --chart-4: 0 0% 45.1%;
     --chart-5: 0 84.2% 60.2%;
   }
@@ -38,10 +41,11 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
   }
 
   body[dir="rtl"] {
-    font-family: 'Noto Sans Arabic', sans-serif;
+    font-family: 'Noto Sans Arabic', 'Poppins', sans-serif;
   }
 
   [dir="rtl"] * {
@@ -49,6 +53,7 @@
   }
 }
 
+/* Font weights for Poppins */
 .font-light {
   font-weight: 300;
 }
@@ -61,6 +66,32 @@
   font-weight: 500;
 }
 
+.font-semibold {
+  font-weight: 600;
+}
+
 .font-bold {
   font-weight: 700;
+}
+
+/* Islamic/Geometric Patterns */
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231b4d3e' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+.geometric-accent {
+  background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15zm0 2c7.18 0 13 5.82 13 13s-5.82 13-13 13S2 22.18 2 15 7.82 2 15 2zm0 2c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11S21.075 4 15 4z' fill='%231b4d3e' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+/* Custom logo styles */
+.logo {
+  width: 150px;
+  height: 150px;
+  background-color: #1b4d3e;
+  border-radius: 50%;
+  color: #e9e1ca;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }

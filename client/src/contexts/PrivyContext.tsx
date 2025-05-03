@@ -143,7 +143,8 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
         loginMethods: ['email', 'wallet'],
         appearance: {
           theme: 'light',
-          accentColor: '#2E7D32',
+          accentColor: '#1b4d3e',
+          logo: 'https://i.ibb.co/S3nLhGD/sanafi-logo.png', // Simple hosted placeholder - update with real logo
         }
       }}
     >
