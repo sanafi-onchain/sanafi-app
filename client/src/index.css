@@ -76,14 +76,19 @@
 
 /* Islamic/Geometric Patterns */
 .islamic-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231b4d3e' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  opacity: 0.6;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231b4d3e' fill-opacity='0.25'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
 }
 
 .geometric-accent {
-  background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15zm0 2c7.18 0 13 5.82 13 13s-5.82 13-13 13S2 22.18 2 15 7.82 2 15 2zm0 2c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11S21.075 4 15 4z' fill='%231b4d3e' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-  background-size: 50px 50px;
-  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15zm0 2c7.18 0 13 5.82 13 13s-5.82 13-13 13S2 22.18 2 15 7.82 2 15 2zm0 2c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11S21.075 4 15 4z' fill='%231b4d3e' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+/* Elegant pattern specifically for AI chat */
+.elegant-pattern {
+  background-color: #f5f0e5;
+  background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231b4d3e' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v42H1V1zM0 22h42v22H0V22zm1 1h40v20H1V23z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Custom logo styles */

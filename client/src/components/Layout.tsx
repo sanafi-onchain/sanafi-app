@@ -62,8 +62,11 @@ export default function Layout({ children }: LayoutProps) {
           )}
           
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto bg-muted p-4 sm:p-6 lg:p-8">
-            {children}
+          <main className="flex-1 overflow-y-auto bg-muted p-4 sm:p-6 lg:p-8 relative">
+            <div className="islamic-pattern absolute inset-0 opacity-10"></div>
+            <div className="relative z-10">
+              {children}
+            </div>
           </main>
         </div>
       </div>
