@@ -1,0 +1,90 @@
+import { Router, Request, Response } from 'express';
+import { z } from 'zod';
+
+const router = Router();
+
+// Schema for validating chat requests
+const chatRequestSchema = z.object({
+  messages: z.array(
+    z.object({
+      role: z.enum(['user', 'assistant', 'system']),
+      content: z.string()
+    })
+  )
+});
+
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    // Validate request body
+    const validatedData = chatRequestSchema.parse(req.body);
+    const { messages } = validatedData;
+
+    // Check if Perplexity API key is available
+    const apiKey = process.env.PERPLEXITY_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({
+        error: 'Perplexity API key not configured',
+        message: 'Please configure the PERPLEXITY_API_KEY environment variable'
+      });
+    }
+
+    // Prepare system message for Islamic finance focus
+    const systemMessage = {
+      role: 'system',
+      content: 'You are an expert in Islamic finance and Sharia-compliant investing. Provide accurate, helpful information about Islamic financial principles, products, and practices. If asked about non-Islamic finance topics, gently redirect to Islamic finance related topics. Be precise and concise.'
+    };
+
+    // Prepare the messages array with system message first
+    const formattedMessages = [
+      systemMessage,
+      ...messages
+    ];
+
+    // Call Perplexity API
+    const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-sonar-small-128k-online',
+        messages: formattedMessages,
+        temperature: 0.2,
+        top_p: 0.9,
+        max_tokens: 500,
+        search_domain_filter: [], // Optional: can add specific domains if needed
+        return_citations: true
+      })
+    });
+
+    if (!perplexityResponse.ok) {
+      const errorData = await perplexityResponse.json();
+      console.error('Perplexity API error:', errorData);
+      return res.status(perplexityResponse.status).json({
+        error: 'Failed to get response from Perplexity',
+        details: errorData
+      });
+    }
+
+    const data = await perplexityResponse.json();
+    
+    // Extract and format the response
+    const responseContent = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    
+    // Format citations if available
+    const citations = data.citations || [];
+
+    return res.json({
+      content: responseContent,
+      citations: citations
+    });
+  } catch (error) {
+    console.error('Chat API error:', error);
+    return res.status(400).json({
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+export default router;
