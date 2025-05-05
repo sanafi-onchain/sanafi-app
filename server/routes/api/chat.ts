@@ -50,7 +50,7 @@ router.post('/', async (req: Request, res: Response) => {
         'X-Title': 'Sanafi AI - Islamic Finance Assistant' // Optional: include your app name
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-opus:beta', // Using Claude 3 Opus, can be customized
+        model: 'meta-llama/llama-4-maverick:free', // Using the free Llama 4 model
         messages: formattedMessages,
         temperature: 0.3,
         max_tokens: 1000
