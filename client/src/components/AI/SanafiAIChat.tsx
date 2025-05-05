@@ -270,7 +270,7 @@ export function SanafiAIChat() {
           <div className="text-xs text-center mt-2 text-gray-500">
             <span className="flex items-center justify-center">
               <CheckCircle2 className="h-3 w-3 mr-1 text-[#1b4d3e]" />
-              Powered by Perplexity LLM technology
+              Powered by OpenRouter AI
             </span>
           </div>
         </div>

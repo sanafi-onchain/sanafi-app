@@ -78,7 +78,7 @@ router.post('/', async (req: Request, res: Response) => {
     
     // OpenRouter doesn't provide citations in the same format as Perplexity
     // We'll send an empty array for compatibility with the frontend
-    const citations = [];
+    const citations: string[] = [];
 
     return res.json({
       content: responseContent,
