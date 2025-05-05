@@ -72,9 +72,18 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     const data = await openRouterResponse.json();
+    console.log('OpenRouter response data:', JSON.stringify(data, null, 2));
     
-    // Extract and format the response
-    const responseContent = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    // Extract and format the response, with better error handling
+    let responseContent = 'Sorry, I could not generate a response.';
+    if (data && data.choices && data.choices.length > 0) {
+      if (data.choices[0].message && data.choices[0].message.content) {
+        responseContent = data.choices[0].message.content;
+      } else if (data.choices[0].text) {
+        // Handle potential alternative format
+        responseContent = data.choices[0].text;
+      }
+    }
     
     // OpenRouter doesn't provide citations in the same format as Perplexity
     // We'll send an empty array for compatibility with the frontend
