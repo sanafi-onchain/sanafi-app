@@ -13,13 +13,10 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
   const [location] = useLocation();
   const { t } = useLanguage();
   
+  // Only showing Sanafi AI and Accounts pages
   const navItems = [
     { path: "/learn", label: t("Sanafi AI") },
-    { path: "/", label: t("Dashboard") },
-    { path: "/accounts", label: t("Accounts") },
-    { path: "/savings", label: t("Savings") },
-    { path: "/investments", label: t("Investments") },
-    { path: "/spend", label: t("Spend") }
+    { path: "/accounts", label: t("Accounts") }
   ];
 
   return (
