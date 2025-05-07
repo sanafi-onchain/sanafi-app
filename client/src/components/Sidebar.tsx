@@ -11,9 +11,9 @@ export default function Sidebar() {
   const [location] = useLocation();
   const { t } = useLanguage();
   
-  // Only showing Sanafi AI and Accounts pages
+  // Only showing Sanafi AI and Accounts pages, with Sanafi AI first
   const navItems = [
-    { path: "/learn", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
+    { path: "/", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
     { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> }
   ];
 
@@ -25,6 +25,9 @@ export default function Sidebar() {
           <SanafiLogo variant="default" />
           <span className="font-bold text-xl">Sanafi</span>
         </Link>
+        <div className="mt-2 text-sm font-medium text-center text-white opacity-80">
+          Your Sharia-compliant financial companion
+        </div>
       </div>
       
       {/* Navigation */}

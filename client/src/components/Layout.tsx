@@ -49,7 +49,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <nav className="px-4 py-2">
                 <ul className="space-y-3">
-                  <li><a href="/learn" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">{t("Sanafi AI")}</a></li>
+                  <li><a href="/" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">{t("Sanafi AI")}</a></li>
                   <li><a href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Accounts")}</a></li>
                 </ul>
               </nav>

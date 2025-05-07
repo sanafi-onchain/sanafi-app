@@ -19,27 +19,29 @@ function App() {
           <ProtectedRoute><Learn /></ProtectedRoute>
         )} />
         
-        {/* Hidden pages - redirect all to Learn page */}
+        {/* Make Sanafi AI the default landing page */}
         <Route path="/" component={() => (
-          <Redirect to="/learn" />
+          <ProtectedRoute><Learn /></ProtectedRoute>
         )} />
+        
+        {/* Hidden pages - redirect all to root (Sanafi AI) */}
         <Route path="/dashboard" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         <Route path="/savings" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         <Route path="/investments" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         <Route path="/spend" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         <Route path="/spend/rewards" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         <Route path="/settings" component={() => (
-          <Redirect to="/learn" />
+          <Redirect to="/" />
         )} />
         
         {/* 404 page */}
