@@ -236,6 +236,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Sanafi AI": "سنافي الذكاء",
   "Settings": "الإعدادات",
   "Sign In": "تسجيل الدخول",
+  "Connect": "توصيل",
   "Sign Out": "تسجيل الخروج",
   "Wallet Details": "تفاصيل المحفظة",
   "Welcome": "مرحباً",
