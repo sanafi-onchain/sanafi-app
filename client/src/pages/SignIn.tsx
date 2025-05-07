@@ -38,15 +38,15 @@ export function SignIn() {
 
       <Card className="w-full max-w-md border-[#e9e1ca] shadow-lg bg-white">
         <CardHeader className="pb-2">
-          <CardTitle className="text-[#1b4d3e] text-2xl font-medium">Welcome Back</CardTitle>
+          <CardTitle className="text-[#1b4d3e] text-2xl font-medium">Welcome</CardTitle>
           <CardDescription className="text-gray-600">
-            Sign in to access your Sharia-compliant financial platform
+            Connect to access your Sharia-compliant financial platform
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center p-6">
             <p className="mb-6 text-gray-600">
-              Choose your preferred sign in method
+              Choose your preferred connection method
             </p>
             <div className="flex flex-col space-y-4">
               <Button
@@ -55,7 +55,7 @@ export function SignIn() {
                 disabled={!isReady}
               >
                 <Mail className="h-5 w-5" />
-                Sign in with Email
+                Connect with Email
               </Button>
 
               <SolanaWalletConnectButton
@@ -67,7 +67,7 @@ export function SignIn() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 text-center pt-0">
           <p className="text-xs text-gray-500">
-            By signing in, you agree to our Terms of Service and Privacy Policy
+            By connecting, you agree to our Terms of Service and Privacy Policy
           </p>
         </CardFooter>
       </Card>

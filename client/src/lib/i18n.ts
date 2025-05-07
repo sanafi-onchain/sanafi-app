@@ -9,6 +9,7 @@ export type TranslationKey =
   | "Sanafi AI"
   | "Settings"
   | "Sign In"
+  | "Connect"
   | "Sign Out"
   | "Wallet Details"
   | "Welcome"
@@ -121,6 +122,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Sanafi AI": "Sanafi AI",
   "Settings": "Settings",
   "Sign In": "Sign In",
+  "Connect": "Connect",
   "Sign Out": "Sign Out",
   "Wallet Details": "Wallet Details",
   "Welcome": "Welcome",

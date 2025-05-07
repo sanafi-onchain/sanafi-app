@@ -48,7 +48,7 @@ export default function WalletConnectButton({ onClick }: WalletConnectButtonProp
   return (
     <Button className="bg-primary hover:bg-primary/90" onClick={onClick}>
       <LinkIcon className="h-4 w-4 mr-2" />
-      <span>{t("Sign In")}</span>
+      <span>{t("Connect")}</span>
     </Button>
   );
 }
