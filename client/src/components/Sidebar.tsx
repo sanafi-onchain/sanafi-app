@@ -2,13 +2,8 @@ import { Link, useLocation } from "wouter";
 import SanafiLogo from "./icons/SanafiLogo";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
   Wallet,
-  PiggyBank,
-  TrendingUp,
-  CreditCard,
-  BookOpen,
-  Settings
+  BookOpen
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -16,13 +11,10 @@ export default function Sidebar() {
   const [location] = useLocation();
   const { t } = useLanguage();
   
+  // Only showing Sanafi AI and Accounts pages
   const navItems = [
     { path: "/learn", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
-    { path: "/", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
-    { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
-    { path: "/savings", label: t("Savings"), icon: <PiggyBank className="h-5 w-5 mr-3" /> },
-    { path: "/investments", label: t("Investments"), icon: <TrendingUp className="h-5 w-5 mr-3" /> },
-    { path: "/spend", label: t("Spend"), icon: <CreditCard className="h-5 w-5 mr-3" /> }
+    { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> }
   ];
 
   return (
@@ -54,12 +46,11 @@ export default function Sidebar() {
         </ul>
       </nav>
       
-      {/* User Settings */}
+      {/* Footer area if needed */}
       <div className="p-4 border-t border-white border-opacity-20">
-        <Link href="/settings" className="flex items-center px-4 py-3 hover:bg-white hover:bg-opacity-10 rounded-lg">
-          <Settings className="h-5 w-5 mr-3" />
-          <span>{t("Settings")}</span>
-        </Link>
+        <div className="px-4 py-3 text-sm opacity-70 text-center">
+          Sanafi © {new Date().getFullYear()}
+        </div>
       </div>
     </aside>
   );
