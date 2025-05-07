@@ -23,10 +23,10 @@ export function SignIn() {
 
   // Redirect to dashboard if already authenticated via Privy or directly connected Solana wallet
   useEffect(() => {
-    if (isAuthenticated || connected) {
-      navigate("/dashboard");
+    if ((isAuthenticated || connected) && isReady) {
+      navigate("/");
     }
-  }, [isAuthenticated, connected, navigate]);
+  }, [isAuthenticated, connected, navigate, isReady]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 islamic-pattern bg-gradient-to-b from-[#e9e1ca] to-[#f5f0e5]">

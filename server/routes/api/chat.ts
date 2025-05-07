@@ -40,59 +40,69 @@ router.post('/', async (req: Request, res: Response) => {
       ...messages
     ];
 
-    // Call OpenRouter API
-    const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://sanafi.ai', // Your site's domain for API tracking
-        'X-Title': 'Sanafi AI - Islamic Finance Assistant' // Optional: include your app name
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-4-maverick:free', // Using the free Llama 4 model
-        messages: formattedMessages,
-        temperature: 0.3,
-        max_tokens: 1000
-      })
-    });
+    console.log('Making OpenRouter API request');
+    
+    try {
+      const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://sanafi.ai', // Domain for API tracking
+          'X-Title': 'Sanafi AI - Islamic Finance Assistant'
+        },
+        body: JSON.stringify({
+          model: 'meta-llama/llama-4-maverick:free', 
+          messages: formattedMessages,
+          temperature: 0.3,
+          max_tokens: 1000,
+          stream: false
+        })
+      });
 
-    if (!openRouterResponse.ok) {
-      let errorData;
-      try {
-        errorData = await openRouterResponse.json();
-      } catch (e) {
-        errorData = await openRouterResponse.text();
+      if (!openRouterResponse.ok) {
+        let errorData;
+        try {
+          errorData = await openRouterResponse.json();
+        } catch (e) {
+          errorData = await openRouterResponse.text();
+        }
+        console.error('OpenRouter API error:', errorData);
+        return res.status(openRouterResponse.status).json({
+          error: 'Failed to get response from OpenRouter',
+          details: errorData
+        });
       }
-      console.error('OpenRouter API error:', errorData);
-      return res.status(openRouterResponse.status).json({
-        error: 'Failed to get response from OpenRouter',
-        details: errorData
+
+      const data = await openRouterResponse.json();
+      console.log('OpenRouter response received');
+      
+      // Extract and format the response, with better error handling
+      let responseContent = 'Sorry, I could not generate a response.';
+      if (data && data.choices && data.choices.length > 0) {
+        if (data.choices[0].message && data.choices[0].message.content) {
+          responseContent = data.choices[0].message.content;
+        } else if (data.choices[0].text) {
+          // Handle potential alternative format
+          responseContent = data.choices[0].text;
+        }
+      }
+      
+      // OpenRouter doesn't provide citations in the same format as Perplexity
+      // We'll send an empty array for compatibility with the frontend
+      const citations: string[] = [];
+
+      return res.json({
+        content: responseContent,
+        citations: citations
+      });
+    } catch (apiError) {
+      console.error('OpenRouter API call error:', apiError);
+      return res.status(500).json({
+        error: 'Error calling OpenRouter API',
+        message: apiError instanceof Error ? apiError.message : 'Unknown API error' 
       });
     }
-
-    const data = await openRouterResponse.json();
-    console.log('OpenRouter response data:', JSON.stringify(data, null, 2));
-    
-    // Extract and format the response, with better error handling
-    let responseContent = 'Sorry, I could not generate a response.';
-    if (data && data.choices && data.choices.length > 0) {
-      if (data.choices[0].message && data.choices[0].message.content) {
-        responseContent = data.choices[0].message.content;
-      } else if (data.choices[0].text) {
-        // Handle potential alternative format
-        responseContent = data.choices[0].text;
-      }
-    }
-    
-    // OpenRouter doesn't provide citations in the same format as Perplexity
-    // We'll send an empty array for compatibility with the frontend
-    const citations: string[] = [];
-
-    return res.json({
-      content: responseContent,
-      citations: citations
-    });
   } catch (error) {
     console.error('Chat API error:', error);
     return res.status(400).json({
