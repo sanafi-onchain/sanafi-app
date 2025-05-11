@@ -1,115 +1,128 @@
-import { 
-  DynamicContextProvider as DynamicProvider,
-  useDynamicContext,
-} from "@dynamic-labs/sdk-react-core";
-import { SolanaWalletConnectors } from "@dynamic-labs/solana";
-import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// Create context for Dynamic
+// This is a simulation of Dynamic.xyz integration until we can properly install the packages
+// When packages are available, this would be replaced with actual Dynamic SDK integration
+
 interface DynamicAuthContextType {
-  isReady: boolean;
+  user: {
+    id: string;
+    email?: string;
+    walletAddress?: string;
+  } | null;
   isAuthenticated: boolean;
-  user: any;
+  isLoading: boolean;
+  walletConnected: boolean;
+  walletAddress: string | null;
   login: () => void;
   logout: () => void;
-  walletAddress: string | null;
-  walletConnected: boolean;
+  error: string | null;
 }
 
 const DynamicAuthContext = createContext<DynamicAuthContextType | undefined>(undefined);
 
-// Inner provider component that uses the Dynamic hooks
-const DynamicAuthProviderInner = ({ children }: { children: ReactNode }) => {
-  const { 
-    isAuthenticated, 
-    primaryWallet, 
-    user, 
-    handleLogOut, 
-    showAuthFlow, 
-    sdkHasLoaded,
-  } = useDynamicContext();
-  
+interface DynamicAuthProviderProps {
+  children: ReactNode;
+}
+
+export const DynamicAuthProvider = ({ children }: DynamicAuthProviderProps) => {
+  const [user, setUser] = useState<DynamicAuthContextType['user']>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [walletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Handle wallet connection
-  const updateWalletInfo = useCallback(() => {
-    if (!sdkHasLoaded || !isAuthenticated) {
-      setWalletAddress(null);
-      setWalletConnected(false);
-      return;
-    }
-
-    // Check for wallet
-    if (primaryWallet?.address) {
-      setWalletAddress(primaryWallet.address);
-      setWalletConnected(true);
-    } else {
-      setWalletAddress(null);
-      setWalletConnected(false);
-    }
-  }, [sdkHasLoaded, isAuthenticated, primaryWallet]);
-
-  // Update wallet info when user changes
+  // Check if the user was previously logged in (from localStorage)
   useEffect(() => {
-    if (sdkHasLoaded) {
-      updateWalletInfo();
+    const checkAuth = async () => {
+      try {
+        const storedUser = localStorage.getItem('sanafiUser');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+          if (parsedUser.walletAddress) {
+            setWalletAddress(parsedUser.walletAddress);
+            setWalletConnected(true);
+          }
+        }
+      } catch (err) {
+        console.error('Error checking authentication:', err);
+        setError('Failed to retrieve authentication status');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Login function - simulates Dynamic.xyz login until we can integrate the actual SDK
+  const login = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Simulate login with wallet
+      const mockUser = {
+        id: `user_${Math.random().toString(36).substring(2, 11)}`,
+        email: 'user@example.com',
+        walletAddress: `${generateRandomHex(8)}...${generateRandomHex(8)}`
+      };
+
+      // Store the user in localStorage for persistence
+      localStorage.setItem('sanafiUser', JSON.stringify(mockUser));
+
+      // Update state
+      setUser(mockUser);
+      setWalletAddress(mockUser.walletAddress);
+      setWalletConnected(true);
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Failed to login. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  }, [sdkHasLoaded, primaryWallet, updateWalletInfo]);
-
-  // Login function
-  const login = useCallback(() => {
-    showAuthFlow();
-  }, [showAuthFlow]);
-
-  // Logout function
-  const logout = useCallback(() => {
-    handleLogOut();
-  }, [handleLogOut]);
-
-  // Create the context value
-  const value = {
-    isReady: sdkHasLoaded,
-    isAuthenticated,
-    user,
-    login,
-    logout,
-    walletAddress,
-    walletConnected,
   };
 
-  return <DynamicAuthContext.Provider value={value}>{children}</DynamicAuthContext.Provider>;
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem('sanafiUser');
+    setUser(null);
+    setWalletAddress(null);
+    setWalletConnected(false);
+  };
+
+  // Helper function to generate a random hex string
+  function generateRandomHex(length: number): string {
+    const characters = "0123456789abcdef";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  }
+
+  const value = {
+    user,
+    isAuthenticated: !!user,
+    isLoading,
+    walletConnected,
+    walletAddress,
+    login,
+    logout,
+    error
+  };
+
+  return (
+    <DynamicAuthContext.Provider value={value}>
+      {children}
+    </DynamicAuthContext.Provider>
+  );
 };
 
-// Hook for using the Dynamic context
 export const useDynamicAuth = () => {
   const context = useContext(DynamicAuthContext);
   if (context === undefined) {
-    throw new Error("useDynamicAuth must be used within a DynamicAuthProvider");
+    throw new Error('useDynamicAuth must be used within a DynamicAuthProvider');
   }
   return context;
-};
-
-// Provider component for Dynamic authentication
-export const DynamicAuthProvider = ({ children }: { children: ReactNode }) => {
-  const environmentId = "f121dc24-0c0a-407d-b521-08824fcea909"; // Using the provided environmentId
-
-  return (
-    <DynamicProvider
-      settings={{
-        environmentId,
-        walletConnectors: [SolanaWalletConnectors],
-        appLogoUrl: "https://i.ibb.co/S3nLhGD/sanafi-logo.png",
-        appName: "Sanafi",
-        walletsFilter: {
-          solana: (wallets) => 
-            wallets.filter((wallet) => 
-              ["Phantom", "Solflare"].includes(wallet.name)
-            ),
-        },
-      }}
-    >
-      <DynamicAuthProviderInner>{children}</DynamicAuthProviderInner>
-    </DynamicProvider>
-  );
 };
