@@ -7,6 +7,7 @@ import { WalletProvider } from "@/contexts/WalletContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { PrivyAuthProvider } from "@/contexts/PrivyContext";
 import { SolanaWalletProvider } from "@/contexts/SolanaWalletProvider";
+import { ChatProvider } from "@/contexts/ChatContext";
 import { Toaster } from "@/components/ui/toaster";
 
 createRoot(document.getElementById("root")!).render(
@@ -15,8 +16,10 @@ createRoot(document.getElementById("root")!).render(
       <PrivyAuthProvider>
         <SolanaWalletProvider>
           <WalletProvider>
-            <App />
-            <Toaster />
+            <ChatProvider>
+              <App />
+              <Toaster />
+            </ChatProvider>
           </WalletProvider>
         </SolanaWalletProvider>
       </PrivyAuthProvider>

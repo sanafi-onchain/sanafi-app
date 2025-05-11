@@ -6,6 +6,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ChatHistoryList from "./ChatHistoryList";
 
 export default function Sidebar() {
   const [location] = useLocation();
@@ -20,7 +21,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-64 bg-primary text-primary-foreground">
       {/* Logo */}
-      <div className="p-4 mb-6">
+      <div className="p-4">
         <Link href="/" className="flex items-center space-x-3 py-3">
           <SanafiLogo variant="default" />
           <span className="font-bold text-xl">Sanafi</span>
@@ -31,7 +32,7 @@ export default function Sidebar() {
       </div>
       
       {/* Navigation */}
-      <nav className="flex-1">
+      <nav>
         <ul className="space-y-1 px-3">
           {navItems.map((item) => (
             <li key={item.path}>
@@ -49,9 +50,14 @@ export default function Sidebar() {
         </ul>
       </nav>
       
-      {/* Footer area if needed */}
-      <div className="p-4 border-t border-white border-opacity-20">
-        <div className="px-4 py-3 text-sm opacity-70 text-center">
+      {/* Chat History Section */}
+      <div className="mt-4 flex-1 overflow-hidden border-t border-white border-opacity-20">
+        <ChatHistoryList />
+      </div>
+      
+      {/* Footer area */}
+      <div className="p-2 border-t border-white border-opacity-20">
+        <div className="px-2 py-2 text-sm opacity-70 text-center">
           Sanafi © {new Date().getFullYear()}
         </div>
       </div>

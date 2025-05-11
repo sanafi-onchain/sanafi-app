@@ -140,7 +140,7 @@ export default function ChatHistoryList() {
                       <div className="flex-1 min-w-0">
                         <div className="truncate text-sm">{chat.title}</div>
                         <div className="text-xs opacity-60">
-                          {formatDistanceToNow(new Date(chat.updatedAt), { addSuffix: true })}
+                          {formatRelativeTime(chat.updatedAt)}
                         </div>
                       </div>
                       

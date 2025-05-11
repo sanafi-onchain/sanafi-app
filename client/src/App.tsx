@@ -5,6 +5,7 @@ import { SignIn } from "@/pages/SignIn";
 import Accounts from "@/pages/Accounts";
 import Learn from "@/pages/Learn";
 import NotFound from "@/pages/not-found";
+import { ChatProvider } from "@/contexts/ChatContext";
 
 function App() {
   return (
