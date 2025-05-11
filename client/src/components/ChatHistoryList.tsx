@@ -69,11 +69,11 @@ export default function ChatHistoryList() {
   return (
     <div className="flex flex-col h-full pb-3 overflow-hidden">
       <div className="px-3 py-2 flex items-center justify-between border-b border-white border-opacity-20">
-        <h3 className="text-sm font-medium opacity-90">Chat History</h3>
+        <h3 className="text-sm font-medium text-white">Chat History</h3>
         <Button 
           variant="ghost" 
           size="icon" 
-          className="h-7 w-7 bg-white bg-opacity-10 hover:bg-opacity-20"
+          className="h-7 w-7 text-white bg-white bg-opacity-10 hover:bg-opacity-20"
           onClick={handleCreateNewChat}
           title="New Chat"
         >
@@ -83,7 +83,7 @@ export default function ChatHistoryList() {
       
       <div className="flex-1 overflow-y-auto py-2 px-1 chat-history-scroll">
         {chats.length === 0 ? (
-          <div className="text-center p-4 text-sm opacity-70">
+          <div className="text-center p-4 text-sm text-white opacity-80">
             No chats yet. Start a new conversation!
           </div>
         ) : (
@@ -99,22 +99,23 @@ export default function ChatHistoryList() {
                   )}
                   onClick={() => handleChatClick(chat.id)}
                 >
-                  <MessageSquare className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <MessageSquare className="h-4 w-4 mr-2 flex-shrink-0 text-white" />
                   
                   {editingChatId === chat.id ? (
                     <div className="flex flex-1 items-center">
                       <Input
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
-                        className="h-7 text-sm bg-white bg-opacity-5 border-white border-opacity-20 text-white mr-1"
+                        className="h-7 text-sm bg-white bg-opacity-10 border-white border-opacity-30 text-white mr-1 placeholder-white placeholder-opacity-50"
                         autoFocus
                         onClick={(e) => e.stopPropagation()}
+                        placeholder="Enter chat title..."
                       />
                       <div className="flex items-center">
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-6 w-6 hover:bg-white hover:bg-opacity-10"
+                          className="h-6 w-6 text-white hover:bg-white hover:bg-opacity-10"
                           onClick={(e) => { 
                             e.stopPropagation(); 
                             saveEditedTitle(); 
@@ -125,7 +126,7 @@ export default function ChatHistoryList() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-6 w-6 hover:bg-white hover:bg-opacity-10"
+                          className="h-6 w-6 text-white hover:bg-white hover:bg-opacity-10"
                           onClick={(e) => { 
                             e.stopPropagation(); 
                             cancelEditing(); 
@@ -138,8 +139,8 @@ export default function ChatHistoryList() {
                   ) : (
                     <>
                       <div className="flex-1 min-w-0">
-                        <div className="truncate text-sm">{chat.title}</div>
-                        <div className="text-xs opacity-60">
+                        <div className="truncate text-sm text-white">{chat.title}</div>
+                        <div className="text-xs text-white opacity-70">
                           {formatRelativeTime(chat.updatedAt)}
                         </div>
                       </div>
@@ -148,7 +149,7 @@ export default function ChatHistoryList() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-6 w-6 hover:bg-white hover:bg-opacity-10"
+                          className="h-6 w-6 text-white hover:bg-white hover:bg-opacity-10"
                           onClick={(e) => { 
                             e.stopPropagation(); 
                             startEditingChat(chat.id, chat.title); 
@@ -159,7 +160,7 @@ export default function ChatHistoryList() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-6 w-6 text-red-400 hover:bg-white hover:bg-opacity-10"
+                          className="h-6 w-6 text-red-300 hover:bg-white hover:bg-opacity-10"
                           onClick={(e) => handleDeleteChat(chat.id, e)}
                         >
                           <Trash2 className="h-3 w-3" />
@@ -178,7 +179,7 @@ export default function ChatHistoryList() {
       <div className="px-3 pt-2">
         <Button 
           variant="outline" 
-          className="w-full justify-center border-white border-opacity-30 hover:bg-white hover:bg-opacity-10"
+          className="w-full justify-center bg-white bg-opacity-10 text-white border-white border-opacity-30 hover:bg-white hover:bg-opacity-20"
           onClick={handleCreateNewChat}
         >
           <Plus className="h-4 w-4 mr-2" />
