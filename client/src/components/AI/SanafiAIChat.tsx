@@ -242,7 +242,7 @@ export function SanafiAIChat() {
         {localMessages.length === 1 && (
           <div className="px-4 pb-4">
             <div className="grid grid-cols-2 gap-2">
-              {SUGGESTIONS.map((suggestion, idx) => (
+              {SUGGESTIONS.map((suggestion: string, idx: number) => (
                 <Button
                   key={idx}
                   variant="outline"
