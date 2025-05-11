@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sparkles, Send, Bot, User, RotateCcw, CheckCircle2, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useChat, ChatMessage as ContextChatMessage } from '@/contexts/ChatContext';
 
 // Types for chat messages
 type MessageRole = 'user' | 'assistant' | 'system';
@@ -33,16 +34,33 @@ const WELCOME_MESSAGE: ChatMessage = {
 };
 
 export function SanafiAIChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
+  const { chats, currentChatId, createNewChat, addMessageToChat, getChatById } = useChat();
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
+  
+  // Convert chat messages from context format to component format
+  const getLocalMessages = (): ChatMessage[] => {
+    if (!currentChatId) return [WELCOME_MESSAGE];
+    
+    const currentChat = getChatById(currentChatId);
+    if (!currentChat || currentChat.messages.length === 0) return [WELCOME_MESSAGE];
+    
+    return currentChat.messages.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+      timestamp: new Date(msg.timestamp),
+      citations: [] // We don't store citations in context yet
+    }));
+  };
+  
+  const localMessages = getLocalMessages();
 
   // Scroll to bottom of messages when new ones are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [localMessages]);
 
   // Handle message submission
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -52,25 +70,29 @@ export function SanafiAIChat() {
     
     const userMessage = inputValue.trim() || selectedSuggestion || '';
     
-    // Add user message to chat
-    const newUserMessage: ChatMessage = {
-      role: 'user',
-      content: userMessage,
-      timestamp: new Date(),
-    };
+    // Ensure we have a current chat to add messages to
+    let chatId = currentChatId;
+    if (!chatId) {
+      chatId = createNewChat();
+    }
     
-    setMessages((prev) => [...prev, newUserMessage]);
+    // Add user message to chat context
+    addMessageToChat(chatId, 'user', userMessage);
+    
     setInputValue('');
     setSelectedSuggestion(null);
     setIsLoading(true);
     
     try {
+      // Get current messages including the one we just added
+      const currentMessages = getLocalMessages();
+      
       // Send the message to our API endpoint
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          messages: [...messages, newUserMessage].map(m => ({
+          messages: currentMessages.map(m => ({
             role: m.role,
             content: m.content
           }))
@@ -85,23 +107,17 @@ export function SanafiAIChat() {
       
       const data = await response.json();
       
-      setMessages((prev) => [...prev, {
-        role: 'assistant',
-        content: data.content,
-        timestamp: new Date(),
-        citations: data.citations || []
-      }]);
+      // Add AI response to chat context
+      addMessageToChat(chatId, 'assistant', data.content);
       
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: "I apologize, but I'm having trouble connecting to my knowledge source. Please try again later.",
-          timestamp: new Date(),
-        },
-      ]);
+      // Add error message to chat context
+      addMessageToChat(
+        chatId, 
+        'assistant', 
+        "I apologize, but I'm having trouble connecting to my knowledge source. Please try again later."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -113,9 +129,9 @@ export function SanafiAIChat() {
     setInputValue(suggestion);
   };
 
-  // Clear chat history
+  // Clear chat history by creating a new chat
   const handleClearChat = () => {
-    setMessages([WELCOME_MESSAGE]);
+    createNewChat();
     setInputValue('');
     setSelectedSuggestion(null);
   };
@@ -153,7 +169,7 @@ export function SanafiAIChat() {
         
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 relative">
           <div className="space-y-6 pb-2">
-            {messages.map((message, index) => (
+            {localMessages.map((message: ChatMessage, index: number) => (
               <div key={index} className={cn(
                 "flex",
                 message.role === 'user' ? "justify-end" : "justify-start"
@@ -181,7 +197,7 @@ export function SanafiAIChat() {
                         <div className="mt-2 pt-2 border-t border-[#1b4d3e]/10 text-xs">
                           <div className="font-medium mb-1">Sources:</div>
                           <ul className="space-y-1">
-                            {message.citations.map((citation, idx) => (
+                            {message.citations.map((citation: string, idx: number) => (
                               <li key={idx}>
                                 <a 
                                   href={citation} 
@@ -223,7 +239,7 @@ export function SanafiAIChat() {
           </div>
         </CardContent>
         
-        {messages.length === 1 && (
+        {localMessages.length === 1 && (
           <div className="px-4 pb-4">
             <div className="grid grid-cols-2 gap-2">
               {SUGGESTIONS.map((suggestion, idx) => (
