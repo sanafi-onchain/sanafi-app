@@ -17,6 +17,16 @@ export default function Header({ toggleMobileMenu }: HeaderProps) {
   const [location] = useLocation();
   const { t } = useLanguage();
   
+  // Handle login button click
+  const handleLogin = () => {
+    login();
+  };
+  
+  // Handle logout button click
+  const handleLogout = () => {
+    logout();
+  };
+  
   // Only showing Sanafi AI and Accounts pages, with Sanafi AI as root path
   const navItems = [
     { path: "/", label: t("Sanafi AI") },
@@ -65,7 +75,7 @@ export default function Header({ toggleMobileMenu }: HeaderProps) {
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={login} 
+              onClick={handleLogin} 
               className="flex items-center gap-2"
             >
               <svg 
@@ -80,19 +90,19 @@ export default function Header({ toggleMobileMenu }: HeaderProps) {
                   fill="currentColor"
                 />
               </svg>
-              {t("Connect")}
+              Connect
             </Button>
           ) : (
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={logout} 
+              onClick={handleLogout} 
               className="flex items-center gap-2"
             >
               {wallet?.address ? (
                 <span className="font-mono text-xs">{wallet.address.substring(0, 4)}...{wallet.address.substring(wallet.address.length - 4)}</span>
               ) : (
-                <span>{t("Wallet")}</span>
+                <span>Wallet</span>
               )}
               <svg 
                 width="16" 

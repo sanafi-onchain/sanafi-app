@@ -7,8 +7,8 @@ import SanafiLogo from "@/components/icons/SanafiLogo";
 import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SiPhantom, SiSolana } from "react-icons/si";
-import { Mail } from "lucide-react";
+import { SiSolana } from "react-icons/si";
+import { Mail, Wallet } from "lucide-react";
 import { FaWallet } from "react-icons/fa";
 
 // Wallet options with their icons
@@ -16,7 +16,7 @@ const walletOptions: { type: WalletType; name: string; icon: React.ReactNode }[]
   { 
     type: "phantom",
     name: "Phantom",
-    icon: <SiPhantom className="h-5 w-5" />
+    icon: <Wallet className="h-5 w-5" />
   },
   { 
     type: "solflare",
@@ -66,8 +66,8 @@ export function SignIn() {
     <div className="flex min-h-[85vh] items-center justify-center p-4 sm:p-6 lg:p-8">
       <Card className="mx-auto w-full max-w-md border-0 shadow-lg">
         <CardHeader className="space-y-2 text-center">
-          <div className="mx-auto mb-4">
-            <SanafiLogo className="h-20 w-20" />
+          <div className="mx-auto mb-4 flex justify-center">
+            <SanafiLogo className="h-20 w-20" variant="default" />
           </div>
           <CardTitle className="text-2xl font-bold">Welcome to Sanafi</CardTitle>
           <CardDescription className="text-muted-foreground">

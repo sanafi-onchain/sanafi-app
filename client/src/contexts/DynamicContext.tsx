@@ -96,7 +96,14 @@ export const DynamicAuthProvider = ({ children }: DynamicAuthProviderProps) => {
         ? 'user@example.com' 
         : `${type.charAt(0).toUpperCase() + type.slice(1)} User`;
       
-      const newUser = {
+      // Create the user with proper type annotations
+      const newUser: {
+        id: string;
+        walletAddress: string;
+        walletType: WalletType;
+        displayName: string;
+        email?: string;
+      } = {
         id: `user_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 9)}`,
         walletAddress,
         walletType: type,
