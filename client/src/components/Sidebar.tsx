@@ -27,7 +27,7 @@ export default function Sidebar() {
           <span className="font-bold text-xl">Sanafi</span>
         </Link>
         <div className="mt-2 text-sm font-medium text-center text-white opacity-80">
-          Your Sharia-compliant financial companion
+          AI-Driven Ethical Onchain Banking
         </div>
       </div>
       
