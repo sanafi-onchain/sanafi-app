@@ -1,31 +1,29 @@
-import { ReactNode, useEffect } from 'react';
-import { useLocation } from 'wouter';
-import { useDynamicAuth } from '@/contexts/DynamicContext';
+import { ReactNode } from "react";
+import { Redirect } from "wouter";
+import { useDynamicAuth } from "@/contexts/DynamicContext";
+import { Spinner } from "@/components/ui/spinner";
 
-export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const [location, navigate] = useLocation();
-  const { isAuthenticated, isReady, walletConnected } = useDynamicAuth();
-  
-  // Either Dynamic auth or wallet connection is enough for authentication
-  const isUserAuthenticated = isAuthenticated || walletConnected;
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
 
-  // Only redirect if not at signin and not authenticated
-  useEffect(() => {
-    if (isReady && !isUserAuthenticated && location !== '/signin') {
-      navigate('/signin');
-    }
-  }, [isReady, isUserAuthenticated, navigate, location]);
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { isAuthenticated, isLoading } = useDynamicAuth();
 
-  if (!isReady) {
+  // If authentication is still loading, show a spinner
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1b4d3e] mx-auto"></div>
-          <p className="mt-4 text-[#1b4d3e]">Loading...</p>
-        </div>
+      <div className="flex h-[80vh] items-center justify-center">
+        <Spinner className="h-10 w-10 text-primary" />
       </div>
     );
   }
 
-  return isUserAuthenticated ? <>{children}</> : null;
-}
+  // If not authenticated, redirect to sign in
+  if (!isAuthenticated) {
+    return <Redirect to="/signin" />;
+  }
+
+  // If authenticated, render the children
+  return <>{children}</>;
+};

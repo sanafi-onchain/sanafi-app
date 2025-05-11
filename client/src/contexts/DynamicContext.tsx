@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// This is a simulation of Dynamic.xyz integration until we can properly install the packages
-// When packages are available, this would be replaced with actual Dynamic SDK integration
+// This is a temporary implementation to prepare for Dynamic.xyz integration
+// This will be replaced with actual Dynamic SDK integration when packages are available
 
 interface DynamicAuthContextType {
   user: {
@@ -11,6 +11,7 @@ interface DynamicAuthContextType {
   } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isReady: boolean;
   walletConnected: boolean;
   walletAddress: string | null;
   login: () => void;
@@ -105,6 +106,7 @@ export const DynamicAuthProvider = ({ children }: DynamicAuthProviderProps) => {
     user,
     isAuthenticated: !!user,
     isLoading,
+    isReady: !isLoading, // isReady is the opposite of isLoading
     walletConnected,
     walletAddress,
     login,
