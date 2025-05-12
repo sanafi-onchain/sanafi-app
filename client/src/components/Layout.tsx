@@ -48,7 +48,7 @@ export default function Layout({ children }: LayoutProps) {
               {/* Header with logo and close button */}
               <div className="flex items-center justify-between p-4 border-b border-white border-opacity-20">
                 <div className="flex items-center space-x-3">
-                  <SanafiLogo variant="default" />
+                  <SanafiLogo variant="inverse" />
                   <span className="font-bold text-xl text-white">Sanafi</span>
                 </div>
                 <button 
