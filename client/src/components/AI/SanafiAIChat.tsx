@@ -143,154 +143,174 @@ export function SanafiAIChat() {
 
   return (
     <div className="flex flex-col h-full">
-      <Card className="flex-1 flex flex-col overflow-hidden border border-[#e9e1ca] bg-white">
-        <CardHeader className="bg-[#1b4d3e]/5 backdrop-blur-sm border-b border-[#e9e1ca]">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-[#1b4d3e] flex items-center">
-                <Sparkles className="h-5 w-5 mr-2 text-[#1b4d3e]" />
-                Sanafi AI Assistant
-              </CardTitle>
-              <CardDescription>
-                Ask me anything about Islamic finance and Sharia-compliant investing
-              </CardDescription>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleClearChat}
-              className="text-gray-500 hover:text-[#1b4d3e]"
-            >
-              <RotateCcw className="h-4 w-4 mr-1" />
-              New Chat
-            </Button>
+      {/* Full-page chat interface similar to ChatGPT */}
+      <div className="h-full flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between py-3 px-4 md:px-6 border-b border-[#e9e1ca] bg-white">
+          <div className="flex items-center">
+            <Sparkles className="h-5 w-5 mr-2 text-[#1b4d3e]" />
+            <h1 className="text-xl font-medium text-[#1b4d3e]">Sanafi AI</h1>
           </div>
-        </CardHeader>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleClearChat}
+            className="text-gray-500 hover:text-[#1b4d3e]"
+          >
+            <RotateCcw className="h-4 w-4 mr-1" />
+            New Chat
+          </Button>
+        </div>
         
-        <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 relative">
-          <div className="space-y-6 pb-2">
-            {localMessages.map((message: ChatMessage, index: number) => (
-              <div key={index} className={cn(
-                "flex",
-                message.role === 'user' ? "justify-end" : "justify-start"
-              )}>
-                <div className={cn(
-                  "max-w-[85%] rounded-xl p-4 shadow-sm flex",
-                  message.role === 'user' 
-                    ? "bg-[#1b4d3e] text-[#f5f0e5] rounded-tr-none" 
-                    : "bg-[#f5f0e5] text-[#1b4d3e] rounded-tl-none"
+        {/* Main conversation area */}
+        <div className="flex-1 overflow-y-auto bg-white">
+          {/* Welcome header only shown at start of conversation */}
+          {localMessages.length === 1 && (
+            <div className="max-w-3xl mx-auto px-4 py-10 text-center">
+              <h2 className="text-2xl font-bold text-[#1b4d3e] mb-2">
+                Sanafi AI Assistant
+              </h2>
+              <p className="text-gray-600 mb-8">
+                Ask me anything about Islamic finance and Sharia-compliant investing
+              </p>
+            </div>
+          )}
+
+          {/* Messages */}
+          <div className="max-w-3xl mx-auto px-4 pb-24">
+            <div className="space-y-6">
+              {localMessages.map((message: ChatMessage, index: number) => (
+                <div key={index} className={cn(
+                  "flex items-start",
+                  message.role === 'user' ? "justify-end md:justify-start" : "justify-start"
                 )}>
-                  <div className={cn(
-                    "rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2",
-                    message.role === 'user' ? "bg-[#f5f0e5]" : "bg-[#1b4d3e]"
-                  )}>
+                  <div 
+                    className={cn(
+                      "h-8 w-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0",
+                      message.role === 'user' ? "bg-[#1b4d3e] text-white" : "bg-[#f5f0e5] text-[#1b4d3e]"
+                    )}
+                  >
                     {message.role === 'user' ? (
-                      <User className="h-3 w-3 text-[#1b4d3e]" />
+                      <User className="h-4 w-4" />
                     ) : (
-                      <Bot className="h-3 w-3 text-[#f5f0e5]" />
+                      <Bot className="h-4 w-4" />
                     )}
                   </div>
-                  <div className="space-y-2 flex-1">
-                    <div className="space-y-2">
-                      <div className="text-sm leading-relaxed">{message.content}</div>
-                      {message.citations && message.citations.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-[#1b4d3e]/10 text-xs">
-                          <div className="font-medium mb-1">Sources:</div>
-                          <ul className="space-y-1">
-                            {message.citations.map((citation: string, idx: number) => (
-                              <li key={idx}>
-                                <a 
-                                  href={citation} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="flex items-center hover:underline"
-                                >
-                                  {citation.replace(/^https?:\/\/(www\.)?/, '').substring(0, 30)}...
-                                  <ExternalLink className="h-3 w-3 ml-1 inline" />
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                  <div className="max-w-[90%] md:max-w-[80%] space-y-1">
+                    <div 
+                      className={cn(
+                        "text-base leading-relaxed",
+                        message.role === 'user' ? "text-[#1b4d3e]" : "text-gray-800"
                       )}
+                    >
+                      {message.content}
                     </div>
-                    <div className="text-xs opacity-70 text-right">
+                    
+                    {message.citations && message.citations.length > 0 && (
+                      <div className="mt-2 pt-2 border-t border-[#1b4d3e]/10 text-xs">
+                        <div className="font-medium mb-1">Sources:</div>
+                        <ul className="space-y-1">
+                          {message.citations.map((citation: string, idx: number) => (
+                            <li key={idx}>
+                              <a 
+                                href={citation} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center hover:underline text-[#1b4d3e]"
+                              >
+                                {citation.replace(/^https?:\/\/(www\.)?/, '').substring(0, 30)}...
+                                <ExternalLink className="h-3 w-3 ml-1 inline" />
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    <div className="text-xs text-gray-500">
                       {formatTime(message.timestamp)}
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-[#f5f0e5] max-w-[85%] rounded-xl p-4 rounded-tl-none shadow-sm">
-                  <div className="flex items-center space-x-2">
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce"></div>
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-                    <span className="text-sm text-[#1b4d3e]/70">Thinking...</span>
+              ))}
+              
+              {isLoading && (
+                <div className="flex items-start">
+                  <div className="h-8 w-8 rounded-full bg-[#f5f0e5] text-[#1b4d3e] flex items-center justify-center mr-3 flex-shrink-0">
+                    <Bot className="h-4 w-4" />
+                  </div>
+                  <div className="flex items-center h-8">
+                    <div className="flex items-center space-x-2">
+                      <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce"></div>
+                      <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-        </CardContent>
-        
-        {localMessages.length === 1 && (
-          <div className="px-4 pb-4">
-            <div className="grid grid-cols-2 gap-2">
-              {SUGGESTIONS.map((suggestion: string, idx: number) => (
-                <Button
-                  key={idx}
-                  variant="outline"
-                  className={cn(
-                    "text-left justify-start text-sm p-3 bg-[#f5f0e5] hover:bg-[#e9e1ca] text-[#1b4d3e] border-[#e9e1ca]",
-                    selectedSuggestion === suggestion && "border-[#1b4d3e] bg-[#1b4d3e]/5"
-                  )}
-                  onClick={() => handleSuggestion(suggestion)}
-                >
-                  <Sparkles className="h-3 w-3 mr-2 flex-shrink-0" />
-                  <span className="truncate">{suggestion}</span>
-                </Button>
-              ))}
+              )}
+              
+              <div ref={messagesEndRef} />
             </div>
           </div>
-        )}
-        
-        <div className="p-4 border-t border-[#e9e1ca] bg-white">
-          <form onSubmit={handleSubmit} className="flex space-x-2">
-            <Textarea
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask about Islamic finance..."
-              className="min-h-[50px] max-h-[150px] border-[#e9e1ca] focus:border-[#1b4d3e] focus:ring-[#1b4d3e]"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit();
-                }
-              }}
-              disabled={isLoading}
-            />
-            <Button 
-              type="submit" 
-              disabled={isLoading || (!inputValue.trim() && !selectedSuggestion)}
-              className="bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5] px-3 h-[50px]"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </form>
-          <div className="text-xs text-center mt-2 text-gray-500">
-            <span className="flex items-center justify-center">
-              <CheckCircle2 className="h-3 w-3 mr-1 text-[#1b4d3e]" />
-              Powered by OpenRouter AI
-            </span>
+        </div>
+
+        {/* Footer with input and suggested questions */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#e9e1ca]">
+          {/* Suggestions */}
+          {localMessages.length === 1 && (
+            <div className="max-w-3xl mx-auto px-4 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {SUGGESTIONS.map((suggestion: string, idx: number) => (
+                  <Button
+                    key={idx}
+                    variant="outline"
+                    className={cn(
+                      "text-left justify-start text-sm p-3 bg-[#f5f0e5] hover:bg-[#e9e1ca] text-[#1b4d3e] border-[#e9e1ca]",
+                      selectedSuggestion === suggestion && "border-[#1b4d3e] bg-[#1b4d3e]/5"
+                    )}
+                    onClick={() => handleSuggestion(suggestion)}
+                  >
+                    <Sparkles className="h-3 w-3 mr-2 flex-shrink-0" />
+                    <span className="truncate">{suggestion}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Input form */}
+          <div className="max-w-3xl mx-auto px-4 py-4">
+            <form onSubmit={handleSubmit} className="flex space-x-2">
+              <Textarea
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Ask about Islamic finance..."
+                className="min-h-[50px] max-h-[150px] border-[#e9e1ca] focus:border-[#1b4d3e] focus:ring-[#1b4d3e] rounded-lg"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+                disabled={isLoading}
+              />
+              <Button 
+                type="submit" 
+                disabled={isLoading || (!inputValue.trim() && !selectedSuggestion)}
+                className="bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5] px-3 h-[50px] rounded-lg"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </form>
+            <div className="text-xs text-center mt-2 text-gray-500">
+              <span className="flex items-center justify-center">
+                <CheckCircle2 className="h-3 w-3 mr-1 text-[#1b4d3e]" />
+                Powered by OpenRouter AI
+              </span>
+            </div>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
