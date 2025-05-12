@@ -144,7 +144,7 @@ export function SanafiAIChat() {
   return (
     <div className="flex flex-col h-full">
       {/* Full-page chat interface similar to ChatGPT */}
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col relative">
         {/* Header */}
         <div className="flex items-center justify-between py-3 px-4 md:px-6 border-b border-[#e9e1ca] bg-white">
           <div className="flex items-center">
@@ -177,7 +177,7 @@ export function SanafiAIChat() {
           )}
 
           {/* Messages */}
-          <div className="max-w-3xl mx-auto px-4 pb-24">
+          <div className="max-w-3xl mx-auto px-4 pb-40">
             <div className="space-y-6">
               {localMessages.map((message: ChatMessage, index: number) => (
                 <div key={index} className={cn(
@@ -255,7 +255,7 @@ export function SanafiAIChat() {
         </div>
 
         {/* Footer with input and suggested questions */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#e9e1ca]">
+        <div className="absolute bottom-0 inset-x-0 bg-white border-t border-[#e9e1ca]">
           {/* Suggestions */}
           {localMessages.length === 1 && (
             <div className="max-w-3xl mx-auto px-4 pt-4">
