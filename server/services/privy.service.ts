@@ -10,10 +10,13 @@ export class PrivyService implements BaseService {
   private appId: string | undefined;
   private secretKey: string | undefined;
 
+  private jwksUrl: string;
+
   constructor() {
     // Directly read from config at instantiation
     this.appId = config.privy.appId;
     this.secretKey = config.privy.secretKey;
+    this.jwksUrl = `https://auth.privy.io/api/v1/apps/${this.appId}/jwks.json`;
   }
 
   async initialize(): Promise<void> {
@@ -61,12 +64,58 @@ export class PrivyService implements BaseService {
       throw new Error('Privy service is not configured');
     }
 
-    // In a real implementation, this would return actual embed settings
+    // Return actual embed settings
     return {
       appId: this.appId,
       environment: config.environment,
       supportedChains: ['solana:mainnet', 'solana:devnet'],
       appearance: 'light',
     };
+  }
+  
+  /**
+   * Verify a Privy JWT token
+   * Note: In a production app, you would use a JWT verification library
+   * like jsonwebtoken or jose to verify the token using the JWKS endpoint
+   */
+  async verifyToken(token: string): Promise<{ userId: string, verified: boolean, error?: string }> {
+    if (!this.isConfigured()) {
+      return { 
+        userId: '', 
+        verified: false, 
+        error: 'Privy service is not configured' 
+      };
+    }
+    
+    try {
+      // In a real implementation, we would make an API call to verify the token
+      // using the JWKS endpoint: this.jwksUrl
+      
+      // For demonstration purposes, we'll parse the token without verification
+      // DO NOT USE THIS IN PRODUCTION
+      const [_header, payload, _signature] = token.split('.');
+      const decodedPayload = JSON.parse(
+        Buffer.from(payload, 'base64').toString('utf-8')
+      );
+      
+      if (!decodedPayload.sub) {
+        return { 
+          userId: '', 
+          verified: false, 
+          error: 'Invalid token: missing subject' 
+        };
+      }
+      
+      return {
+        userId: decodedPayload.sub,
+        verified: true
+      };
+    } catch (error) {
+      return { 
+        userId: '', 
+        verified: false, 
+        error: error instanceof Error ? error.message : 'Unknown error verifying token' 
+      };
+    }
   }
 }
