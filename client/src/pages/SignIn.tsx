@@ -14,7 +14,6 @@ import { usePrivyAuth } from "@/contexts/PrivyContext";
 import { useSolanaWallet } from "@/contexts/SolanaWalletProvider";
 import { ArrowRight, Mail } from "lucide-react";
 import SanafiLogo from "@/components/icons/SanafiLogo";
-import { SolanaWalletConnectButton } from "@/components/SolanaWalletConnectButton";
 
 export function SignIn() {
   const [, navigate] = useLocation();
@@ -50,18 +49,27 @@ export function SignIn() {
             </p>
             <div className="flex flex-col space-y-4">
               <Button
-                onClick={() => login()}
+                onClick={() => login({ loginMethod: 'email' })}
                 className="flex items-center justify-center gap-2 bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5] h-12 rounded-full shadow-md"
                 disabled={!isReady}
               >
                 <Mail className="h-5 w-5" />
                 Connect with Email
               </Button>
-
-              <SolanaWalletConnectButton
+              
+              <Button
+                onClick={() => login({ loginMethod: 'wallet' })}
                 variant="outline"
-                className="w-full justify-center h-12 rounded-full border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10"
-              />
+                className="flex items-center justify-center gap-2 w-full justify-center h-12 rounded-full border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10"
+                disabled={!isReady}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+                  <path d="M19.97 6.43L12 2L4.03 6.43L9.1 9.24C9.83 8.48 10.89 8 12 8C13.11 8 14.17 8.48 14.9 9.24L19.97 6.43Z" fill="currentColor"/>
+                  <path d="M12 11C10.9 11 10 11.9 10 13C10 14.1 10.9 15 12 15C13.1 15 14 14.1 14 13C14 11.9 13.1 11 12 11Z" fill="currentColor"/>
+                  <path d="M21 9.5V15.5C21 16.2 20.64 16.85 20.15 17.15L13 21.65L5.5 17.3V22H3.5V7L2 8V16.5L4 17.5V10.7L11 14.5L18 10.7V16L21 13.5V7.5L13.5 12L11.7 11L19.5 6.5L21 7.5C21.6 7.8 22 8.4 22 9.1V9.5H21Z" fill="currentColor"/>
+                </svg>
+                Connect Wallet
+              </Button>
             </div>
           </div>
         </CardContent>

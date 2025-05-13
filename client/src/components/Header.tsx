@@ -1,8 +1,18 @@
 import { Link, useLocation } from "wouter";
 import WalletConnectButton from "./WalletConnectButton";
 import SanafiLogo from "./icons/SanafiLogo";
-import { Menu } from "lucide-react";
+import { Menu, LogOut, Wallet } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePrivyAuth } from "@/contexts/PrivyContext";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
   toggleMobileMenu: () => void;
