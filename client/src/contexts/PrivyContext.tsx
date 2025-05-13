@@ -8,10 +8,11 @@ interface PrivyContextType {
   user: any;
   login: (options?: any) => void;
   logout: () => void;
-  connectWallet: () => void;
+  connectWallet: (walletType?: string) => void;
   walletAddress: string | null;
   walletBalance: string | null;
   walletConnected: boolean;
+  walletProvider: string | null;
 }
 
 const PrivyContext = createContext<PrivyContextType | undefined>(undefined);
@@ -19,64 +20,116 @@ const PrivyContext = createContext<PrivyContextType | undefined>(undefined);
 // Inner provider component that uses the Privy hooks
 const PrivyAuthProviderInner = ({ children }: { children: ReactNode }) => {
   const privy = usePrivy();
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  const [walletProvider, setWalletProvider] = useState<string | null>(null);
 
-  // Handle wallet connection
-  const updateWalletInfo = useCallback(async () => {
-    if (!privy.ready || !privy.authenticated) {
-      setWalletAddress(null);
-      setWalletBalance(null);
-      setWalletConnected(false);
-      return;
-    }
-
-    // Check for wallet
-    if (privy.user?.wallet?.address) {
-      setWalletAddress(privy.user.wallet.address);
-      setWalletConnected(true);
-      setWalletBalance("0.00"); // Placeholder
-    } else {
-      setWalletAddress(null);
-      setWalletBalance(null);
-      setWalletConnected(false);
-    }
-  }, [privy.ready, privy.authenticated, privy.user]);
-
-  // Update wallet info when user changes
+  // Initialize Privy state
   useEffect(() => {
-    if (privy.ready) {
-      updateWalletInfo();
-    }
-  }, [privy.ready, privy.user, updateWalletInfo]);
+    const initPrivy = async () => {
+      try {
+        if (!privy) return;
+
+        // Check if user is authenticated
+        const authenticated = await privy.isAuthenticated();
+        setIsAuthenticated(authenticated);
+        
+        if (authenticated) {
+          const userData = await privy.getUser();
+          setUser(userData);
+          
+          // Check for Solana wallets
+          const wallets = await privy.getWallets();
+          const solanaWallet = wallets.find(w => w.chain === 'solana');
+          
+          if (solanaWallet) {
+            setWalletAddress(solanaWallet.address);
+            setWalletConnected(true);
+            setWalletProvider(solanaWallet.walletClientType || 'solana');
+            setWalletBalance('0.00'); // Would fetch real balance in production
+          }
+        }
+        
+        setIsReady(true);
+      } catch (error) {
+        console.error('Error initializing Privy:', error);
+        setIsReady(true); // Still mark as ready so UI can show error state
+      }
+    };
+    
+    initPrivy();
+  }, [privy]);
 
   // Login function
-  const login = useCallback((options?: any) => {
-    privy.login(options);
+  const login = useCallback(async (options?: any) => {
+    if (!privy) return;
+    try {
+      await privy.login(options);
+      setIsAuthenticated(true);
+      const userData = await privy.getUser();
+      setUser(userData);
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   }, [privy]);
 
   // Logout function
-  const logout = useCallback(() => {
-    privy.logout();
+  const logout = useCallback(async () => {
+    if (!privy) return;
+    try {
+      await privy.logout();
+      setIsAuthenticated(false);
+      setUser(null);
+      setWalletAddress(null);
+      setWalletBalance(null);
+      setWalletConnected(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   }, [privy]);
 
   // Connect wallet function
-  const connectWallet = useCallback(() => {
-    privy.connectWallet();
+  const connectWallet = useCallback(async (walletType?: string) => {
+    if (!privy) return;
+    try {
+      // We would customize this based on wallet type in production
+      await privy.connectWallet();
+      
+      // Refresh user data after wallet connection
+      const userData = await privy.getUser();
+      setUser(userData);
+      
+      // Check for newly connected wallet
+      const wallets = await privy.getWallets();
+      const solanaWallet = wallets.find(w => w.chain === 'solana');
+      
+      if (solanaWallet) {
+        setWalletAddress(solanaWallet.address);
+        setWalletConnected(true);
+        setWalletProvider(solanaWallet.walletClientType || 'solana');
+        setWalletBalance('0.00');
+      }
+    } catch (error) {
+      console.error('Wallet connection error:', error);
+    }
   }, [privy]);
 
   // Create the context value
   const value = {
-    isReady: privy.ready,
-    isAuthenticated: privy.authenticated,
-    user: privy.user,
+    isReady,
+    isAuthenticated,
+    user,
     login,
     logout,
     connectWallet,
     walletAddress,
     walletBalance,
     walletConnected,
+    walletProvider,
   };
 
   return <PrivyContext.Provider value={value}>{children}</PrivyContext.Provider>;
@@ -146,7 +199,7 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
           accentColor: '#1b4d3e',
           logo: 'https://i.ibb.co/S3nLhGD/sanafi-logo.png', // Simple hosted placeholder - update with real logo
         }
-      }}
+      } as PrivyConfigType}
     >
       <PrivyAuthProviderInner>{children}</PrivyAuthProviderInner>
     </PrivyProvider>
