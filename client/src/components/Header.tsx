@@ -2,7 +2,6 @@ import { Link, useLocation } from "wouter";
 import WalletConnectButton from "./WalletConnectButton";
 import SanafiLogo from "./icons/SanafiLogo";
 import { Menu, LogOut, Wallet } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivyAuth } from "@/contexts/PrivyContext";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,13 +20,13 @@ interface HeaderProps {
 
 export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderProps) {
   const [location] = useLocation();
-  const { t } = useLanguage();
   const { isAuthenticated, isReady, user, logout, connectWallet, walletConnected } = usePrivyAuth();
   
   // Only showing Sanafi AI and Accounts pages, with Sanafi AI as root path
   const navItems = [
-    { path: "/", label: t("Sanafi AI") },
-    { path: "/accounts", label: t("Accounts") }
+    { path: "/", label: "Sanafi AI" },
+    { path: "/accounts", label: "Accounts" },
+    { path: "/wallet-demo", label: "Wallet Demo" }
   ];
   
   // Format user display name
