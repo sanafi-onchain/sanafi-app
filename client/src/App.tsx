@@ -4,6 +4,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { SignIn } from "@/pages/SignIn";
 import Accounts from "@/pages/Accounts";
 import Learn from "@/pages/Learn";
+import { WalletDemo } from "@/pages/WalletDemo";
 import NotFound from "@/pages/not-found";
 import { ChatProvider } from "@/contexts/ChatContext";
 
@@ -18,6 +19,10 @@ function App() {
         )} />
         <Route path="/learn" component={() => (
           <ProtectedRoute><Learn /></ProtectedRoute>
+        )} />
+        
+        <Route path="/wallet-demo" component={() => (
+          <ProtectedRoute><WalletDemo /></ProtectedRoute>
         )} />
         
         {/* Make Sanafi AI the default landing page */}

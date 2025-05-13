@@ -12,10 +12,11 @@ export default function Sidebar() {
   const [location] = useLocation();
   const { t } = useLanguage();
   
-  // Only showing Sanafi AI and Accounts pages, with Sanafi AI first
+  // Navigation items
   const navItems = [
     { path: "/", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
-    { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> }
+    { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
+    { path: "/wallet-demo", label: t("Wallet Demo"), icon: <Wallet className="h-5 w-5 mr-3" /> }
   ];
 
   return (

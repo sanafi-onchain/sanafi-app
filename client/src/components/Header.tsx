@@ -89,7 +89,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
               <div className="flex items-center space-x-3">
                 {!walletConnected && (
                   <Button 
-                    onClick={connectWallet}
+                    onClick={() => connectWallet()}
                     variant="outline"
                     size="sm"
                     className="border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10"
