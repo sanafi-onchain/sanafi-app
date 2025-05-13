@@ -130,14 +130,13 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
               </div>
             </>
           ) : (
-            <Link href="/signin">
-              <Button 
+            <Button 
                 variant="outline" 
                 className="border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10"
+                onClick={() => window.location.href = '/signin'}
               >
                 Sign In
               </Button>
-            </Link>
           )}
         </div>
       </div>

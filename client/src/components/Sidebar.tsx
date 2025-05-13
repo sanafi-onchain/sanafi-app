@@ -5,18 +5,16 @@ import {
   Wallet,
   BookOpen
 } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 import ChatHistoryList from "./ChatHistoryList";
 
 export default function Sidebar() {
   const [location] = useLocation();
-  const { t } = useLanguage();
   
   // Navigation items
   const navItems = [
-    { path: "/", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
-    { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
-    { path: "/wallet-demo", label: t("Wallet Demo"), icon: <Wallet className="h-5 w-5 mr-3" /> }
+    { path: "/", label: "Sanafi AI", icon: <BookOpen className="h-5 w-5 mr-3" /> },
+    { path: "/accounts", label: "Accounts", icon: <Wallet className="h-5 w-5 mr-3" /> },
+    { path: "/wallet-demo", label: "Wallet Demo", icon: <Wallet className="h-5 w-5 mr-3" /> }
   ];
 
   return (
