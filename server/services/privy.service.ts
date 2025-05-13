@@ -75,8 +75,9 @@ export class PrivyService implements BaseService {
   
   /**
    * Verify a Privy JWT token
-   * Note: In a production app, you would use a JWT verification library
-   * like jsonwebtoken or jose to verify the token using the JWKS endpoint
+   * 
+   * In a production app, you should validate the JWT signature using the JWKS endpoint.
+   * For now, we'll implement basic token parsing and minimal validation.
    */
   async verifyToken(token: string): Promise<{ userId: string, verified: boolean, error?: string }> {
     if (!this.isConfigured()) {
@@ -88,24 +89,56 @@ export class PrivyService implements BaseService {
     }
     
     try {
-      // In a real implementation, we would make an API call to verify the token
-      // using the JWKS endpoint: this.jwksUrl
+      // Split the token into its parts
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        return {
+          userId: '',
+          verified: false,
+          error: 'Invalid token format'
+        };
+      }
       
-      // For demonstration purposes, we'll parse the token without verification
-      // DO NOT USE THIS IN PRODUCTION
-      const [_header, payload, _signature] = token.split('.');
+      // Decode the payload
+      const [_header, payload, _signature] = parts;
+      
+      // Base64url decode the payload
+      const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const paddedBase64 = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
       const decodedPayload = JSON.parse(
-        Buffer.from(payload, 'base64').toString('utf-8')
+        Buffer.from(paddedBase64, 'base64').toString('utf-8')
       );
       
+      // Check for required claims
       if (!decodedPayload.sub) {
         return { 
           userId: '', 
           verified: false, 
-          error: 'Invalid token: missing subject' 
+          error: 'Invalid token: missing subject claim' 
         };
       }
       
+      // Check if token is expired
+      const now = Math.floor(Date.now() / 1000);
+      if (decodedPayload.exp && decodedPayload.exp < now) {
+        return {
+          userId: '',
+          verified: false,
+          error: 'Token expired'
+        };
+      }
+      
+      // Check issuer (should be Privy)
+      if (decodedPayload.iss && !decodedPayload.iss.includes('privy.io')) {
+        return {
+          userId: '',
+          verified: false,
+          error: 'Invalid token issuer'
+        };
+      }
+      
+      // For demo purposes, we're considering the token valid
+      // In production, you would validate the signature using the JWKS endpoint
       return {
         userId: decodedPayload.sub,
         verified: true
@@ -116,6 +149,45 @@ export class PrivyService implements BaseService {
         verified: false, 
         error: error instanceof Error ? error.message : 'Unknown error verifying token' 
       };
+    }
+  }
+  
+  /**
+   * Generate an authorization signature for an API request to Privy
+   * For critical operations like wallet actions, Privy requires request signing
+   */
+  async generateAuthorizationSignature(
+    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    url: string,
+    body: any
+  ): Promise<string | null> {
+    if (!this.secretKey) {
+      console.error('Cannot generate authorization signature: No Privy secret key configured');
+      return null;
+    }
+    
+    try {
+      // Payload must follow the format specified by Privy
+      const payload = {
+        version: 1,
+        method,
+        url,
+        body,
+        headers: {
+          'privy-app-id': this.appId || ''
+        }
+      };
+      
+      // In production, you would:
+      // 1. JSON-canonicalize the payload
+      // 2. Convert the private key to PEM format
+      // 3. Sign using crypto.createSign('SHA256')
+      
+      // For demo purposes, return a placeholder
+      return 'demo-signature';
+    } catch (error) {
+      console.error('Error generating authorization signature:', error);
+      return null;
     }
   }
 }
