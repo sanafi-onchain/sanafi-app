@@ -1,5 +1,5 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { createContext, useContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext, useContext, ReactNode, useCallback, useEffect, useState, useMemo } from "react";
 
 // Create context for Privy
 interface PrivyContextType {

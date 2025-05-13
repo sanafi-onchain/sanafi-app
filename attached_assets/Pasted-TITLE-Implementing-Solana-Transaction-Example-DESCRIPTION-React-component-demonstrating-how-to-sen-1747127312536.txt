@@ -1,0 +1,1096 @@
+TITLE: Implementing Solana Transaction Example
+DESCRIPTION: React component demonstrating how to send SOL to a random address using the Wallet Adapter hooks. Includes connection management, transaction creation, and confirmation handling.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/APP.md#2025-04-21_snippet_2
+
+LANGUAGE: tsx
+CODE:
+```
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
+import React, { FC, useCallback } from 'react';
+
+export const SendSOLToRandomAddress: FC = () => {
+    const { connection } = useConnection();
+    const { publicKey, sendTransaction } = useWallet();
+
+    const onClick = useCallback(async () => {
+        if (!publicKey) throw new WalletNotConnectedError();
+
+        // 890880 lamports as of 2022-09-01
+        const lamports = await connection.getMinimumBalanceForRentExemption(0);
+
+        const transaction = new Transaction().add(
+            SystemProgram.transfer({
+                fromPubkey: publicKey,
+                toPubkey: Keypair.generate().publicKey,
+                lamports,
+            })
+        );
+
+        const {
+            context: { slot: minContextSlot },
+            value: { blockhash, lastValidBlockHeight }
+        } = await connection.getLatestBlockhashAndContext();
+
+        const signature = await sendTransaction(transaction, connection, { minContextSlot });
+
+        await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+    }, [publicKey, sendTransaction, connection]);
+
+    return (
+        <button onClick={onClick} disabled={!publicKey}>
+            Send SOL to a random address!
+        </button>
+    );
+};
+```
+
+----------------------------------------
+
+TITLE: Setting up Solana Wallet Provider Components
+DESCRIPTION: React component implementation that sets up the Wallet Adapter context providers, including connection management and wallet selection UI. Configures network endpoint and available wallet adapters.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/APP.md#2025-04-21_snippet_1
+
+LANGUAGE: tsx
+CODE:
+```
+import React, { FC, useMemo } from 'react';
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
+import {
+    WalletModalProvider,
+    WalletDisconnectButton,
+    WalletMultiButton
+} from '@solana/wallet-adapter-react-ui';
+import { clusterApiUrl } from '@solana/web3.js';
+
+// Default styles that can be overridden by your app
+import '@solana/wallet-adapter-react-ui/styles.css';
+
+export const Wallet: FC = () => {
+    // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
+    const network = WalletAdapterNetwork.Devnet;
+
+    // You can also provide a custom RPC endpoint.
+    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+    const wallets = useMemo(
+        () => [
+            /**
+             * Wallets that implement either of these standards will be available automatically.
+             *
+             *   - Solana Mobile Stack Mobile Wallet Adapter Protocol
+             *     (https://github.com/solana-mobile/mobile-wallet-adapter)
+             *   - Solana Wallet Standard
+             *     (https://github.com/anza-xyz/wallet-standard)
+             *
+             * If you wish to support a wallet that supports neither of those standards,
+             * instantiate its legacy wallet adapter here. Common legacy adapters can be found
+             * in the npm package `@solana/wallet-adapter-wallets`.
+             */
+            new UnsafeBurnerWalletAdapter(),
+        ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [network]
+    );
+
+    return (
+        <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider wallets={wallets} autoConnect>
+                <WalletModalProvider>
+                    <WalletMultiButton />
+                    <WalletDisconnectButton />
+                    { /* Your app's components go here, nested within the context providers. */ }
+                </WalletModalProvider>
+            </WalletProvider>
+        </ConnectionProvider>
+    );
+};
+```
+
+----------------------------------------
+
+TITLE: Implementing a Custom Solana Wallet Connect Button with useWalletMultiButton in TypeScript
+DESCRIPTION: A complete example of implementing a custom wallet connect button using the useWalletMultiButton hook. The component handles all possible wallet states (no-wallet, has-wallet, connecting, connected, disconnecting) and includes a modal for wallet selection.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/core/react/README.md#2025-04-21_snippet_0
+
+LANGUAGE: typescript
+CODE:
+```
+function CustomConnectButton() {
+    const [walletModalConfig, setWalletModalConfig] = useState<Readonly<{
+        onSelectWallet(walletName: WalletName): void;
+        wallets: Wallet[];
+    }> | null>(null);
+    const { buttonState, onConnect, onDisconnect, onSelectWallet } = useWalletMultiButton({
+        onSelectWallet: setWalletModalConfig,
+    });
+    let label;
+    switch (buttonState) {
+        case 'connected':
+            label = 'Disconnect';
+            break;
+        case 'connecting':
+            label = 'Connecting';
+            break;
+        case 'disconnecting':
+            label = 'Disconnecting';
+            break;
+        case 'has-wallet':
+            label = 'Connect';
+            break;
+        case 'no-wallet':
+            label = 'Select Wallet';
+            break;
+    }
+    return (
+        <>
+            <button
+                disabled={buttonState === 'connecting' || buttonState === 'disconnecting'}
+                onClick={() => {
+                    switch (buttonState) {
+                        case 'connected':
+                            onDisconnect?.();
+                            break;
+                        case 'connecting':
+                        case 'disconnecting':
+                            break;
+                        case 'has-wallet':
+                            onConnect?.();
+                            break;
+                        case 'no-wallet':
+                            onSelectWallet?.();
+                            break;
+                    }
+                }}
+            >
+                {label}
+            </button>
+            {walletModalConfig ? (
+                <Modal>
+                    {walletModalConfig.wallets.map((wallet) => (
+                        <button
+                            key={wallet.adapter.name}
+                            onClick={() => {
+                                walletModalConfig.onSelectWallet(wallet.adapter.name);
+                                setWalletModalConfig(null);
+                            }}
+                        >
+                            {wallet.adapter.name}
+                        </button>
+                    ))}
+                </Modal>
+            ) : null}
+        </>
+    );
+}
+```
+
+----------------------------------------
+
+TITLE: Installing Solana Wallet Adapter Dependencies
+DESCRIPTION: Command to install required npm packages for implementing Solana Wallet Adapter in a React application.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/APP.md#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+npm install --save \
+    @solana/wallet-adapter-base \
+    @solana/wallet-adapter-react \
+    @solana/wallet-adapter-react-ui \
+    @solana/wallet-adapter-wallets \
+    @solana/web3.js \
+    react
+```
+
+----------------------------------------
+
+TITLE: Initializing WalletConnectWalletAdapter for Solana in React
+DESCRIPTION: This snippet demonstrates how to initialize the WalletConnectWalletAdapter within a React component. It configures the adapter with network settings, a relay URL, project ID, and metadata for the application. This setup enables WalletConnect functionality for Solana wallets in a React application.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/walletconnect/README.md#2025-04-21_snippet_0
+
+LANGUAGE: javascript
+CODE:
+```
+import { WalletConnectWalletAdapter } from '@solana/wallet-adapter-walletconnect';
+
+const App = () => {
+  ...
+  const wallets = useMemo(
+      () => [
+          new WalletConnectWalletAdapter({
+              network,
+              options: {
+                  relayUrl: 'wss://relay.walletconnect.com',
+                  // example WC app project ID
+                  projectId: 'e899c82be21d4acca2c8aec45e893598',
+                  metadata: {
+                      name: 'Example App',
+                      description: 'Example App',
+                      url: 'https://github.com/anza-xyz/wallet-adapter',
+                      icons: ['https://avatars.githubusercontent.com/u/35608259?s=200'],
+                  },
+              },
+          }),
+      ],
+      []
+  );
+  ...
+}
+```
+
+----------------------------------------
+
+TITLE: Adding Sign In With Solana Method to @solana/wallet-adapter-example
+DESCRIPTION: This update adds a `signIn` method for Sign In With Solana functionality and updates related dependencies.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/starter/example/CHANGELOG.md#2025-04-21_snippet_2
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.18.24
+
+### Patch Changes
+
+- a3d35a1: Add `signIn` (Sign In With Solana) method
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-react@0.15.34
+    - @solana/wallet-adapter-base@0.9.23
+    - @solana/wallet-adapter-wallets@0.19.20
+    - @solana/wallet-adapter-ant-design@0.11.30
+    - @solana/wallet-adapter-material-ui@0.16.32
+    - @solana/wallet-adapter-react-ui@0.9.33
+```
+
+----------------------------------------
+
+TITLE: Adding Mobile Wallet Adapter Support to @solana/wallet-adapter-example
+DESCRIPTION: This update adds Mobile Wallet Adapter and Wallet Standard support to @solana/wallet-adapter-react and updates related dependencies.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/starter/example/CHANGELOG.md#2025-04-21_snippet_4
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.18.16
+
+### Patch Changes
+
+- 5d016a2: Mobile Wallet Adapter and Wallet Standard support in `@solana/wallet-adapter-react`
+
+    - Early Access + Upgrade Guide: https://github.com/solana-labs/wallet-adapter/issues/604
+    - Changes in this release: https://github.com/solana-labs/wallet-adapter/pull/598
+
+- Updated dependencies [5d016a2]
+    - @solana/wallet-adapter-react@0.15.22
+    - @solana/wallet-adapter-ant-design@0.11.17
+    - @solana/wallet-adapter-material-ui@0.16.18
+    - @solana/wallet-adapter-react-ui@0.9.20
+```
+
+----------------------------------------
+
+TITLE: Sign In With Solana Addition
+DESCRIPTION: Changelog entry documenting the addition of Sign In With Solana functionality and related dependency updates.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/starter/react-ui-starter/CHANGELOG.md#2025-04-21_snippet_2
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.9.21
+
+### Patch Changes
+
+- a3d35a1: Add `signIn` (Sign In With Solana) method
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-react@0.15.34
+    - @solana/wallet-adapter-base@0.9.23
+    - @solana/wallet-adapter-wallets@0.19.20
+    - @solana/wallet-adapter-react-ui@0.9.33
+```
+
+----------------------------------------
+
+TITLE: Changelog Entry for Version 0.1.16
+DESCRIPTION: Details updates in version 0.1.16, including raising the base Node version to v20 and adding VersionedTransaction support for Keystone.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/keystone/CHANGELOG.md#2025-04-21_snippet_1
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.1.16
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- f326fb92: Add VersionedTransaction support to Keystone
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+```
+
+----------------------------------------
+
+TITLE: Version History Documentation in Markdown
+DESCRIPTION: Changelog entries detailing version updates from 0.9.21 to 0.9.27, including dependency updates, Node version requirement changes, and v0 transaction support additions
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/ledger/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-ledger
+
+## 0.9.27
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+
+## 0.9.26
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+
+## 0.9.25
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-base@0.9.23
+
+## 0.9.24
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-base@0.9.22
+
+## 0.9.23
+
+### Patch Changes
+
+- f99c2154: Add v0 tx support to Ledger adapter
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-base@0.9.21
+
+## 0.9.22
+
+### Patch Changes
+
+- Updated dependencies [912cc0e]
+    - @solana/wallet-adapter-base@0.9.20
+
+## 0.9.21
+
+### Patch Changes
+
+- Updated dependencies [353f2a5]
+    - @solana/wallet-adapter-base@0.9.19
+```
+
+----------------------------------------
+
+TITLE: Changelog Markdown Documentation
+DESCRIPTION: Version history documenting patch changes, dependency updates, and feature additions for the NuFi wallet adapter. Notable changes include Node v20 requirement, versioned transaction support, and regular dependency updates.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/nufi/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-nufi
+
+## 0.1.19
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+
+## 0.1.18
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+
+## 0.1.17
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-base@0.9.23
+
+## 0.1.16
+
+### Patch Changes
+
+- 4bb73bc7: Support versioned transactions in NuFi adapter
+
+## 0.1.15
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-base@0.9.22
+
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-base@0.9.21
+
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies [912cc0e]
+    - @solana/wallet-adapter-base@0.9.20
+
+## 0.1.12
+
+### Patch Changes
+
+- Updated dependencies [353f2a5]
+    - @solana/wallet-adapter-base@0.9.19
+```
+
+----------------------------------------
+
+TITLE: Displaying Changelog Updates in Markdown
+DESCRIPTION: Markdown formatted changelog entries showing version updates and dependency changes for Solana wallet adapter packages. Documents patches and dependencies across multiple wallet integrations.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/wallets/CHANGELOG.md#2025-04-21_snippet_1
+
+LANGUAGE: markdown
+CODE:
+```
+### Patch Changes
+
+- Updated dependencies [f99c2154]
+- Updated dependencies [f99c2154]
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-clover@0.4.17
+    - @solana/wallet-adapter-ledger@0.9.23
+    - @solana/wallet-adapter-phantom@0.9.21
+    [... additional dependencies ...]
+
+## 0.19.11
+
+### Patch Changes
+
+- Updated dependencies [b4558126]
+    - @solana/wallet-adapter-solflare@0.6.22
+    - @solana/wallet-adapter-phantom@0.9.20
+
+## 0.19.10
+
+### Patch Changes
+
+- Updated dependencies [21d2c863]
+    - @solana/wallet-adapter-solflare@0.6.21
+```
+
+----------------------------------------
+
+TITLE: Displaying Changelog for @solana/wallet-adapter-wallets in Markdown
+DESCRIPTION: This code snippet presents the changelog for the @solana/wallet-adapter-wallets package, showing the version history and dependency updates across multiple releases. Each entry includes the version number, patch changes, and updated dependencies.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/wallets/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-wallets
+
+## 0.19.35
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-unsafe-burner@0.1.9
+    - @solana/wallet-adapter-walletconnect@0.1.19
+    - @solana/wallet-adapter-tokenpocket@0.4.21
+    - @solana/wallet-adapter-mathwallet@0.9.20
+    - @solana/wallet-adapter-coinbase@0.1.21
+    - @solana/wallet-adapter-hyperpay@0.1.16
+    - @solana/wallet-adapter-keystone@0.1.17
+    - @solana/wallet-adapter-particle@0.1.14
+    - @solana/wallet-adapter-solflare@0.6.30
+    - @solana/wallet-adapter-tokenary@0.1.14
+    - @solana/wallet-adapter-bitkeep@0.3.22
+    - @solana/wallet-adapter-coinhub@0.3.20
+    - @solana/wallet-adapter-fractal@0.1.10
+    - @solana/wallet-adapter-krystal@0.1.14
+    - @solana/wallet-adapter-nightly@0.1.18
+    - @solana/wallet-adapter-phantom@0.9.26
+    - @solana/wallet-adapter-safepal@0.5.20
+    - @solana/wallet-adapter-bitpie@0.5.20
+    - @solana/wallet-adapter-clover@0.4.21
+    - @solana/wallet-adapter-coin98@0.5.22
+    - @solana/wallet-adapter-ledger@0.9.27
+    - @solana/wallet-adapter-salmon@0.1.16
+    - @solana/wallet-adapter-solong@0.9.20
+    - @solana/wallet-adapter-trezor@0.1.4
+    - @solana/wallet-adapter-alpha@0.1.12
+    - @solana/wallet-adapter-avana@0.1.15
+    - @solana/wallet-adapter-huobi@0.1.17
+    - @solana/wallet-adapter-saifu@0.1.17
+    - @solana/wallet-adapter-torus@0.11.30
+    - @solana/wallet-adapter-trust@0.1.15
+    - @solana/wallet-adapter-xdefi@0.1.9
+    - @solana/wallet-adapter-neko@0.2.14
+    - @solana/wallet-adapter-nufi@0.1.19
+    - @solana/wallet-adapter-onto@0.1.9
+    - @solana/wallet-adapter-spot@0.1.17
+    - @solana/wallet-adapter-sky@0.1.17
+
+## 0.19.34
+
+### Patch Changes
+
+- Updated dependencies [e6058c2f]
+    - @solana/wallet-adapter-walletconnect@0.1.18
+
+## 0.19.33
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- Updated dependencies [24780bcf]
+- Updated dependencies [e88d8749]
+- Updated dependencies [f3721882]
+- Updated dependencies [c96cae47]
+- Updated dependencies [b3797c26]
+- Updated dependencies [f326fb92]
+    - @solana/wallet-adapter-trezor@0.1.3
+    - @solana/wallet-adapter-unsafe-burner@0.1.8
+    - @solana/wallet-adapter-walletconnect@0.1.17
+    - @solana/wallet-adapter-tokenpocket@0.4.20
+    - @solana/wallet-adapter-mathwallet@0.9.19
+    - @solana/wallet-adapter-coinbase@0.1.20
+    - @solana/wallet-adapter-hyperpay@0.1.15
+    - @solana/wallet-adapter-keystone@0.1.16
+    - @solana/wallet-adapter-particle@0.1.13
+    - @solana/wallet-adapter-solflare@0.6.29
+    - @solana/wallet-adapter-tokenary@0.1.13
+    - @solana/wallet-adapter-bitkeep@0.3.21
+    - @solana/wallet-adapter-coinhub@0.3.19
+    - @solana/wallet-adapter-fractal@0.1.9
+    - @solana/wallet-adapter-krystal@0.1.13
+    - @solana/wallet-adapter-nightly@0.1.17
+    - @solana/wallet-adapter-phantom@0.9.25
+    - @solana/wallet-adapter-safepal@0.5.19
+    - @solana/wallet-adapter-bitpie@0.5.19
+    - @solana/wallet-adapter-clover@0.4.20
+    - @solana/wallet-adapter-coin98@0.5.21
+    - @solana/wallet-adapter-ledger@0.9.26
+    - @solana/wallet-adapter-salmon@0.1.15
+    - @solana/wallet-adapter-solong@0.9.19
+    - @solana/wallet-adapter-alpha@0.1.11
+    - @solana/wallet-adapter-avana@0.1.14
+    - @solana/wallet-adapter-huobi@0.1.16
+    - @solana/wallet-adapter-saifu@0.1.16
+    - @solana/wallet-adapter-torus@0.11.29
+    - @solana/wallet-adapter-trust@0.1.14
+    - @solana/wallet-adapter-xdefi@0.1.8
+    - @solana/wallet-adapter-neko@0.2.13
+    - @solana/wallet-adapter-nufi@0.1.18
+    - @solana/wallet-adapter-onto@0.1.8
+    - @solana/wallet-adapter-spot@0.1.16
+    - @solana/wallet-adapter-sky@0.1.16
+
+## 0.19.32
+
+### Patch Changes
+
+- Updated dependencies [ba90b65]
+    - @solana/wallet-adapter-trezor@0.1.2
+
+## 0.19.31
+
+### Patch Changes
+
+- Updated dependencies [375e548]
+    - @solana/wallet-adapter-trezor@0.1.1
+
+## 0.19.30
+
+### Patch Changes
+
+- Updated dependencies [dc81bc9]
+    - @solana/wallet-adapter-keystone@0.1.15
+
+## 0.19.29
+
+### Patch Changes
+
+- Updated dependencies [84e2250]
+    - @solana/wallet-adapter-keystone@0.1.14
+
+## 0.19.28
+
+### Patch Changes
+
+- Updated dependencies [f535bac]
+    - @solana/wallet-adapter-keystone@0.1.13
+
+## 0.19.27
+
+### Patch Changes
+
+- Updated dependencies [3b38a73]
+    - @solana/wallet-adapter-coinbase@0.1.19
+
+## 0.19.26
+
+### Patch Changes
+
+- Updated dependencies [bef1cad]
+    - @solana/wallet-adapter-particle@0.1.12
+
+## 0.19.25
+
+### Patch Changes
+
+- Updated dependencies [a9f41dde]
+- Updated dependencies [7d41f2fe]
+    - @solana/wallet-adapter-trezor@0.1.0
+    - @solana/wallet-adapter-particle@0.1.11
+
+## 0.19.24
+
+### Patch Changes
+
+- 46f06e72: Remove Censor adapter (non-functioning)
+- Updated dependencies [f1ac88db]
+    - @solana/wallet-adapter-bitkeep@0.3.20
+
+## 0.19.23
+
+### Patch Changes
+
+- Updated dependencies [3d2e0cd5]
+    - @solana/wallet-adapter-solflare@0.6.28
+
+## 0.19.22
+
+### Patch Changes
+
+- Updated dependencies [a4566f89]
+    - @solana/wallet-adapter-solflare@0.6.27
+
+## 0.19.21
+
+### Patch Changes
+
+- bdc0eff: Remove deprecated wallet adapters that implement the Wallet Standard or are no longer functioning
+
+## 0.19.20
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-unsafe-burner@0.1.7
+    - @solana/wallet-adapter-alpha@0.1.10
+    - @solana/wallet-adapter-avana@0.1.13
+    - @solana/wallet-adapter-backpack@0.1.14
+    - @solana/wallet-adapter-bitkeep@0.3.19
+    - @solana/wallet-adapter-bitpie@0.5.18
+    - @solana/wallet-adapter-blocto@0.5.22
+    - @solana/wallet-adapter-brave@0.1.17
+    - @solana/wallet-adapter-censo@0.1.4
+    - @solana/wallet-adapter-clover@0.4.19
+    - @solana/wallet-adapter-coin98@0.5.20
+    - @solana/wallet-adapter-coinbase@0.1.18
+    - @solana/wallet-adapter-coinhub@0.3.18
+    - @solana/wallet-adapter-exodus@0.1.18
+    - @solana/wallet-adapter-fractal@0.1.8
+    - @solana/wallet-adapter-glow@0.1.18
+    - @solana/wallet-adapter-huobi@0.1.15
+    - @solana/wallet-adapter-hyperpay@0.1.14
+    - @solana/wallet-adapter-keystone@0.1.12
+    - @solana/wallet-adapter-krystal@0.1.12
+    - @solana/wallet-adapter-ledger@0.9.25
+    - @solana/wallet-adapter-magiceden@0.1.13
+    - @solana/wallet-adapter-mathwallet@0.9.18
+    - @solana/wallet-adapter-neko@0.2.12
+    - @solana/wallet-adapter-nightly@0.1.16
+    - @solana/wallet-adapter-nufi@0.1.17
+    - @solana/wallet-adapter-onto@0.1.7
+    - @solana/wallet-adapter-particle@0.1.10
+    - @solana/wallet-adapter-phantom@0.9.24
+    - @solana/wallet-adapter-safepal@0.5.18
+    - @solana/wallet-adapter-saifu@0.1.15
+    - @solana/wallet-adapter-salmon@0.1.14
+    - @solana/wallet-adapter-sky@0.1.15
+    - @solana/wallet-adapter-slope@0.5.21
+    - @solana/wallet-adapter-solflare@0.6.26
+    - @solana/wallet-adapter-sollet@0.11.17
+    - @solana/wallet-adapter-solong@0.9.18
+    - @solana/wallet-adapter-spot@0.1.15
+    - @solana/wallet-adapter-strike@0.1.13
+    - @solana/wallet-adapter-tokenary@0.1.12
+    - @solana/wallet-adapter-tokenpocket@0.4.19
+    - @solana/wallet-adapter-torus@0.11.28
+    - @solana/wallet-adapter-trust@0.1.13
+    - @solana/wallet-adapter-walletconnect@0.1.16
+    - @solana/wallet-adapter-xdefi@0.1.7
+
+## 0.19.19
+
+### Patch Changes
+
+- Updated dependencies [e5024dc]
+    - @solana/wallet-adapter-solflare@0.6.25
+
+## 0.19.18
+
+### Patch Changes
+
+- Updated dependencies [4de663e]
+    - @solana/wallet-adapter-phantom@0.9.23
+
+## 0.19.17
+
+### Patch Changes
+
+- Updated dependencies [18e023f]
+    - @solana/wallet-adapter-walletconnect@0.1.15
+
+## 0.19.16
+
+### Patch Changes
+
+- Updated dependencies [4bb73bc7]
+- Updated dependencies [6f7b4595]
+    - @solana/wallet-adapter-nufi@0.1.16
+    - @solana/wallet-adapter-nightly@0.1.15
+
+## 0.19.15
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-unsafe-burner@0.1.6
+    - @solana/wallet-adapter-walletconnect@0.1.14
+    - @solana/wallet-adapter-tokenpocket@0.4.18
+    - @solana/wallet-adapter-mathwallet@0.9.17
+    - @solana/wallet-adapter-magiceden@0.1.12
+    - @solana/wallet-adapter-backpack@0.1.13
+    - @solana/wallet-adapter-coinbase@0.1.17
+    - @solana/wallet-adapter-hyperpay@0.1.13
+    - @solana/wallet-adapter-keystone@0.1.11
+    - @solana/wallet-adapter-particle@0.1.9
+    - @solana/wallet-adapter-solflare@0.6.24
+    - @solana/wallet-adapter-tokenary@0.1.11
+    - @solana/wallet-adapter-bitkeep@0.3.18
+    - @solana/wallet-adapter-coinhub@0.3.17
+    - @solana/wallet-adapter-fractal@0.1.7
+    - @solana/wallet-adapter-krystal@0.1.11
+    - @solana/wallet-adapter-nightly@0.1.14
+    - @solana/wallet-adapter-phantom@0.9.22
+    - @solana/wallet-adapter-safepal@0.5.17
+    - @solana/wallet-adapter-bitpie@0.5.17
+    - @solana/wallet-adapter-blocto@0.5.21
+    - @solana/wallet-adapter-clover@0.4.18
+    - @solana/wallet-adapter-coin98@0.5.19
+    - @solana/wallet-adapter-exodus@0.1.17
+    - @solana/wallet-adapter-ledger@0.9.24
+    - @solana/wallet-adapter-salmon@0.1.13
+    - @solana/wallet-adapter-sollet@0.11.16
+    - @solana/wallet-adapter-solong@0.9.17
+    - @solana/wallet-adapter-strike@0.1.12
+    - @solana/wallet-adapter-alpha@0.1.9
+    - @solana/wallet-adapter-avana@0.1.12
+    - @solana/wallet-adapter-brave@0.1.16
+    - @solana/wallet-adapter-censo@0.1.3
+    - @solana/wallet-adapter-huobi@0.1.14
+    - @solana/wallet-adapter-saifu@0.1.14
+    - @solana/wallet-adapter-slope@0.5.20
+    - @solana/wallet-adapter-torus@0.11.27
+    - @solana/wallet-adapter-trust@0.1.12
+    - @solana/wallet-adapter-xdefi@0.1.6
+    - @solana/wallet-adapter-glow@0.1.17
+    - @solana/wallet-adapter-neko@0.2.11
+    - @solana/wallet-adapter-nufi@0.1.15
+    - @solana/wallet-adapter-onto@0.1.6
+    - @solana/wallet-adapter-spot@0.1.14
+    - @solana/wallet-adapter-sky@0.1.14
+
+## 0.19.14
+
+### Patch Changes
+
+- Updated dependencies [61e86b58]
+    - @solana/wallet-adapter-walletconnect@0.1.13
+
+## 0.19.13
+
+### Patch Changes
+
+- Updated dependencies [f5abf15c]
+    - @solana/wallet-adapter-walletconnect@0.1.12
+
+## 0.19.12
+
+
+```
+
+----------------------------------------
+
+TITLE: Displaying Changelog for BitKeep Wallet Adapter in Markdown
+DESCRIPTION: This snippet shows the version history and patch notes for the @solana/wallet-adapter-bitkeep package. It includes version numbers, changes made, and dependency updates across multiple releases.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/bitkeep/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-bitkeep
+
+## 0.3.22
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+
+## 0.3.21
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+
+## 0.3.20
+
+### Patch Changes
+
+- f1ac88db: Rename BitKeep adapter to Bitget (non-breakingly)
+
+## 0.3.19
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-base@0.9.23
+
+## 0.3.18
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-base@0.9.22
+
+## 0.3.17
+
+### Patch Changes
+
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-base@0.9.21
+
+## 0.3.16
+
+### Patch Changes
+
+- Updated dependencies [912cc0e]
+    - @solana/wallet-adapter-base@0.9.20
+
+## 0.3.15
+
+### Patch Changes
+
+- Updated dependencies [353f2a5]
+    - @solana/wallet-adapter-base@0.9.19
+```
+
+----------------------------------------
+
+TITLE: Version Update Changelog for @solana/wallet-adapter-safepal
+DESCRIPTION: Markdown changelog detailing version updates from 0.5.14 through 0.5.20, documenting dependency updates and compatibility changes.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/safepal/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-safepal
+
+## 0.5.20
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+
+## 0.5.19
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+
+## 0.5.18
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-base@0.9.23
+
+## 0.5.17
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-base@0.9.22
+
+## 0.5.16
+
+### Patch Changes
+
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-base@0.9.21
+
+## 0.5.15
+
+### Patch Changes
+
+- Updated dependencies [912cc0e]
+    - @solana/wallet-adapter-base@0.9.20
+
+## 0.5.14
+
+### Patch Changes
+
+- Updated dependencies [353f2a5]
+    - @solana/wallet-adapter-base@0.9.19
+```
+
+----------------------------------------
+
+TITLE: Documenting Changelog for @solana/wallet-adapter-trust in Markdown
+DESCRIPTION: This snippet contains the entire changelog for @solana/wallet-adapter-trust, detailing version updates from 0.1.9 to 0.1.15. It includes patch changes, dependency updates, and specific modifications for each version.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/trust/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+# @solana/wallet-adapter-trust
+
+## 0.1.15
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+
+## 0.1.14
+
+### Patch Changes
+
+- c96cae47: The base version of Node has been raised to v20
+- b3797c26: Update TrustWallet icon
+- Updated dependencies [c96cae47]
+    - @solana/wallet-adapter-base@0.9.24
+
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies [a3d35a1]
+    - @solana/wallet-adapter-base@0.9.23
+
+## 0.1.12
+
+### Patch Changes
+
+- 8a8fdc72: Update dependencies
+- Updated dependencies [8a8fdc72]
+    - @solana/wallet-adapter-base@0.9.22
+
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [f99c2154]
+    - @solana/wallet-adapter-base@0.9.21
+
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies [912cc0e]
+    - @solana/wallet-adapter-base@0.9.20
+
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [353f2a5]
+    - @solana/wallet-adapter-base@0.9.19
+```
+
+----------------------------------------
+
+TITLE: Changelog Entry for Version 0.1.17
+DESCRIPTION: Documents changes in version 0.1.17, including dependency updates and patches to the base wallet adapter.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/keystone/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.1.17
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+```
+
+----------------------------------------
+
+TITLE: Changelog Entry for Version 0.5.22
+DESCRIPTION: Documents patch changes for version 0.5.22 including dependency updates
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/packages/wallets/coin98/CHANGELOG.md#2025-04-21_snippet_0
+
+LANGUAGE: markdown
+CODE:
+```
+## 0.5.22
+
+### Patch Changes
+
+- 27e408d: Update dependencies
+- Updated dependencies [27e408d]
+    - @solana/wallet-adapter-base@0.9.25
+```
+
+----------------------------------------
+
+TITLE: Activating PNPM with Corepack using jq
+DESCRIPTION: Command to enable Corepack and prepare the latest version of PNPM by dynamically fetching the current version using jq.
+SOURCE: https://github.com/anza-xyz/wallet-adapter/blob/master/BUILD.md#2025-04-21_snippet_0
+
+LANGUAGE: shell
+CODE:
+```
+corepack enable
+corepack prepare pnpm@`npm info pnpm --json | jq -r .version` --activate
+```

@@ -32,32 +32,22 @@ router.get("/me", async (req: Request, res: Response) => {
     
     // If user doesn't exist, create a minimal user record
     if (!user) {
-      user = {
-        id: 0, // Will be replaced with actual ID after creation
-        username: `user_${Date.now().toString().slice(-6)}`,
-        name: "Sanafi User",
-        email: "",
-        country: "",
-        walletAddress: userId,
-        kycStatus: "pending",
-        createdAt: new Date(),
-        preferences: "{}"
-      };
+      const tempUsername = `user_${Date.now().toString().slice(-6)}`;
       
       try {
-        // Create basic user
+        // Create basic user with random password (Privy handles auth)
         user = await storage.createUser({
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          country: user.country,
-          preferences: user.preferences
+          username: tempUsername,
+          password: `pwd_${Math.random().toString(36).substring(2, 12)}`,
+          name: "Sanafi User",
+          email: "",
+          walletAddress: userId
         });
         
         // Create wallet linked to user
         await storage.createWallet({
           address: userId,
-          type: "solana", // Assuming all Privy wallets are Solana for now
+          provider: "privy", // Wallet provider
           userId: user.id
         });
       } catch (err) {
@@ -67,13 +57,13 @@ router.get("/me", async (req: Request, res: Response) => {
 
     // Create a sanitized response without sensitive data
     const userResponse = {
-      id: user.id,
-      name: user.name || "Sanafi User",
-      username: user.username,
+      id: user?.id || 0,
+      name: user?.name || "Sanafi User",
+      username: user?.username || "user",
       walletAddress: userId,
-      email: user.email || "",
+      email: user?.email || "",
       profileImageUrl: null,
-      isKycVerified: user.kycStatus === 'verified',
+      isKycVerified: user?.kycStatus === 'verified',
       privyUserId: userId
     };
 
@@ -182,6 +172,7 @@ router.post("/onboarding", async (req: Request, res: Response) => {
       // Create new user
       await storage.createUser({
         username: validatedData.email.split("@")[0],
+        password: `pwd_${Math.random().toString(36).substring(2, 12)}`, // Generate random password
         email: validatedData.email,
         name: validatedData.name,
         country: validatedData.country,
