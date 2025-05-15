@@ -8,7 +8,8 @@ import {
   TrendingUp,
   CreditCard,
   BookOpen,
-  Settings
+  Settings,
+  DollarSign
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -18,6 +19,7 @@ export default function Sidebar() {
   
   const navItems = [
     { path: "/learn", label: t("Sanafi AI"), icon: <BookOpen className="h-5 w-5 mr-3" /> },
+    { path: "/stake", label: t("Stake"), icon: <DollarSign className="h-5 w-5 mr-3" /> },
     { path: "/", label: t("Dashboard"), icon: <LayoutDashboard className="h-5 w-5 mr-3" /> },
     { path: "/accounts", label: t("Accounts"), icon: <Wallet className="h-5 w-5 mr-3" /> },
     { path: "/savings", label: t("Savings"), icon: <PiggyBank className="h-5 w-5 mr-3" /> },

@@ -16,6 +16,7 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
   
   const navItems = [
     { path: "/learn", label: t("Sanafi AI") },
+    { path: "/stake", label: t("Stake") },
     { path: "/", label: t("Dashboard") },
     { path: "/accounts", label: t("Accounts") },
     { path: "/savings", label: t("Savings") },
