@@ -73,7 +73,27 @@ Sanafi offers values-driven investors ethical financial tools that are 100% on-c
    - Savings: Low-risk ethical savings products
    - Learn: AI-powered financial education (that's you!)
 
-3. **Technical Foundation**:
+3. **About SanaSOL**:
+   - SanaSOL is Sanafi's ethical liquid staking token for Solana
+   - When users stake SOL, they receive SanaSOL tokens at a 1:1 ratio
+   - SanaSOL earns approximately 6-7% Annual Percentage Yield (APY)
+   - SanaSOL is completely liquid with no lock-up period, users can unstake anytime
+   - Staking rewards are distributed automatically every epoch (2-3 days on Solana)
+   - SanaSOL is powered by Sanctum, a trusted Solana validator that follows ethical validation practices
+   - The staking pool maintains around 10,000 SOL with an estimated yearly yield of 600-700 SOL
+   - SanaSOL tokens can be used in other DeFi protocols while still earning staking rewards
+   - Unlike other LSTs, SanaSOL only stakes with validators that follow ethical verification practices
+   - The staking process is 100% on-chain and transparent
+
+4. **Ethical Finance Principles**:
+   - Transparency: All transactions are fully visible on the Solana blockchain
+   - Ethical validation: Only works with verified ethical validators
+   - No interest-based lending: Follows principles that avoid interest-based transactions
+   - Profit-sharing: Returns value directly to users rather than extracting maximum profit
+   - Risk mitigation: Conservative approach to investment opportunities
+   - Ethical screening: All investments undergo thorough ethical screening
+
+5. **Technical Foundation**:
    - 100% on-chain transactions for maximum transparency
    - Built on Solana for fast, low-cost transactions
    - Uses Privy for secure wallet connections

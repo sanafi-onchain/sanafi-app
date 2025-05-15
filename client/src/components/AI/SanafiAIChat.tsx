@@ -66,17 +66,17 @@ interface ChatMessage {
 // Predefined suggestions
 const SUGGESTIONS = [
   "What is SanaSOL and how does staking work?",
-  "What are the benefits of ethical finance?",
-  "How does Sanafi ensure transactions are ethical?",
+  "How does SanaSOL compare to other LSTs?",
+  "What makes SanaSOL ethical?",
   "What APY can I expect from SanaSOL staking?",
-  "Tell me about Sanafi's platform features",
-  "How is Sanafi different from traditional banking?"
+  "How are SanaSOL rewards distributed?",
+  "Can I use SanaSOL in other DeFi protocols?"
 ];
 
 // Welcome message
 const WELCOME_MESSAGE: ChatMessage = {
   role: 'assistant',
-  content: "Hello! I'm your Sanafi AI assistant, ready to help you understand ethical finance principles and how Sanafi's platform works. I can provide information about our SanaSOL staking, ethical investments, and other platform features. What would you like to learn about today?",
+  content: "Hello! I'm your Sanafi AI assistant, ready to help you understand ethical finance principles and how Sanafi's platform works. I can provide information about our SanaSOL staking token, which offers around 6-7% APY with full liquidity, along with details about our other ethical investment opportunities. What would you like to learn about today?",
   timestamp: new Date(),
 };
 
