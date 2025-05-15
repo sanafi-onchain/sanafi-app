@@ -144,7 +144,7 @@ export default function Stake() {
                       className="text-3xl font-bold h-16 bg-transparent border-none focus-visible:ring-0 p-0"
                     />
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-2">
-                      <span className="text-lg font-semibold text-primary">sanSOL</span>
+                      <span className="text-lg font-semibold text-primary">SanaSOL</span>
                     </div>
                     <div className="text-sm text-muted-foreground">{receiveAmountUSD}</div>
                   </div>
@@ -173,7 +173,7 @@ export default function Stake() {
                       Rate
                       <InfoIcon className="h-4 w-4 ml-1" />
                     </span>
-                    <span className="font-medium">1 SOL = 0.982080 sanSOL</span>
+                    <span className="font-medium">1 SOL = 0.982080 SanaSOL</span>
                   </div>
                   
                   <div className="flex justify-between py-2 border-b border-[#e9e1ca]">
