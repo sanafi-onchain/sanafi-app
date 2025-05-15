@@ -65,18 +65,18 @@ interface ChatMessage {
 
 // Predefined suggestions
 const SUGGESTIONS = [
-  "What is Mudarabah in Islamic finance?",
-  "Explain the difference between conventional and Islamic banking",
-  "How does Sukuk work as an investment?",
-  "What makes an investment Halal or Haram?",
-  "Explain profit-sharing in Islamic finance",
-  "What are the principles of Riba in Sharia law?"
+  "What is SanaSOL and how does staking work?",
+  "What are the benefits of ethical finance?",
+  "How does Sanafi ensure transactions are ethical?",
+  "What APY can I expect from SanaSOL staking?",
+  "Tell me about Sanafi's platform features",
+  "How is Sanafi different from traditional banking?"
 ];
 
 // Welcome message
 const WELCOME_MESSAGE: ChatMessage = {
   role: 'assistant',
-  content: "Assalamu alaikum! I'm your Sanafi AI assistant, ready to help you understand Islamic finance principles and Sharia-compliant investing. What would you like to learn about today?",
+  content: "Hello! I'm your Sanafi AI assistant, ready to help you understand ethical finance principles and how Sanafi's platform works. I can provide information about our SanaSOL staking, ethical investments, and other platform features. What would you like to learn about today?",
   timestamp: new Date(),
 };
 
