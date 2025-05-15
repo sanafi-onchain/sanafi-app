@@ -21,15 +21,27 @@ export function SignIn() {
   const { isAuthenticated, isReady, login } = usePrivyAuth();
   const { connected } = useSolanaWallet();
 
-  // Redirect to home/dashboard if already authenticated
+  // Only check authentication status once when component mounts
   useEffect(() => {
-    if ((isReady && isAuthenticated) || connected) {
-      navigate("/");
-    }
-  }, [isReady, isAuthenticated, connected, navigate]);
+    let mounted = true;
+    
+    // Using setTimeout to break potential render cycles
+    const checkAuth = setTimeout(() => {
+      if (!mounted) return;
+      
+      if ((isReady && isAuthenticated) || connected) {
+        window.location.href = "/"; // Use direct location change instead of navigate
+      }
+    }, 100);
+    
+    return () => {
+      mounted = false;
+      clearTimeout(checkAuth);
+    };
+  }, []); // Empty dependency array - only run once on mount
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 islamic-pattern bg-gradient-to-b from-[#e9e1ca] to-[#f5f0e5]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-[#e9e1ca] to-[#f5f0e5]">
       <div className="mb-10 text-center">
         <SanafiLogo className="w-24 h-24 mx-auto mb-6" />
         <h1 className="text-5xl font-semibold text-[#1b4d3e] mb-3 font-[Poppins]">Sanafi</h1>

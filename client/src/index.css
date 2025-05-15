@@ -44,13 +44,7 @@
     font-family: 'Poppins', sans-serif;
   }
 
-  body[dir="rtl"] {
-    font-family: 'Noto Sans Arabic', 'Poppins', sans-serif;
-  }
-
-  [dir="rtl"] * {
-    text-align: right;
-  }
+  /* RTL support removed - English only */
 }
 
 /* Font weights for Poppins */
