@@ -24,6 +24,12 @@ declare module '@privy-io/react-auth' {
         accentColor?: string;
         logo?: string;
       };
+      externalWallets?: {
+        solana?: {
+          enabled?: boolean;
+          connectors?: any[];
+        };
+      };
     };
   }
 
