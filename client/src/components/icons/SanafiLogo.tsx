@@ -35,7 +35,8 @@ export default function SanafiLogo({
       break;
   }
   
+  // Return an empty span, no "S" character
   return (
-    <span className={`${textColor} font-bold ${small ? 'text-3xl' : 'text-4xl'} font-[Poppins] ${className}`}>S</span>
+    <span className={`${className}`}></span>
   );
 }
