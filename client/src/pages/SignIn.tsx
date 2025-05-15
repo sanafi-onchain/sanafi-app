@@ -45,14 +45,14 @@ export function SignIn() {
       <div className="mb-10 text-center">
         <SanafiLogo className="w-24 h-24 mx-auto mb-6" />
         <h1 className="text-5xl font-semibold text-[#1b4d3e] mb-3 font-[Poppins]">Sanafi</h1>
-        <p className="text-gray-600 text-lg">Sharia-compliant financial services</p>
+        <p className="text-gray-600 text-lg">AI-Driven Ethical Onchain Banking</p>
       </div>
 
       <Card className="w-full max-w-md border-[#e9e1ca] shadow-lg bg-white">
         <CardHeader className="pb-2">
           <CardTitle className="text-[#1b4d3e] text-2xl font-medium">Welcome Back</CardTitle>
           <CardDescription className="text-gray-600">
-            Sign in to access your Sharia-compliant financial platform
+            Sign in to access your AI-Driven Ethical Onchain Banking platform
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -86,7 +86,7 @@ export function SignIn() {
 
       <div className="mt-10 text-center">
         <p className="text-sm text-gray-600 mb-2">
-          Learn more about our Sharia-compliant services
+          Learn more about our AI-Driven Ethical Onchain Banking
         </p>
         <Button
           variant="link"
