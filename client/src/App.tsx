@@ -1,6 +1,5 @@
 import { Route, Switch, useLocation, Redirect } from "wouter";
 import Layout from "@/components/Layout";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { SignIn } from "@/pages/SignIn";
 import Dashboard from "@/pages/Dashboard";
 import Accounts from "@/pages/Accounts";
@@ -28,28 +27,14 @@ function App() {
           }}
         </Route>
         
-        {/* Protected routes - require authentication */}
-        <Route path="/">
-          {() => <ProtectedRoute><Dashboard /></ProtectedRoute>}
-        </Route>
-        <Route path="/accounts">
-          {() => <ProtectedRoute><Accounts /></ProtectedRoute>}
-        </Route>
-        <Route path="/savings">
-          {() => <ProtectedRoute><Savings /></ProtectedRoute>}
-        </Route>
-        <Route path="/investments">
-          {() => <ProtectedRoute><Investments /></ProtectedRoute>}
-        </Route>
-        <Route path="/spend">
-          {() => <ProtectedRoute><Spend /></ProtectedRoute>}
-        </Route>
-        <Route path="/spend/rewards">
-          {() => <ProtectedRoute><SpendRewards /></ProtectedRoute>}
-        </Route>
-        <Route path="/settings">
-          {() => <ProtectedRoute><Settings /></ProtectedRoute>}
-        </Route>
+        {/* All routes accessible without authentication */}
+        <Route path="/" component={Dashboard} />
+        <Route path="/accounts" component={Accounts} />
+        <Route path="/savings" component={Savings} />
+        <Route path="/investments" component={Investments} />
+        <Route path="/spend" component={Spend} />
+        <Route path="/spend/rewards" component={SpendRewards} />
+        <Route path="/settings" component={Settings} />
         
         {/* Catch all for 404 */}
         <Route component={NotFound} />
