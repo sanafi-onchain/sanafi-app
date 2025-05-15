@@ -22,9 +22,10 @@ router.post('/', async (req: Request, res: Response) => {
     // Check if Perplexity API key is available
     const apiKey = process.env.PERPLEXITY_API_KEY;
     if (!apiKey) {
+      console.error('Missing PERPLEXITY_API_KEY environment variable');
       return res.status(500).json({
-        error: 'Perplexity API key not configured',
-        message: 'Please configure the PERPLEXITY_API_KEY environment variable'
+        error: 'Perplexity API configuration error',
+        message: 'Chat service is not properly configured'
       });
     }
 
