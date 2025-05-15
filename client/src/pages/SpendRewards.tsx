@@ -65,19 +65,9 @@ export default function SpendRewards() {
     }
   ];
 
-  if (!wallet?.isConnected) {
-    return (
-      <Card className="p-6 my-8">
-        <div className="text-center py-10">
-          <h2 className="text-2xl font-bold mb-2">Sign In</h2>
-          <p className="text-muted-foreground mb-6">
-            Please sign in to view your spend and rewards
-          </p>
-          <Button className="bg-primary">Sign In</Button>
-        </div>
-      </Card>
-    );
-  }
+  // Show demo data if wallet is not connected
+  const isWalletConnected = wallet?.isConnected || false;
+  // Continue with the rest of the component
 
   return (
     <div className="space-y-6">
