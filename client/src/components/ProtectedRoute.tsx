@@ -1,19 +1,17 @@
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { usePrivyAuth } from '@/contexts/PrivyContext';
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const [, navigate] = useLocation();
   const { isAuthenticated, isReady } = usePrivyAuth();
-  const [hasChecked, setHasChecked] = useState(false);
 
   useEffect(() => {
-    if (isReady && !isAuthenticated && !hasChecked) {
-      setHasChecked(true);
+    if (isReady && !isAuthenticated) {
       navigate('/signin');
     }
-  }, [isReady, isAuthenticated, navigate, hasChecked]);
+  }, [isReady, isAuthenticated, navigate]);
 
   if (!isReady) {
     return <div>Loading...</div>;
