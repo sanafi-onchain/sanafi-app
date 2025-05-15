@@ -70,10 +70,12 @@ export function SanafiAIChat() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          messages: [...messages, newUserMessage].map(m => ({
-            role: m.role,
-            content: m.content
-          }))
+          messages: [...messages, newUserMessage]
+            .filter(m => m.role !== 'system') // Filter out any system messages from the frontend
+            .map(m => ({
+              role: m.role,
+              content: m.content
+            }))
         }),
       });
       

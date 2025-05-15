@@ -60,10 +60,36 @@ router.post('/', async (req: Request, res: Response) => {
     };
 
     // Prepare the messages array with system message first
-    const formattedMessages = [
-      systemMessage,
-      ...messages
-    ];
+    // Ensure messages alternate properly between user and assistant
+    // Start with the system message
+    let formattedMessages = [systemMessage];
+    
+    // Filter to only the most recent set of messages that maintain alternating pattern
+    // Ensure the last message is from the user
+    const filteredMessages = [];
+    for (let i = messages.length - 1; i >= 0; i--) {
+      // Always include the last user message
+      if (i === messages.length - 1 && messages[i].role === 'user') {
+        filteredMessages.unshift(messages[i]);
+        continue;
+      }
+      
+      // Then ensure proper alternating pattern
+      if (filteredMessages.length > 0 && 
+          messages[i].role !== filteredMessages[0].role) {
+        filteredMessages.unshift(messages[i]);
+      } else {
+        // Stop once the alternating pattern would be broken
+        break;
+      }
+    }
+    
+    // Add filtered messages to the formatted array
+    formattedMessages = [...formattedMessages, ...filteredMessages];
+    
+    // Debug logging to understand message structure
+    console.log('Perplexity API Request - Formatted Messages:', 
+      JSON.stringify(formattedMessages.map(m => ({ role: m.role, contentLength: m.content.length })), null, 2));
 
     // Call Perplexity API
     const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
