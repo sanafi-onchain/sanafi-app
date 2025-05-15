@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ServiceStatus } from '@/components/ServiceStatus';
+import { ServiceStatus } from '../components/settings/ServiceStatus';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -12,11 +12,15 @@ import {
   PanelLeft, 
   Languages,
   CircleDollarSign,
-  HelpCircle
+  HelpCircle,
+  Pencil,
+  ExternalLink,
+  Wallet
 } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Settings() {
@@ -75,8 +79,181 @@ export default function Settings() {
               <CardDescription>Update your personal information and how we can reach you</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Form content would go here */}
-              <p className="text-muted-foreground">Personal information settings will be implemented in a future update.</p>
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* Profile Photo */}
+                <div className="flex flex-col items-center space-y-3">
+                  <div className="relative">
+                    <div className="w-32 h-32 rounded-full border-2 border-[#1b4d3e] overflow-hidden bg-[#f5f0e5] flex items-center justify-center">
+                      <img 
+                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=SanafiUser&backgroundColor=f5f0e5" 
+                        alt="Profile Avatar" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <Button variant="outline" size="icon" className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-white border-[#1b4d3e]">
+                      <Pencil className="h-4 w-4 text-[#1b4d3e]" />
+                      <span className="sr-only">Change profile picture</span>
+                    </Button>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Upload a photo (max 2MB)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex-1 space-y-6">
+                  {/* Basic Information */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="fullName">Full Name</Label>
+                      <Input 
+                        id="fullName" 
+                        defaultValue="Demo User" 
+                        className="border-[#e9e1ca] focus:border-[#1b4d3e]"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="displayName">Display Name</Label>
+                      <Input 
+                        id="displayName" 
+                        defaultValue="Demo User" 
+                        className="border-[#e9e1ca] focus:border-[#1b4d3e]"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        This is how your name will appear publicly
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Contact Information */}
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium">Contact Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          defaultValue="user@example.com" 
+                          className="border-[#e9e1ca] focus:border-[#1b4d3e]"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input 
+                          id="phone" 
+                          type="tel" 
+                          placeholder="+1 (555) 123-4567" 
+                          className="border-[#e9e1ca] focus:border-[#1b4d3e]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium">Location</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="country">Country</Label>
+                        <Select defaultValue="us">
+                          <SelectTrigger id="country" className="border-[#e9e1ca] focus:border-[#1b4d3e]">
+                            <SelectValue placeholder="Select Country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="us">United States</SelectItem>
+                            <SelectItem value="ca">Canada</SelectItem>
+                            <SelectItem value="uk">United Kingdom</SelectItem>
+                            <SelectItem value="ae">United Arab Emirates</SelectItem>
+                            <SelectItem value="sa">Saudi Arabia</SelectItem>
+                            <SelectItem value="my">Malaysia</SelectItem>
+                            <SelectItem value="id">Indonesia</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="timezone">Timezone</Label>
+                        <Select defaultValue="utc-5">
+                          <SelectTrigger id="timezone" className="border-[#e9e1ca] focus:border-[#1b4d3e]">
+                            <SelectValue placeholder="Select Timezone" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="utc-8">Pacific Time (UTC-8)</SelectItem>
+                            <SelectItem value="utc-7">Mountain Time (UTC-7)</SelectItem>
+                            <SelectItem value="utc-6">Central Time (UTC-6)</SelectItem>
+                            <SelectItem value="utc-5">Eastern Time (UTC-5)</SelectItem>
+                            <SelectItem value="utc">UTC</SelectItem>
+                            <SelectItem value="utc+3">Arabian Time (UTC+3)</SelectItem>
+                            <SelectItem value="utc+8">Malaysia/Singapore (UTC+8)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Connected Wallet */}
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium">Blockchain Wallet</h3>
+                    <div className="p-4 border border-[#e9e1ca] rounded-md bg-[#f5f0e5]/30">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="h-10 w-10 rounded-full bg-[#1b4d3e]/10 flex items-center justify-center">
+                            <Wallet className="h-5 w-5 text-[#1b4d3e]" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">Connected Wallet</p>
+                            <p className="text-xs text-muted-foreground">HeKs...YABvEBrV</p>
+                          </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm" className="text-xs">
+                            <ExternalLink className="h-3 w-3 mr-1" />
+                            View
+                          </Button>
+                          <Button variant="outline" size="sm" className="text-xs">
+                            Disconnect
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+              
+              {/* Preferences */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium">Account Preferences</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="marketing-emails">Marketing Emails</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive emails about new features and investment opportunities
+                      </p>
+                    </div>
+                    <Switch id="marketing-emails" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="transaction-notifications">Transaction Confirmations</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive email confirmations for all transactions
+                      </p>
+                    </div>
+                    <Switch id="transaction-notifications" defaultChecked />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button variant="outline">Cancel</Button>
+                <Button className="bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5]">
+                  Save Changes
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
