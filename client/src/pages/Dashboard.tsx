@@ -22,26 +22,29 @@ export default function Dashboard() {
 
   // Show a welcome toast when first loading the dashboard
   useEffect(() => {
-    if (wallet?.isConnected) {
-      toast({
-        title: "Welcome back!",
-        description: "Your dashboard is ready."
-      });
-    }
-  }, [wallet?.isConnected, toast]);
+    toast({
+      title: "Welcome to Sanafi!",
+      description: "Explore our ethical banking platform."
+    });
+  }, [toast]);
+
+  // Set a default value for walletConnected to make components work without authentication
+  const isWalletConnected = wallet?.isConnected || false;
 
   return (
     <div className="space-y-6">
-      {wallet?.isConnected && <WelcomeBanner name={userData?.name || "Guest"} />}
+      <WelcomeBanner name={"Guest"} />
       
+      {/* Always show stats */}
       <StatsOverview 
         isLoading={isLoading}
-        walletConnected={!!wallet?.isConnected}
+        walletConnected={true}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <RecentActivity walletConnected={!!wallet?.isConnected} />
+          {/* Always show activity */}
+          <RecentActivity walletConnected={true} />
         </div>
         <div className="space-y-6">
           <QuickActions />

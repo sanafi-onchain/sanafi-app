@@ -14,18 +14,7 @@ export default function StatsOverview({
 }: StatsOverviewProps) {
   const { t } = useLanguage();
   
-  if (!walletConnected) {
-    return (
-      <Card className="bg-primary text-white rounded-lg p-6 shadow-md mb-6">
-        <div className="text-center">
-          <h2 className="text-lg font-medium mb-2">Sign In</h2>
-          <p className="text-white/80 mb-4">
-            Sign in to view your balance and account information
-          </p>
-        </div>
-      </Card>
-    );
-  }
+  // Always show stats even if wallet is not connected
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
