@@ -144,7 +144,12 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
         appearance: {
           theme: 'light',
           accentColor: '#1b4d3e',
-          logo: 'https://i.ibb.co/S3nLhGD/sanafi-logo.png', // Simple hosted placeholder - update with real logo
+          logo: 'https://i.ibb.co/S3nLhGD/sanafi-logo.png',
+        },
+        externalWallets: {
+          solana: {
+            enabled: true,
+          },
         }
       }}
     >

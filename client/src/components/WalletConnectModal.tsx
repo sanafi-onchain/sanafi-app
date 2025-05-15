@@ -51,7 +51,7 @@ export default function WalletConnectModal({ open, onClose }: WalletConnectModal
         <DialogHeader>
           <DialogTitle>Sign In</DialogTitle>
           <DialogDescription>
-            Sign in to access Tahara's Sharia-compliant financial services.
+            Sign in to access Sanafi's AI-Driven Ethical Onchain Banking.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3 py-4">
