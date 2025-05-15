@@ -19,7 +19,7 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
   
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["/api/transactions/recent"],
-    enabled: walletConnected
+    enabled: true // Always fetch data regardless of wallet connection
   });
   
   // These would come from API in a real app
@@ -89,13 +89,7 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
       </CardHeader>
       <CardContent className="px-0 py-0">
         <div className="p-4 max-h-96 overflow-y-auto">
-          {!walletConnected && (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">{t("Sign in to view your recent activity")}</p>
-            </div>
-          )}
-          
-          {walletConnected && isLoading && (
+          {isLoading && (
             <div className="space-y-4 px-2">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className="flex items-center justify-between py-3 border-b border-border last:border-0">
@@ -115,7 +109,7 @@ export default function RecentActivity({ walletConnected }: RecentActivityProps)
             </div>
           )}
           
-          {walletConnected && !isLoading && mockTransactions.map((tx) => (
+          {!isLoading && mockTransactions.map((tx) => (
             <div key={tx.id} className="flex items-center justify-between py-3 px-2 border-b border-gray-100 last:border-0">
               <div className="flex items-center">
                 <div className={`w-10 h-10 rounded-full ${tx.iconBg} flex items-center justify-center mr-4`}>

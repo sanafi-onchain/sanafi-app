@@ -14,10 +14,10 @@ export default function Dashboard() {
   const { wallet } = useWallet();
   const { toast } = useToast();
   
-  // Check if wallet is connected to display appropriate content
+  // Always fetch data regardless of wallet connection status
   const { data: userData, isLoading } = useQuery({
     queryKey: ["/api/user/profile"],
-    enabled: !!wallet?.address
+    enabled: true
   });
 
   // Show a welcome toast when first loading the dashboard

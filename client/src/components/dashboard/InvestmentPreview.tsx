@@ -23,7 +23,7 @@ export default function InvestmentPreview() {
   
   const { data: featuredInvestments } = useQuery({
     queryKey: ["/api/investments/featured"],
-    enabled: !!wallet?.address
+    enabled: true // Always fetch data regardless of wallet connection
   });
   
   // These would come from API in a real app
@@ -55,15 +55,7 @@ export default function InvestmentPreview() {
   ];
   
   const handleInvestment = (id: string) => {
-    if (!wallet?.isConnected) {
-      toast({
-        title: t("Wallet Not Connected"),
-        description: t("Please connect your wallet to invest"),
-        variant: "destructive"
-      });
-      return;
-    }
-    
+    // Check only for valid amount, not wallet connection
     if (!investAmount || parseFloat(investAmount) <= 0) {
       toast({
         title: t("Invalid Amount"),
