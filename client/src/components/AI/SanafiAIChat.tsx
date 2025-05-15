@@ -280,10 +280,24 @@ export function SanafiAIChat() {
                           <p key={pIdx} className={pIdx > 0 ? "mt-4" : ""}>
                             {paragraph.split('\n').map((line, lIdx) => {
                               // Check if this is a list item
-                              if (line.match(/^[\d*-]+\.\s+/) || line.match(/^[•*-]\s+/)) {
+                              if (line.match(/^\d+\.\s+/) || line.match(/^[•*-]\s+/)) {
+                                // Extract the list marker and the content
+                                const listItemMatch = line.match(/^(\d+\.\s+|[•*-]\s+)(.*)/);
+                                if (listItemMatch) {
+                                  const [_, marker, content] = listItemMatch;
+                                  
+                                  return (
+                                    <span key={lIdx} className="block ml-4 my-1">
+                                      <span>{marker}</span>
+                                      {processFormattedText(content)}
+                                    </span>
+                                  );
+                                }
+                                
+                                // Fallback if regex doesn't match correctly
                                 return (
                                   <span key={lIdx} className="block ml-4 my-1">
-                                    {line}
+                                    {processFormattedText(line)}
                                   </span>
                                 );
                               }
@@ -295,7 +309,7 @@ export function SanafiAIChat() {
                                 return (
                                   <span key={lIdx} 
                                     className={`block font-semibold ${level === 1 ? 'text-lg mt-3 mb-2' : 'mt-2 mb-1'}`}>
-                                    {text}
+                                    {processFormattedText(text)}
                                   </span>
                                 );
                               }
