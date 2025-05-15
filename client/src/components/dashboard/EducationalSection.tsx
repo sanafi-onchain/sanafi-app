@@ -45,7 +45,7 @@ export default function EducationalSection() {
                 </div>
               </div>
               
-              <Button variant="link" className="p-0 h-auto text-secondary flex items-center">
+              <Button variant="link" className="p-0 h-auto text-primary font-medium flex items-center">
                 {t("Read Full Article")}
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
@@ -56,32 +56,32 @@ export default function EducationalSection() {
               <ul className="space-y-3">
                 <li>
                   <a href="/learn" className="flex items-start hover:text-primary">
-                    <PlayCircle className="h-4 w-4 mt-1 mr-2 text-secondary" />
+                    <PlayCircle className="h-4 w-4 mt-1 mr-2 text-primary" />
                     <span className="text-sm">{t("Introduction to Sukuk - 3 min video")}</span>
                   </a>
                 </li>
                 <li>
                   <a href="/learn" className="flex items-start hover:text-primary">
-                    <FileText className="h-4 w-4 mt-1 mr-2 text-secondary" />
+                    <FileText className="h-4 w-4 mt-1 mr-2 text-primary" />
                     <span className="text-sm">{t("Halal vs Haram Investments Guide")}</span>
                   </a>
                 </li>
                 <li>
                   <a href="/learn" className="flex items-start hover:text-primary">
-                    <HelpCircle className="h-4 w-4 mt-1 mr-2 text-secondary" />
+                    <HelpCircle className="h-4 w-4 mt-1 mr-2 text-primary" />
                     <span className="text-sm">{t("Islamic Finance FAQ")}</span>
                   </a>
                 </li>
                 <li>
                   <a href="/learn" className="flex items-start hover:text-primary">
-                    <BookOpen className="h-4 w-4 mt-1 mr-2 text-secondary" />
+                    <BookOpen className="h-4 w-4 mt-1 mr-2 text-primary" />
                     <span className="text-sm">{t("Blockchain and Sharia Compliance")}</span>
                   </a>
                 </li>
               </ul>
               
               <div className="mt-4 pt-4 border-t">
-                <Button variant="link" className="p-0 h-auto text-secondary flex items-center">
+                <Button variant="link" className="p-0 h-auto text-primary font-medium flex items-center">
                   {t("Explore Learning Center")}
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>

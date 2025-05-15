@@ -18,15 +18,6 @@ export default function QuickActions() {
   const [_, setLocation] = useLocation();
   
   const handleDepositFunds = () => {
-    if (!wallet?.isConnected) {
-      toast({
-        title: "Not Signed In",
-        description: "Please sign in first",
-        variant: "destructive"
-      });
-      return;
-    }
-    
     toast({
       title: t("Deposit Initiated"),
       description: t("Preparing deposit process...")
