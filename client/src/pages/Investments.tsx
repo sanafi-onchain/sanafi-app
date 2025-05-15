@@ -19,12 +19,14 @@ import {
   ToggleGroupItem
 } from "@/components/ui/toggle-group";
 import { TokenSwap } from "@/components/TokenSwap";
+import { PerformanceChart } from "@/components/investments/PerformanceChart";
 
 export default function Investments() {
   const { wallet } = useWallet();
   const [selectedAssetType, setSelectedAssetType] = useState<string>("all");
   const [selectedRisk, setSelectedRisk] = useState<string>("all");
   const [investAmount, setInvestAmount] = useState<string>("");
+  const [timeRange, setTimeRange] = useState<'1M' | '3M' | '1Y' | 'All'>('1M');
   
   const { data: investmentsData, isLoading } = useQuery({
     queryKey: ["/api/investments"],
@@ -257,7 +259,11 @@ export default function Investments() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Portfolio View</CardTitle>
-          <ToggleGroup type="single" defaultValue="1M">
+          <ToggleGroup 
+            type="single" 
+            value={timeRange}
+            onValueChange={(value) => value && setTimeRange(value as '1M' | '3M' | '1Y' | 'All')}
+          >
             <ToggleGroupItem value="1M">1M</ToggleGroupItem>
             <ToggleGroupItem value="3M">3M</ToggleGroupItem>
             <ToggleGroupItem value="1Y">1Y</ToggleGroupItem>
