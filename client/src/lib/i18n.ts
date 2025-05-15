@@ -234,6 +234,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Spend": "الإنفاق",
   "Learn": "تعلم",
   "Sanafi AI": "سنافي الذكاء",
+  "Stake": "استثمار",
   "Settings": "الإعدادات",
   "Sign In": "تسجيل الدخول",
   "Sign Out": "تسجيل الخروج",
