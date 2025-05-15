@@ -52,7 +52,7 @@ export function SignIn() {
         <CardHeader className="pb-2">
           <CardTitle className="text-[#1b4d3e] text-2xl font-medium">Welcome Back</CardTitle>
           <CardDescription className="text-gray-600">
-            Sign in to access your AI-Driven Ethical Onchain Banking platform
+            Sign in to access your AI-Driven Ethical Onchain Banking
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -97,17 +97,7 @@ export function SignIn() {
         </Button>
       </div>
 
-      <div className="mt-8 flex flex-wrap justify-center gap-6 max-w-xl">
-        <div className="bg-white p-3 rounded-lg shadow-sm flex items-center justify-center w-24 h-12">
-          <div className="text-xs text-gray-500 opacity-70">Powered by</div>
-        </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm flex items-center justify-center w-24 h-12">
-          <div className="text-xs text-gray-500 opacity-70">Solana</div>
-        </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm flex items-center justify-center w-24 h-12">
-          <div className="text-xs text-gray-500 opacity-70">Privy</div>
-        </div>
-      </div>
+
     </div>
   );
 }
