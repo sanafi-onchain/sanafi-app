@@ -7,23 +7,99 @@ import { cn } from '@/lib/utils';
 
 // Helper function to process text formatting (bold and italic)
 const processFormattedText = (text: string): ReactNode[] => {
-  // Split by markdown patterns for bold and italic
-  const segments = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+  // Check if the entire line is a bold heading (starts and ends with **)
+  if (text.startsWith('**') && text.endsWith('**') && text.length > 4) {
+    return [<strong key="whole-line">{text.slice(2, -2)}</strong>];
+  }
   
-  return segments.map((segment, index) => {
-    // Handle bold text: **text**
-    if (segment.startsWith('**') && segment.endsWith('**')) {
-      return <strong key={index}>{segment.slice(2, -2)}</strong>;
+  // Process mixed formatting within a line
+  const segments: ReactNode[] = [];
+  let currentText = text;
+  let boldMatch;
+  let italicMatch;
+  let lastIndex = 0;
+  
+  // First find all bold segments
+  const boldRegex = /\*\*(.+?)\*\*/g;
+  const processedIndices: number[] = [];
+  
+  while ((boldMatch = boldRegex.exec(currentText)) !== null) {
+    // Add normal text before this match
+    if (boldMatch.index > lastIndex) {
+      segments.push(
+        <span key={`text-${lastIndex}`}>
+          {currentText.substring(lastIndex, boldMatch.index)}
+        </span>
+      );
     }
-    // Handle italic text: *text*
-    else if (segment.startsWith('*') && segment.endsWith('*') && !segment.startsWith('**')) {
-      return <em key={index}>{segment.slice(1, -1)}</em>;
+    
+    // Add the bold text
+    segments.push(
+      <strong key={`bold-${boldMatch.index}`}>
+        {boldMatch[1]}
+      </strong>
+    );
+    
+    processedIndices.push(boldMatch.index);
+    lastIndex = boldMatch.index + boldMatch[0].length;
+  }
+  
+  // Add any remaining text
+  if (lastIndex < currentText.length) {
+    // Process italic in the remaining text
+    const remainingText = currentText.substring(lastIndex);
+    const italicRegex = /\*(.+?)\*/g;
+    let italicLastIndex = 0;
+    let italicSegments: ReactNode[] = [];
+    
+    while ((italicMatch = italicRegex.exec(remainingText)) !== null) {
+      // Add normal text before this match
+      if (italicMatch.index > italicLastIndex) {
+        italicSegments.push(
+          <span key={`text-${lastIndex + italicLastIndex}`}>
+            {remainingText.substring(italicLastIndex, italicMatch.index)}
+          </span>
+        );
+      }
+      
+      // Add the italic text
+      italicSegments.push(
+        <em key={`italic-${lastIndex + italicMatch.index}`}>
+          {italicMatch[1]}
+        </em>
+      );
+      
+      italicLastIndex = italicMatch.index + italicMatch[0].length;
     }
-    // Regular text
-    else {
-      return segment;
+    
+    // Add any remaining text after italic processing
+    if (italicLastIndex < remainingText.length) {
+      italicSegments.push(
+        <span key={`text-${lastIndex + italicLastIndex}`}>
+          {remainingText.substring(italicLastIndex)}
+        </span>
+      );
     }
-  });
+    
+    // If we processed any italic segments, add them to the main segments
+    if (italicSegments.length > 0) {
+      segments.push(...italicSegments);
+    } else {
+      // No italic formatting, just add the remaining text
+      segments.push(
+        <span key={`text-${lastIndex}`}>
+          {remainingText}
+        </span>
+      );
+    }
+  }
+  
+  // If we didn't process anything, return the original text
+  if (segments.length === 0) {
+    return [text];
+  }
+  
+  return segments;
 };
 
 // Types for chat messages
