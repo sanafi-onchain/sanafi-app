@@ -59,33 +59,28 @@ router.post('/', async (req: Request, res: Response) => {
       content: 'You are an expert in Islamic finance and Sharia-compliant investing. Provide accurate, helpful information about Islamic financial principles, products, and practices. If asked about non-Islamic finance topics, gently redirect to Islamic finance related topics. Be precise and concise.'
     };
 
-    // Prepare the messages array with system message first
-    // Ensure messages alternate properly between user and assistant
-    // Start with the system message
+    // Completely rebuild the messages array to ensure proper ordering
+    // Always start with the system message
     let formattedMessages = [systemMessage];
     
-    // Filter to only the most recent set of messages that maintain alternating pattern
-    // Ensure the last message is from the user
-    const filteredMessages = [];
+    // Make sure the final message is from the user
+    let lastUserMessage = null;
     for (let i = messages.length - 1; i >= 0; i--) {
-      // Always include the last user message
-      if (i === messages.length - 1 && messages[i].role === 'user') {
-        filteredMessages.unshift(messages[i]);
-        continue;
-      }
-      
-      // Then ensure proper alternating pattern
-      if (filteredMessages.length > 0 && 
-          messages[i].role !== filteredMessages[0].role) {
-        filteredMessages.unshift(messages[i]);
-      } else {
-        // Stop once the alternating pattern would be broken
+      if (messages[i].role === 'user') {
+        lastUserMessage = messages[i];
         break;
       }
     }
     
-    // Add filtered messages to the formatted array
-    formattedMessages = [...formattedMessages, ...filteredMessages];
+    if (!lastUserMessage) {
+      return res.status(400).json({
+        error: 'Invalid request',
+        message: 'No user message provided'
+      });
+    }
+    
+    // For chat history context, only use the most recent exchange
+    formattedMessages.push(lastUserMessage);
     
     // Debug logging to understand message structure
     console.log('Perplexity API Request - Formatted Messages:', 
