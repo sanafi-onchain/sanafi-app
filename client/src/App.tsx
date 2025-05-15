@@ -16,32 +16,42 @@ function App() {
   return (
     <Layout>
       <Switch>
-        <Route path="/" component={() => (
-          <ProtectedRoute><Dashboard /></ProtectedRoute>
-        )} />
+        {/* Public routes */}
         <Route path="/signin" component={SignIn} />
-        <Route path="/dashboard" component={() => (
-          <Redirect to="/" />
-        )} />
-        <Route path="/accounts" component={() => (
-          <ProtectedRoute><Accounts /></ProtectedRoute>
-        )} />
-        <Route path="/savings" component={() => (
-          <ProtectedRoute><Savings /></ProtectedRoute>
-        )} />
-        <Route path="/investments" component={() => (
-          <ProtectedRoute><Investments /></ProtectedRoute>
-        )} />
-        <Route path="/spend" component={() => (
-          <ProtectedRoute><Spend /></ProtectedRoute>
-        )} />
-        <Route path="/spend/rewards" component={() => (
-          <ProtectedRoute><SpendRewards /></ProtectedRoute>
-        )} />
         <Route path="/learn" component={Learn} />
-        <Route path="/settings" component={() => (
-          <ProtectedRoute><Settings /></ProtectedRoute>
-        )} />
+        
+        {/* Legacy dashboard redirect - clean URL redirection */}
+        <Route path="/dashboard">
+          {() => {
+            window.history.replaceState(null, '', '/');
+            return <Dashboard />;
+          }}
+        </Route>
+        
+        {/* Protected routes - require authentication */}
+        <Route path="/">
+          {() => <ProtectedRoute><Dashboard /></ProtectedRoute>}
+        </Route>
+        <Route path="/accounts">
+          {() => <ProtectedRoute><Accounts /></ProtectedRoute>}
+        </Route>
+        <Route path="/savings">
+          {() => <ProtectedRoute><Savings /></ProtectedRoute>}
+        </Route>
+        <Route path="/investments">
+          {() => <ProtectedRoute><Investments /></ProtectedRoute>}
+        </Route>
+        <Route path="/spend">
+          {() => <ProtectedRoute><Spend /></ProtectedRoute>}
+        </Route>
+        <Route path="/spend/rewards">
+          {() => <ProtectedRoute><SpendRewards /></ProtectedRoute>}
+        </Route>
+        <Route path="/settings">
+          {() => <ProtectedRoute><Settings /></ProtectedRoute>}
+        </Route>
+        
+        {/* Catch all for 404 */}
         <Route component={NotFound} />
       </Switch>
     </Layout>

@@ -21,12 +21,12 @@ export function SignIn() {
   const { isAuthenticated, isReady, login } = usePrivyAuth();
   const { connected } = useSolanaWallet();
 
-  // Redirect to dashboard if already authenticated via Privy or directly connected Solana wallet
+  // Redirect to home/dashboard if already authenticated
   useEffect(() => {
-    if (isAuthenticated || connected) {
-      navigate("/dashboard");
+    if ((isReady && isAuthenticated) || connected) {
+      navigate("/");
     }
-  }, [isAuthenticated, connected, navigate]);
+  }, [isReady, isAuthenticated, connected, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 islamic-pattern bg-gradient-to-b from-[#e9e1ca] to-[#f5f0e5]">

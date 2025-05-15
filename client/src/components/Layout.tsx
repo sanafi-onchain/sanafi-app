@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import { Link } from "wouter";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import WalletConnectModal from "./WalletConnectModal";
@@ -49,13 +50,13 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <nav className="px-4 py-2">
                 <ul className="space-y-3">
-                  <li><a href="/learn" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">{t("Sanafi AI")}</a></li>
-                  <li><a href="/" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Dashboard")}</a></li>
-                  <li><a href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Accounts")}</a></li>
-                  <li><a href="/savings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Savings")}</a></li>
-                  <li><a href="/investments" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Investments")}</a></li>
-                  <li><a href="/spend" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Spend")}</a></li>
-                  <li><a href="/settings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Settings")}</a></li>
+                  <li><Link href="/learn" className="block py-3 px-4 text-primary font-medium hover:bg-muted rounded-lg">{t("Sanafi AI")}</Link></li>
+                  <li><Link href="/" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Dashboard")}</Link></li>
+                  <li><Link href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Accounts")}</Link></li>
+                  <li><Link href="/savings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Savings")}</Link></li>
+                  <li><Link href="/investments" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Investments")}</Link></li>
+                  <li><Link href="/spend" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Spend")}</Link></li>
+                  <li><Link href="/settings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Settings")}</Link></li>
                 </ul>
               </nav>
             </div>
