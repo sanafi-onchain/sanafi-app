@@ -51,28 +51,28 @@ export default function QuickActions() {
       </CardHeader>
       <CardContent className="p-5 space-y-3">
         <Button 
-          className="w-full bg-primary hover:bg-primary/90" 
+          className="w-full bg-primary hover:bg-primary/90 text-[#e9e1ca]" 
           onClick={handleDepositFunds}
         >
           <Plus className="h-4 w-4 mr-2" />
-          <span>{t("Deposit Funds")}</span>
+          <span className="text-[#e9e1ca]">{t("Deposit Funds")}</span>
         </Button>
         
         <Button 
-          className="w-full bg-secondary hover:bg-secondary/90" 
+          className="w-full bg-[#e9e1ca] hover:bg-[#e9e1ca]/90 text-[#1b4d3e]" 
           onClick={handleViewPortfolio}
         >
           <PieChart className="h-4 w-4 mr-2" />
-          <span>{t("View Portfolio")}</span>
+          <span className="text-[#1b4d3e]">{t("View Portfolio")}</span>
         </Button>
         
         <Button 
           variant="outline" 
-          className="w-full border-primary text-primary hover:bg-primary/10" 
+          className="w-full border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10" 
           onClick={handleExploreInvestments}
         >
           <Search className="h-4 w-4 mr-2" />
-          <span>{t("Explore Investments")}</span>
+          <span className="text-[#1b4d3e]">{t("Explore Investments")}</span>
         </Button>
       </CardContent>
     </Card>
