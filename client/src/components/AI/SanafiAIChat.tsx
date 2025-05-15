@@ -7,99 +7,50 @@ import { cn } from '@/lib/utils';
 
 // Helper function to process text formatting (bold and italic)
 const processFormattedText = (text: string): ReactNode[] => {
-  // Check if the entire line is a bold heading (starts and ends with **)
-  if (text.startsWith('**') && text.endsWith('**') && text.length > 4) {
-    return [<strong key="whole-line">{text.slice(2, -2)}</strong>];
-  }
-  
-  // Process mixed formatting within a line
-  const segments: ReactNode[] = [];
-  let currentText = text;
-  let boldMatch;
-  let italicMatch;
-  let lastIndex = 0;
-  
-  // First find all bold segments
-  const boldRegex = /\*\*(.+?)\*\*/g;
-  const processedIndices: number[] = [];
-  
-  while ((boldMatch = boldRegex.exec(currentText)) !== null) {
-    // Add normal text before this match
-    if (boldMatch.index > lastIndex) {
-      segments.push(
-        <span key={`text-${lastIndex}`}>
-          {currentText.substring(lastIndex, boldMatch.index)}
-        </span>
-      );
+  try {
+    // Simple approach: replace bold and italic with spans
+    let processedText = text;
+    
+    // First handle complete bold string case
+    if (text.startsWith('**') && text.endsWith('**') && text.length > 4) {
+      return [<strong key="whole">{text.slice(2, -2)}</strong>];
     }
     
-    // Add the bold text
-    segments.push(
-      <strong key={`bold-${boldMatch.index}`}>
-        {boldMatch[1]}
-      </strong>
-    );
+    // Handle bold formatting within text
+    const boldRegex = /\*\*(.+?)\*\*/g;
+    const segments: ReactNode[] = [];
     
-    processedIndices.push(boldMatch.index);
-    lastIndex = boldMatch.index + boldMatch[0].length;
-  }
-  
-  // Add any remaining text
-  if (lastIndex < currentText.length) {
-    // Process italic in the remaining text
-    const remainingText = currentText.substring(lastIndex);
-    const italicRegex = /\*(.+?)\*/g;
-    let italicLastIndex = 0;
-    let italicSegments: ReactNode[] = [];
-    
-    while ((italicMatch = italicRegex.exec(remainingText)) !== null) {
-      // Add normal text before this match
-      if (italicMatch.index > italicLastIndex) {
-        italicSegments.push(
-          <span key={`text-${lastIndex + italicLastIndex}`}>
-            {remainingText.substring(italicLastIndex, italicMatch.index)}
-          </span>
-        );
+    let lastIndex = 0;
+    let match;
+
+    while ((match = boldRegex.exec(text)) !== null) {
+      // Add text before the match
+      if (match.index > lastIndex) {
+        segments.push(text.substring(lastIndex, match.index));
       }
       
-      // Add the italic text
-      italicSegments.push(
-        <em key={`italic-${lastIndex + italicMatch.index}`}>
-          {italicMatch[1]}
-        </em>
-      );
+      // Add the bold text
+      segments.push(<strong key={`bold-${match.index}`}>{match[1]}</strong>);
       
-      italicLastIndex = italicMatch.index + italicMatch[0].length;
+      lastIndex = match.index + match[0].length;
     }
     
-    // Add any remaining text after italic processing
-    if (italicLastIndex < remainingText.length) {
-      italicSegments.push(
-        <span key={`text-${lastIndex + italicLastIndex}`}>
-          {remainingText.substring(italicLastIndex)}
-        </span>
-      );
+    // Add any remaining text
+    if (lastIndex < text.length) {
+      segments.push(text.substring(lastIndex));
     }
     
-    // If we processed any italic segments, add them to the main segments
-    if (italicSegments.length > 0) {
-      segments.push(...italicSegments);
-    } else {
-      // No italic formatting, just add the remaining text
-      segments.push(
-        <span key={`text-${lastIndex}`}>
-          {remainingText}
-        </span>
-      );
+    // If nothing was processed, return original text
+    if (segments.length === 0) {
+      return [text];
     }
-  }
-  
-  // If we didn't process anything, return the original text
-  if (segments.length === 0) {
+    
+    return segments;
+  } catch (error) {
+    // Fallback if there's any error during processing
+    console.error("Error processing text formatting:", error);
     return [text];
   }
-  
-  return segments;
 };
 
 // Types for chat messages
@@ -279,8 +230,20 @@ export function SanafiAIChat() {
                         {message.content.split('\n\n').map((paragraph, pIdx) => (
                           <p key={pIdx} className={pIdx > 0 ? "mt-4" : ""}>
                             {paragraph.split('\n').map((line, lIdx) => {
-                              // Check if this is a list item
-                              if (line.match(/^\d+\.\s+/) || line.match(/^[•*-]\s+/)) {
+                              // Special case: numbered list with bold start (e.g. "1. **Bold text**")
+                              const numberedWithBold = line.match(/^(\d+\.)\s+(\*\*.+\*\*)/);
+                              if (numberedWithBold) {
+                                const [_, number, boldText] = numberedWithBold;
+                                return (
+                                  <span key={lIdx} className="block ml-4 my-1">
+                                    <span>{number} </span>
+                                    <strong>{boldText.slice(2, -2)}</strong>
+                                    {line.substring(number.length + boldText.length + 1)}
+                                  </span>
+                                );
+                              }
+                              // Check if this is a regular list item
+                              else if (line.match(/^\d+\.\s+/) || line.match(/^[•*-]\s+/)) {
                                 // Extract the list marker and the content
                                 const listItemMatch = line.match(/^(\d+\.\s+|[•*-]\s+)(.*)/);
                                 if (listItemMatch) {
