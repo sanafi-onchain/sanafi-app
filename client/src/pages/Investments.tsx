@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/toggle-group";
 import { TokenSwap } from "@/components/TokenSwap";
 import { PerformanceChart } from "@/components/investments/PerformanceChart";
+import { HoldingsPieChart } from "@/components/investments/HoldingsPieChart";
 
 export default function Investments() {
   const { wallet } = useWallet();
@@ -274,14 +275,8 @@ export default function Investments() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="md:col-span-1">
               <h3 className="text-sm font-medium mb-4">Holdings Breakdown</h3>
-              <div className="aspect-square bg-muted rounded-full relative flex items-center justify-center mb-4">
-                <PieChart className="h-12 w-12 text-muted-foreground/50" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-xl font-bold">45 USDC</div>
-                    <div className="text-xs text-muted-foreground">Total Value</div>
-                  </div>
-                </div>
+              <div className="mb-4">
+                <HoldingsPieChart />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center">
