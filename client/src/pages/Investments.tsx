@@ -188,8 +188,8 @@ export default function Investments() {
                             
                             <div className="mb-6">
                               <h3 className="font-medium mb-2">Performance</h3>
-                              <div className="h-32 bg-muted rounded-md flex items-center justify-center">
-                                <span className="text-sm text-muted-foreground">Performance chart placeholder</span>
+                              <div className="h-32 rounded-md">
+                                <PerformanceChart height={128} showGrid={false} />
                               </div>
                             </div>
                             
@@ -307,8 +307,8 @@ export default function Investments() {
                 <h3 className="text-sm font-medium">Performance</h3>
                 <div className="text-sm text-primary font-medium">+2.3% today</div>
               </div>
-              <div className="h-40 bg-muted rounded-md flex items-center justify-center mb-6">
-                <span className="text-sm text-muted-foreground">Performance chart placeholder</span>
+              <div className="h-40 rounded-md mb-6">
+                <PerformanceChart height={160} timeRange={timeRange} />
               </div>
               
               <div className="rounded-md border">
