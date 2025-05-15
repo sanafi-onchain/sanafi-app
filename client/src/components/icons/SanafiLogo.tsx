@@ -36,11 +36,6 @@ export default function SanafiLogo({
   }
   
   return (
-    <div 
-      className={`${size} ${className} ${bgColor} ${shadowStyle} rounded-full flex items-center justify-center transition-transform hover:scale-105`}
-      style={{ boxShadow: variant === 'default' ? '0 4px 12px rgba(0, 0, 0, 0.15)' : '' }}
-    >
-      <span className={`${textColor} font-bold ${small ? 'text-3xl' : 'text-4xl'} font-[Poppins]`}>S</span>
-    </div>
+    <span className={`${textColor} font-bold ${small ? 'text-3xl' : 'text-4xl'} font-[Poppins] ${className}`}>S</span>
   );
 }
