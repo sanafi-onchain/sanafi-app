@@ -1,7 +1,8 @@
 import { Link, useLocation } from "wouter";
 import WalletConnectButton from "./WalletConnectButton";
 import SanafiLogo from "./icons/SanafiLogo";
-import { Menu } from "lucide-react";
+import { Menu, Mail } from "lucide-react";
+import { Button } from "./ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface HeaderProps {
@@ -59,6 +60,12 @@ export default function Header({ toggleMobileMenu, toggleWalletModal }: HeaderPr
         
         {/* Right side controls */}
         <div className="flex items-center space-x-4">
+          <Link href="/signin">
+            <Button variant="outline" className="hidden lg:flex items-center">
+              <Mail className="h-4 w-4 mr-2" />
+              {t("Sign In")}
+            </Button>
+          </Link>
           {/* Wallet Connect Button */}
           <WalletConnectButton onClick={toggleWalletModal} />
         </div>
