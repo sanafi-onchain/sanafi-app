@@ -163,8 +163,8 @@ export function SanafiAIChat() {
                 <div className={cn(
                   "max-w-[85%] rounded-xl p-4 shadow-sm flex",
                   message.role === 'user' 
-                    ? "bg-[#1b4d3e] text-[#f5f0e5] rounded-tr-none" 
-                    : "bg-[#f5f0e5] text-[#1b4d3e] rounded-tl-none"
+                    ? "bg-[#1b4d3e] text-[#f5f0e5] rounded-tr-none border border-[#1b4d3e]/20" 
+                    : "bg-[#f5f0e5] text-[#1b4d3e] rounded-tl-none border border-[#e9e1ca]"
                 )}>
                   <div className={cn(
                     "rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3 mt-1",
@@ -178,24 +178,75 @@ export function SanafiAIChat() {
                   </div>
                   <div className="space-y-2 flex-1">
                     <div className="space-y-2">
-                      <div className="text-base leading-relaxed">{message.content}</div>
+                      <div className="text-base leading-relaxed whitespace-pre-wrap">
+                        {message.content.split('\n\n').map((paragraph, pIdx) => (
+                          <p key={pIdx} className={pIdx > 0 ? "mt-4" : ""}>
+                            {paragraph.split('\n').map((line, lIdx) => {
+                              // Check if this is a list item
+                              if (line.match(/^[\d*-]+\.\s+/) || line.match(/^[•*-]\s+/)) {
+                                return (
+                                  <span key={lIdx} className="block ml-4 my-1">
+                                    {line}
+                                  </span>
+                                );
+                              }
+                              // Check if this is a heading (starting with #)
+                              else if (line.match(/^#+\s+/)) {
+                                const headingMatch = line.match(/^(#+)\s+/);
+                                const level = headingMatch?.[1]?.length || 1;
+                                const text = line.replace(/^#+\s+/, '');
+                                return (
+                                  <span key={lIdx} 
+                                    className={`block font-semibold ${level === 1 ? 'text-lg mt-3 mb-2' : 'mt-2 mb-1'}`}>
+                                    {text}
+                                  </span>
+                                );
+                              }
+                              // Regular line
+                              return (
+                                <span key={lIdx} className={lIdx > 0 ? "block mt-1" : ""}>
+                                  {line}
+                                </span>
+                              );
+                            })}
+                          </p>
+                        ))}
+                      </div>
                       {message.citations && message.citations.length > 0 && (
-                        <div className="mt-3 pt-3 border-t border-[#1b4d3e]/10 text-sm">
-                          <div className="font-medium mb-1">Sources:</div>
-                          <ul className="space-y-1">
-                            {message.citations.map((citation, idx) => (
-                              <li key={idx}>
-                                <a 
-                                  href={citation} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="flex items-center hover:underline"
-                                >
-                                  {citation.replace(/^https?:\/\/(www\.)?/, '').substring(0, 30)}...
-                                  <ExternalLink className="h-3 w-3 ml-1 inline" />
-                                </a>
-                              </li>
-                            ))}
+                        <div className="mt-4 pt-3 border-t border-[#1b4d3e]/10 text-sm">
+                          <div className="font-medium mb-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5">
+                              <path d="M12 11h1v6h-1" />
+                              <path d="M7 7a4 4 0 0 1 8 0v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z" />
+                              <circle cx="12" cy="8" r="1" />
+                            </svg>
+                            Sources:
+                          </div>
+                          <ul className="space-y-1.5 pl-1">
+                            {message.citations.map((citation, idx) => {
+                              // Extract domain name for display
+                              const urlObj = new URL(citation);
+                              const domain = urlObj.hostname.replace(/^www\./, '');
+                              
+                              return (
+                                <li key={idx} className="border border-[#1b4d3e]/10 rounded-md px-3 py-1.5 bg-[#1b4d3e]/5 hover:bg-[#1b4d3e]/10 transition-colors">
+                                  <a 
+                                    href={citation} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-between w-full text-[#1b4d3e]"
+                                  >
+                                    <span className="flex items-center">
+                                      <span className="inline-block w-5 h-5 mr-2 text-center text-xs font-medium bg-[#1b4d3e] text-white rounded-full">
+                                        {idx + 1}
+                                      </span>
+                                      <span className="truncate max-w-[200px]">{domain}</span>
+                                    </span>
+                                    <ExternalLink className="h-3 w-3 ml-1 inline flex-shrink-0" />
+                                  </a>
+                                </li>
+                              );
+                            })}
                           </ul>
                         </div>
                       )}
@@ -210,12 +261,27 @@ export function SanafiAIChat() {
             
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-[#f5f0e5] max-w-[85%] rounded-xl p-4 rounded-tl-none shadow-sm">
-                  <div className="flex items-center space-x-2">
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce"></div>
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="h-2 w-2 bg-[#1b4d3e] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-                    <span className="text-sm text-[#1b4d3e]/70">Thinking...</span>
+                <div className="bg-[#f5f0e5] max-w-[85%] rounded-xl p-4 rounded-tl-none shadow-sm border border-[#e9e1ca]">
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex-shrink-0">
+                      <div className="h-8 w-8 rounded-full bg-[#1b4d3e]/10 flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-full border-t-2 border-[#1b4d3e] animate-spin"></div>
+                        <Bot className="h-4 w-4 text-[#1b4d3e]" />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center text-[#1b4d3e]">
+                        <span className="text-sm font-medium">Sanafi AI</span>
+                        <span className="text-xs ml-2 px-1.5 py-0.5 rounded-full bg-[#1b4d3e]/10 text-[#1b4d3e] font-medium">
+                          Thinking...
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-1 mt-1.5">
+                        <div className="h-1.5 w-1.5 bg-[#1b4d3e] rounded-full animate-pulse"></div>
+                        <div className="h-1.5 w-1.5 bg-[#1b4d3e] rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="h-1.5 w-1.5 bg-[#1b4d3e] rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
