@@ -1,14 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Wallet } from 'lucide-react';
-import { useSolanaWallet } from '@/contexts/SolanaWalletProvider';
+import { Wallet, LogOut, ArrowRight } from 'lucide-react';
 import { usePrivyAuth } from '@/contexts/PrivyContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface SolanaWalletConnectButtonProps {
   variant?: 'default' | 'outline';
@@ -17,59 +10,43 @@ interface SolanaWalletConnectButtonProps {
 
 /**
  * Button component for connecting a Solana wallet
- * Uses both Privy and direct wallet integration
+ * Uses Privy's wallet integration to handle connections
  * Styled according to Sanafi brand guidelines
  */
 export const SolanaWalletConnectButton: FC<SolanaWalletConnectButtonProps> = ({ 
   variant = 'outline',
   className = ''
 }) => {
-  const { publicKey, connected, connectPhantom, connectSolflare, disconnect } = useSolanaWallet();
-  const { connectWallet, isReady, isAuthenticated } = usePrivyAuth();
+  const { 
+    walletAddress, 
+    walletConnected, 
+    connectWallet, 
+    logout, 
+    isReady, 
+    isAuthenticated,
+    user
+  } = usePrivyAuth();
   const [isConnecting, setIsConnecting] = useState(false);
   
-  // Determine the button label based on connection state
-  const getButtonLabel = () => {
-    if (isConnecting) return 'Connecting...';
-    if (connected && publicKey) return `Connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-    return 'Connect Solana Wallet';
-  };
-
-  const handleConnectPhantom = async () => {
-    setIsConnecting(true);
-    try {
-      await connectPhantom();
-    } catch (error) {
-      console.error("Failed to connect Phantom:", error);
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const handleConnectSolflare = async () => {
-    setIsConnecting(true);
-    try {
-      await connectSolflare();
-    } catch (error) {
-      console.error("Failed to connect Solflare:", error);
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const handlePrivyConnect = async () => {
+  // Handle wallet connection via Privy
+  const handleConnectWallet = async () => {
     setIsConnecting(true);
     try {
       await connectWallet();
     } catch (error) {
-      console.error("Failed to connect via Privy:", error);
+      console.error("Failed to connect wallet via Privy:", error);
     } finally {
       setIsConnecting(false);
     }
   };
 
+  // Handle wallet disconnection
   const handleDisconnect = async () => {
-    await disconnect();
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Failed to disconnect wallet:", error);
+    }
   };
 
   // Custom button styling for Sanafi brand
@@ -82,55 +59,42 @@ export const SolanaWalletConnectButton: FC<SolanaWalletConnectButtonProps> = ({
     return `${baseButtonClass} border-2 border-[#1b4d3e] text-[#1b4d3e] hover:bg-[#1b4d3e]/10 shadow-sm`;
   };
 
+  // Determine button label based on connection state
+  const getButtonLabel = () => {
+    if (isConnecting) return 'Connecting...';
+    if (walletConnected && walletAddress) {
+      const displayAddress = `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`;
+      return `Connected: ${displayAddress}`;
+    }
+    return 'Connect Wallet';
+  };
+
   // If already connected, show the connected state with option to disconnect
-  if (connected && publicKey) {
+  if (walletConnected && walletAddress) {
     return (
       <Button
         variant={variant}
         className={getButtonStyles()}
         onClick={handleDisconnect}
       >
-        <Wallet className="h-5 w-5" />
+        <Wallet className="h-5 w-5 mr-1" />
         {getButtonLabel()}
+        <LogOut className="h-4 w-4 ml-1" />
       </Button>
     );
   }
 
-  // If not connected, show dropdown with wallet options
+  // If not connected, show connect button that uses Privy's wallet modal
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant={variant} 
-          className={getButtonStyles()}
-          disabled={isConnecting}
-        >
-          <Wallet className="h-5 w-5" />
-          {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        className="bg-white border border-[#e9e1ca] shadow-md rounded-lg p-1"
-      >
-        <DropdownMenuItem 
-          onClick={handleConnectPhantom}
-          className="cursor-pointer hover:bg-[#f5f0e5] focus:bg-[#f5f0e5] rounded-md px-4 py-2 text-[#1b4d3e]"
-        >
-          Connect with Phantom
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={handleConnectSolflare}
-          className="cursor-pointer hover:bg-[#f5f0e5] focus:bg-[#f5f0e5] rounded-md px-4 py-2 text-[#1b4d3e]"
-        >
-          Connect with Solflare
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={handlePrivyConnect}
-          className="cursor-pointer hover:bg-[#f5f0e5] focus:bg-[#f5f0e5] rounded-md px-4 py-2 text-[#1b4d3e]"
-        >
-          Connect with Privy
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button 
+      variant={variant} 
+      className={getButtonStyles()}
+      disabled={isConnecting || !isReady}
+      onClick={handleConnectWallet}
+    >
+      <Wallet className="h-5 w-5" />
+      {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+      <ArrowRight className="h-4 w-4 ml-1" />
+    </Button>
   );
 };
