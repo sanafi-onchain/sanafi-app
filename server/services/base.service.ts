@@ -3,7 +3,7 @@
  */
 export class ServiceError extends Error {
   statusCode: number;
-  
+
   constructor(message: string, statusCode: number = 500) {
     super(message);
     this.name = 'ServiceError';
@@ -15,16 +15,12 @@ export class ServiceError extends Error {
  * Base interface that all services must implement
  */
 export interface BaseService {
-  /**
-   * Initialize the service
-   */
   initialize(): Promise<void>;
-  
-  /**
-   * Check if the service is properly configured with all required credentials
-   */
   isConfigured(): boolean;
-  
+  getConnectionStatus(): Promise<{
+    connected: boolean;
+    error?: string;
+  }>;
   /**
    * Perform a health check to verify the service is working properly
    */

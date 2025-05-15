@@ -19,13 +19,37 @@ router.post('/', async (req: Request, res: Response) => {
     const validatedData = chatRequestSchema.parse(req.body);
     const { messages } = validatedData;
 
-    // Check if Perplexity API key is available
+    // Check service connections
     const apiKey = process.env.PERPLEXITY_API_KEY;
     if (!apiKey) {
       console.error('Missing PERPLEXITY_API_KEY environment variable');
       return res.status(500).json({
         error: 'Perplexity API configuration error',
         message: 'Chat service is not properly configured'
+      });
+    }
+
+    // Test Perplexity API connection
+    try {
+      const testResponse = await fetch('https://api.perplexity.ai/health', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`
+        }
+      });
+      
+      if (!testResponse.ok) {
+        console.error('Perplexity API connection failed:', await testResponse.text());
+        return res.status(503).json({
+          error: 'Perplexity API connection error',
+          message: 'Unable to connect to chat service'
+        });
+      }
+    } catch (error) {
+      console.error('Perplexity API connection error:', error);
+      return res.status(503).json({
+        error: 'Perplexity API connection error',
+        message: 'Unable to connect to chat service'
       });
     }
 
