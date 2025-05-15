@@ -126,16 +126,16 @@ export function SanafiAIChat() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <Card className="flex-1 flex flex-col overflow-hidden border border-[#e9e1ca] bg-white">
-        <CardHeader className="bg-[#1b4d3e]/5 backdrop-blur-sm border-b border-[#e9e1ca]">
+    <div className="flex flex-col h-full w-full">
+      <Card className="flex-1 flex flex-col overflow-hidden border border-[#e9e1ca] bg-white h-full shadow-lg">
+        <CardHeader className="bg-[#1b4d3e]/5 backdrop-blur-sm border-b border-[#e9e1ca] py-4">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-[#1b4d3e] flex items-center">
-                <Sparkles className="h-5 w-5 mr-2 text-[#1b4d3e]" />
+              <CardTitle className="text-[#1b4d3e] flex items-center text-xl">
+                <Sparkles className="h-6 w-6 mr-2 text-[#1b4d3e]" />
                 Sanafi AI Assistant
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Ask me anything about Islamic finance and Sharia-compliant investing
               </CardDescription>
             </div>
@@ -151,8 +151,8 @@ export function SanafiAIChat() {
           </div>
         </CardHeader>
         
-        <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 relative">
-          <div className="space-y-6 pb-2">
+        <CardContent className="flex-1 overflow-y-auto p-6 space-y-4 relative">
+          <div className="space-y-8 pb-2 max-w-4xl mx-auto">
             {messages.map((message, index) => (
               <div key={index} className={cn(
                 "flex",
@@ -165,20 +165,20 @@ export function SanafiAIChat() {
                     : "bg-[#f5f0e5] text-[#1b4d3e] rounded-tl-none"
                 )}>
                   <div className={cn(
-                    "rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2",
+                    "rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-3 mt-1",
                     message.role === 'user' ? "bg-[#f5f0e5]" : "bg-[#1b4d3e]"
                   )}>
                     {message.role === 'user' ? (
-                      <User className="h-3 w-3 text-[#1b4d3e]" />
+                      <User className="h-4 w-4 text-[#1b4d3e]" />
                     ) : (
-                      <Bot className="h-3 w-3 text-[#f5f0e5]" />
+                      <Bot className="h-4 w-4 text-[#f5f0e5]" />
                     )}
                   </div>
                   <div className="space-y-2 flex-1">
                     <div className="space-y-2">
-                      <div className="text-sm leading-relaxed">{message.content}</div>
+                      <div className="text-base leading-relaxed">{message.content}</div>
                       {message.citations && message.citations.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-[#1b4d3e]/10 text-xs">
+                        <div className="mt-3 pt-3 border-t border-[#1b4d3e]/10 text-sm">
                           <div className="font-medium mb-1">Sources:</div>
                           <ul className="space-y-1">
                             {message.citations.map((citation, idx) => (
@@ -224,19 +224,19 @@ export function SanafiAIChat() {
         </CardContent>
         
         {messages.length === 1 && (
-          <div className="px-4 pb-4">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="px-6 pb-5">
+            <div className="grid grid-cols-2 gap-3 max-w-4xl mx-auto">
               {SUGGESTIONS.map((suggestion, idx) => (
                 <Button
                   key={idx}
                   variant="outline"
                   className={cn(
-                    "text-left justify-start text-sm p-3 bg-[#f5f0e5] hover:bg-[#e9e1ca] text-[#1b4d3e] border-[#e9e1ca]",
+                    "text-left justify-start text-sm p-4 bg-[#f5f0e5] hover:bg-[#e9e1ca] text-[#1b4d3e] border-[#e9e1ca]",
                     selectedSuggestion === suggestion && "border-[#1b4d3e] bg-[#1b4d3e]/5"
                   )}
                   onClick={() => handleSuggestion(suggestion)}
                 >
-                  <Sparkles className="h-3 w-3 mr-2 flex-shrink-0" />
+                  <Sparkles className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span className="truncate">{suggestion}</span>
                 </Button>
               ))}
@@ -244,13 +244,13 @@ export function SanafiAIChat() {
           </div>
         )}
         
-        <div className="p-4 border-t border-[#e9e1ca] bg-white">
-          <form onSubmit={handleSubmit} className="flex space-x-2">
+        <div className="p-6 border-t border-[#e9e1ca] bg-white">
+          <form onSubmit={handleSubmit} className="flex space-x-3 max-w-4xl mx-auto">
             <Textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask about Islamic finance..."
-              className="min-h-[50px] max-h-[150px] border-[#e9e1ca] focus:border-[#1b4d3e] focus:ring-[#1b4d3e]"
+              className="min-h-[60px] max-h-[150px] border-[#e9e1ca] focus:border-[#1b4d3e] focus:ring-[#1b4d3e] text-base"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
@@ -262,14 +262,14 @@ export function SanafiAIChat() {
             <Button 
               type="submit" 
               disabled={isLoading || (!inputValue.trim() && !selectedSuggestion)}
-              className="bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5] px-3 h-[50px]"
+              className="bg-[#1b4d3e] hover:bg-[#1b4d3e]/90 text-[#f5f0e5] px-4 h-[60px]"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-5 w-5" />
             </Button>
           </form>
-          <div className="text-xs text-center mt-2 text-gray-500">
+          <div className="text-sm text-center mt-3 text-gray-500 max-w-4xl mx-auto">
             <span className="flex items-center justify-center">
-              <CheckCircle2 className="h-3 w-3 mr-1 text-[#1b4d3e]" />
+              <CheckCircle2 className="h-4 w-4 mr-1 text-[#1b4d3e]" />
               Powered by Perplexity LLM technology
             </span>
           </div>
