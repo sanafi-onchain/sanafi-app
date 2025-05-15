@@ -19,12 +19,12 @@ router.post('/', async (req: Request, res: Response) => {
     const validatedData = chatRequestSchema.parse(req.body);
     const { messages } = validatedData;
 
-    // Check if OpenRouter API key is available
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    // Check if Perplexity API key is available
+    const apiKey = process.env.PERPLEXITY_API_KEY;
     if (!apiKey) {
       return res.status(500).json({
-        error: 'OpenRouter API key not configured',
-        message: 'Please configure the OPENROUTER_API_KEY environment variable'
+        error: 'Perplexity API key not configured',
+        message: 'Please configure the PERPLEXITY_API_KEY environment variable'
       });
     }
 
@@ -40,54 +40,40 @@ router.post('/', async (req: Request, res: Response) => {
       ...messages
     ];
 
-    // Call OpenRouter API
-    const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Call Perplexity API
+    const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://sanafi.ai', // Your site's domain for API tracking
-        'X-Title': 'Sanafi AI - Islamic Finance Assistant' // Optional: include your app name
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-4-maverick:free', // Using the free Llama 4 model
+        model: 'llama-3.1-sonar-small-128k-online',
         messages: formattedMessages,
-        temperature: 0.3,
-        max_tokens: 1000
+        temperature: 0.2,
+        top_p: 0.9,
+        max_tokens: 500,
+        search_domain_filter: [], // Optional: can add specific domains if needed
+        return_citations: true
       })
     });
 
-    if (!openRouterResponse.ok) {
-      let errorData;
-      try {
-        errorData = await openRouterResponse.json();
-      } catch (e) {
-        errorData = await openRouterResponse.text();
-      }
-      console.error('OpenRouter API error:', errorData);
-      return res.status(openRouterResponse.status).json({
-        error: 'Failed to get response from OpenRouter',
+    if (!perplexityResponse.ok) {
+      const errorData = await perplexityResponse.json();
+      console.error('Perplexity API error:', errorData);
+      return res.status(perplexityResponse.status).json({
+        error: 'Failed to get response from Perplexity',
         details: errorData
       });
     }
 
-    const data = await openRouterResponse.json();
-    console.log('OpenRouter response data:', JSON.stringify(data, null, 2));
+    const data = await perplexityResponse.json();
     
-    // Extract and format the response, with better error handling
-    let responseContent = 'Sorry, I could not generate a response.';
-    if (data && data.choices && data.choices.length > 0) {
-      if (data.choices[0].message && data.choices[0].message.content) {
-        responseContent = data.choices[0].message.content;
-      } else if (data.choices[0].text) {
-        // Handle potential alternative format
-        responseContent = data.choices[0].text;
-      }
-    }
+    // Extract and format the response
+    const responseContent = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
     
-    // OpenRouter doesn't provide citations in the same format as Perplexity
-    // We'll send an empty array for compatibility with the frontend
-    const citations: string[] = [];
+    // Format citations if available
+    const citations = data.citations || [];
 
     return res.json({
       content: responseContent,
