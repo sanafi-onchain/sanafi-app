@@ -8,6 +8,7 @@ import Investments from "@/pages/Investments";
 import Spend from "@/pages/Spend";
 import SpendRewards from "@/pages/SpendRewards";
 import Learn from "@/pages/Learn";
+import Stake from "@/pages/Stake";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
 
@@ -18,6 +19,7 @@ function App() {
         {/* Public routes */}
         <Route path="/signin" component={SignIn} />
         <Route path="/learn" component={Learn} />
+        <Route path="/stake" component={Stake} />
         
         {/* Legacy dashboard redirect - clean URL redirection */}
         <Route path="/dashboard">
