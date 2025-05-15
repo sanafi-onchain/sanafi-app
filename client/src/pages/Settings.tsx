@@ -33,36 +33,36 @@ export default function Settings() {
       </div>
       
       <Tabs defaultValue="general" className="space-y-4">
-        <TabsList className="grid grid-cols-4 md:grid-cols-8 lg:w-2/3">
-          <TabsTrigger value="general" className="flex items-center gap-2">
+        <TabsList className="flex flex-wrap gap-1 md:gap-0 md:grid md:grid-cols-4 lg:grid-cols-8 lg:w-2/3">
+          <TabsTrigger value="general" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <UserRound className="h-4 w-4" />
             <span className="hidden md:inline">General</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
+          <TabsTrigger value="notifications" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <Bell className="h-4 w-4" />
             <span className="hidden md:inline">Notifications</span>
           </TabsTrigger>
-          <TabsTrigger value="security" className="flex items-center gap-2">
+          <TabsTrigger value="security" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <Shield className="h-4 w-4" />
             <span className="hidden md:inline">Security</span>
           </TabsTrigger>
-          <TabsTrigger value="appearance" className="flex items-center gap-2">
+          <TabsTrigger value="appearance" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <PanelLeft className="h-4 w-4" />
             <span className="hidden md:inline">Appearance</span>
           </TabsTrigger>
-          <TabsTrigger value="language" className="flex items-center gap-2">
+          <TabsTrigger value="language" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <Languages className="h-4 w-4" />
             <span className="hidden md:inline">Language</span>
           </TabsTrigger>
-          <TabsTrigger value="billing" className="flex items-center gap-2">
+          <TabsTrigger value="billing" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <CircleDollarSign className="h-4 w-4" />
             <span className="hidden md:inline">Billing</span>
           </TabsTrigger>
-          <TabsTrigger value="services" className="flex items-center gap-2">
+          <TabsTrigger value="services" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <Globe className="h-4 w-4" />
             <span className="hidden md:inline">Services</span>
           </TabsTrigger>
-          <TabsTrigger value="support" className="flex items-center gap-2">
+          <TabsTrigger value="support" className="flex-1 min-w-[3rem] flex items-center justify-center gap-2">
             <HelpCircle className="h-4 w-4" />
             <span className="hidden md:inline">Support</span>
           </TabsTrigger>
