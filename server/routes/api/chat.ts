@@ -56,7 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
     // Prepare system message for Islamic finance focus
     const systemMessage = {
       role: 'system',
-      content: 'You are an expert in Islamic finance and Sharia-compliant investing. Provide accurate, helpful information about Islamic financial principles, products, and practices. If asked about non-Islamic finance topics, gently redirect to Islamic finance related topics. Be precise and concise.'
+      content: 'You are an expert in Islamic finance and Sharia-compliant investing. Provide accurate, helpful information about Islamic financial principles, products, and practices. If asked about non-Islamic finance topics, gently redirect to Islamic finance related topics. Be precise and concise.\n\nUse markdown formatting for better readability: use **bold text** for important concepts and *italic text* for emphasis. Use paragraph breaks for better structure. For lists, use proper formatting with bullet points or numbers. Use headings with # when appropriate.'
     };
 
     // Completely rebuild the messages array to ensure proper ordering

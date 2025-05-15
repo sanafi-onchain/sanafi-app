@@ -1,9 +1,30 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sparkles, Send, Bot, User, RotateCcw, CheckCircle2, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Helper function to process text formatting (bold and italic)
+const processFormattedText = (text: string): ReactNode[] => {
+  // Split by markdown patterns for bold and italic
+  const segments = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+  
+  return segments.map((segment, index) => {
+    // Handle bold text: **text**
+    if (segment.startsWith('**') && segment.endsWith('**')) {
+      return <strong key={index}>{segment.slice(2, -2)}</strong>;
+    }
+    // Handle italic text: *text*
+    else if (segment.startsWith('*') && segment.endsWith('*') && !segment.startsWith('**')) {
+      return <em key={index}>{segment.slice(1, -1)}</em>;
+    }
+    // Regular text
+    else {
+      return segment;
+    }
+  });
+};
 
 // Types for chat messages
 type MessageRole = 'user' | 'assistant' | 'system';
@@ -202,10 +223,10 @@ export function SanafiAIChat() {
                                   </span>
                                 );
                               }
-                              // Regular line
+                              // Regular line with potential formatting
                               return (
                                 <span key={lIdx} className={lIdx > 0 ? "block mt-1" : ""}>
-                                  {line}
+                                  {processFormattedText(line)}
                                 </span>
                               );
                             })}
