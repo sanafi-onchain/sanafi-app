@@ -62,7 +62,7 @@ export default function Notifications() {
           {mockNotifications.map((notification) => (
             <div 
               key={notification.id} 
-              className={`p-4 ${notification.isNew ? "bg-muted" : ""}`}
+              className={`p-4 ${notification.isNew ? "bg-primary/10" : ""}`}
             >
               <div className="flex items-start">
                 <div className="flex-shrink-0 mt-1 mr-3">
@@ -72,7 +72,7 @@ export default function Notifications() {
                   <p className="font-medium">{t(notification.title)}</p>
                   <p className="text-sm text-muted-foreground mt-1">{t(notification.description)}</p>
                   <div className="mt-2">
-                    <Button variant="link" className="p-0 h-auto text-secondary">{t(notification.actionLabel)}</Button>
+                    <Button variant="link" className="p-0 h-auto text-primary font-medium">{t(notification.actionLabel)}</Button>
                   </div>
                 </div>
               </div>
@@ -81,7 +81,7 @@ export default function Notifications() {
         </div>
         
         <div className="px-6 py-4 border-t">
-          <Button variant="link" className="p-0 h-auto text-secondary">
+          <Button variant="link" className="p-0 h-auto text-primary font-medium">
             {t("View All Notifications")}
           </Button>
         </div>
