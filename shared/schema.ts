@@ -12,8 +12,6 @@ export const users = pgTable("users", {
   walletAddress: text("wallet_address").unique(),
   email: text("email").unique(),
   phone: text("phone"),
-  country: text("country"),
-  preferences: text("preferences").default("{}"),
   kycStatus: text("kyc_status").default("pending"), // pending, verified, rejected
   createdAt: timestamp("created_at").defaultNow()
 });
@@ -70,7 +68,6 @@ export const wallets = pgTable("wallets", {
   userId: integer("user_id").references(() => users.id),
   balance: doublePrecision("balance").notNull().default(0),
   provider: text("provider"), // Privy, Phantom, Solflare
-  type: text("type").default("solana"), // solana, ethereum, etc.
   isConnected: boolean("is_connected").default(true),
   dateCreated: timestamp("date_created").defaultNow(),
   lastActivity: timestamp("last_activity").defaultNow()

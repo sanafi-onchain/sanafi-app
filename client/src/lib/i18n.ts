@@ -8,9 +8,7 @@ export type TranslationKey =
   | "Learn" 
   | "Sanafi AI"
   | "Settings"
-  | "Wallet Demo"
   | "Sign In"
-  | "Connect"
   | "Sign Out"
   | "Wallet Details"
   | "Welcome"
@@ -122,9 +120,7 @@ const enTranslations: Record<TranslationKey, string> = {
   "Learn": "Learn",
   "Sanafi AI": "Sanafi AI",
   "Settings": "Settings",
-  "Wallet Demo": "Wallet Demo",
   "Sign In": "Sign In",
-  "Connect": "Connect",
   "Sign Out": "Sign Out",
   "Wallet Details": "Wallet Details",
   "Welcome": "Welcome",
@@ -237,9 +233,7 @@ const arTranslations: Record<TranslationKey, string> = {
   "Learn": "تعلم",
   "Sanafi AI": "سنافي الذكاء",
   "Settings": "الإعدادات",
-  "Wallet Demo": "عرض المحفظة",
   "Sign In": "تسجيل الدخول",
-  "Connect": "توصيل",
   "Sign Out": "تسجيل الخروج",
   "Wallet Details": "تفاصيل المحفظة",
   "Welcome": "مرحباً",

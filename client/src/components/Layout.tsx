@@ -4,10 +4,6 @@ import Header from "./Header";
 import WalletConnectModal from "./WalletConnectModal";
 import { useWallet } from "@/contexts/WalletContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { cn } from "@/lib/utils";
-import { Wallet, BookOpen } from "lucide-react";
-import SanafiLogo from "./icons/SanafiLogo";
-import { useLocation } from "wouter";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,7 +14,6 @@ export default function Layout({ children }: LayoutProps) {
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const { wallet } = useWallet();
   const { language, t } = useLanguage();
-  const [location] = useLocation();
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -44,66 +39,25 @@ export default function Layout({ children }: LayoutProps) {
           
           {/* Mobile Navigation (hidden by default) */}
           {mobileMenuOpen && (
-            <div className="lg:hidden bg-primary text-primary-foreground absolute inset-0 z-20 flex flex-col">
-              {/* Header with logo and close button */}
-              <div className="flex items-center justify-between p-4 border-b border-white border-opacity-20">
-                <div className="flex items-center space-x-3">
-                  <SanafiLogo variant="inverse" />
-                  <span className="font-bold text-xl text-white">Sanafi</span>
-                </div>
-                <button 
-                  onClick={toggleMobileMenu}
-                  className="text-white bg-white bg-opacity-10 rounded-full p-1 hover:bg-opacity-20"
-                >
+            <div className="lg:hidden bg-white shadow-lg absolute inset-0 z-20">
+              <div className="flex justify-end p-4">
+                <button onClick={toggleMobileMenu}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              
-              {/* Tagline */}
-              <div className="mt-2 text-sm font-medium text-center text-white opacity-80 px-4">
-                AI-Driven Ethical Onchain Banking
-              </div>
-              
-              {/* Navigation */}
-              <nav className="mt-4 px-4 py-2">
-                <ul className="space-y-1">
-                  <li>
-                    <a 
-                      href="/" 
-                      className={cn(
-                        "flex items-center px-4 py-3 rounded-lg",
-                        location.includes("/") && !location.includes("/accounts")
-                          ? "bg-white bg-opacity-10" 
-                          : "hover:bg-white hover:bg-opacity-10"
-                      )}
-                    >
-                      <BookOpen className="h-5 w-5 mr-3" />
-                      <span>{t("Sanafi AI")}</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a 
-                      href="/accounts" 
-                      className={cn(
-                        "flex items-center px-4 py-3 rounded-lg",
-                        location.includes("/accounts") 
-                          ? "bg-white bg-opacity-10" 
-                          : "hover:bg-white hover:bg-opacity-10"
-                      )}
-                    >
-                      <Wallet className="h-5 w-5 mr-3" />
-                      <span>{t("Accounts")}</span>
-                    </a>
-                  </li>
+              <nav className="px-4 py-2">
+                <ul className="space-y-3">
+                  <li><a href="/learn" className="block py-3 px-4 text-primary font-medium bg-muted rounded-lg">{t("Sanafi AI")}</a></li>
+                  <li><a href="/" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Dashboard")}</a></li>
+                  <li><a href="/accounts" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Accounts")}</a></li>
+                  <li><a href="/savings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Savings")}</a></li>
+                  <li><a href="/investments" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Investments")}</a></li>
+                  <li><a href="/spend" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Spend")}</a></li>
+                  <li><a href="/settings" className="block py-3 px-4 text-foreground hover:bg-muted rounded-lg">{t("Settings")}</a></li>
                 </ul>
               </nav>
-              
-              {/* Footer */}
-              <div className="mt-auto p-4 text-sm opacity-70 text-center border-t border-white border-opacity-20">
-                Sanafi © {new Date().getFullYear()}
-              </div>
             </div>
           )}
           

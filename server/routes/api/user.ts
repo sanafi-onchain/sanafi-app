@@ -6,108 +6,11 @@ import { serviceManager } from "../../services/service-manager";
 
 const router = Router();
 
-// Get authenticated user from Privy token
-router.get("/me", async (req: Request, res: Response) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Missing or invalid authorization header' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    const privyService = serviceManager.getService<PrivyService>("privy");
-    
-    if (!privyService) {
-      return res.status(500).json({ error: 'Privy service not available' });
-    }
-
-    const { verified, userId, error } = await privyService.verifyToken(token);
-    
-    if (!verified || !userId) {
-      return res.status(401).json({ error: error || 'Invalid token' });
-    }
-
-    // Try to fetch user from database
-    let user = await storage.getUserByWalletAddress(userId);
-    
-    // If user doesn't exist, create a minimal user record
-    if (!user) {
-      const tempUsername = `user_${Date.now().toString().slice(-6)}`;
-      
-      try {
-        // Create basic user with random password (Privy handles auth)
-        user = await storage.createUser({
-          username: tempUsername,
-          password: `pwd_${Math.random().toString(36).substring(2, 12)}`,
-          name: "Sanafi User",
-          email: "",
-          walletAddress: userId
-        });
-        
-        // Create wallet linked to user
-        await storage.createWallet({
-          address: userId,
-          provider: "privy", // Wallet provider
-          userId: user.id
-        });
-      } catch (err) {
-        console.error('Error creating user:', err);
-      }
-    }
-
-    // Create a sanitized response without sensitive data
-    const userResponse = {
-      id: user?.id || 0,
-      name: user?.name || "Sanafi User",
-      username: user?.username || "user",
-      walletAddress: userId,
-      email: user?.email || "",
-      profileImageUrl: null,
-      isKycVerified: user?.kycStatus === 'verified',
-      privyUserId: userId
-    };
-
-    return res.json(userResponse);
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    return res.status(500).json({ error: "Failed to fetch user profile" });
-  }
-});
-
 // Get user profile data
 router.get("/profile", async (req: Request, res: Response) => {
   try {
-    // For demo purposes, return a demo user if not authenticated
-    // In production, this should require authentication
-    const authHeader = req.headers.authorization;
-    
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      // If authenticated, fetch real user profile
-      const token = authHeader.split(' ')[1];
-      const privyService = serviceManager.getService<PrivyService>("privy");
-      
-      if (privyService) {
-        const { verified, userId } = await privyService.verifyToken(token);
-        
-        if (verified && userId) {
-          // Get user by wallet address (Privy user ID)
-          const user = await storage.getUserByWalletAddress(userId);
-          
-          if (user) {
-            return res.json({
-              id: user.id,
-              name: user.name || "Sanafi User",
-              walletAddress: userId,
-              email: user.email || "",
-              profileImageUrl: null,
-              isKycVerified: user.kycStatus === 'verified',
-            });
-          }
-        }
-      }
-    }
-    
-    // Fallback to demo user
+    // For demo purposes, return a demo user
+    // In a real app, this would validate the user's session/JWT and return their profile
     const demoUser = {
       id: 1,
       name: "Demo User",
@@ -172,7 +75,6 @@ router.post("/onboarding", async (req: Request, res: Response) => {
       // Create new user
       await storage.createUser({
         username: validatedData.email.split("@")[0],
-        password: `pwd_${Math.random().toString(36).substring(2, 12)}`, // Generate random password
         email: validatedData.email,
         name: validatedData.name,
         country: validatedData.country,
