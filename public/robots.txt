@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://sanafi.com/sitemap.xml
+
+# Rate limiting for bots
+Crawl-delay: 10
