@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Wallet, LogOut, ArrowRight } from 'lucide-react';
-import { usePrivyAuth } from '@/contexts/PrivyContext';
 
 interface SolanaWalletConnectButtonProps {
   variant?: 'default' | 'outline';
@@ -10,42 +9,105 @@ interface SolanaWalletConnectButtonProps {
 
 /**
  * Button component for connecting a Solana wallet
- * Uses Privy's wallet integration to handle connections
+ * Uses direct Solana wallet connections (Phantom, Solflare)
  * Styled according to Sanafi brand guidelines
  */
 export const SolanaWalletConnectButton: FC<SolanaWalletConnectButtonProps> = ({ 
   variant = 'outline',
   className = ''
 }) => {
-  const { 
-    walletAddress, 
-    walletConnected, 
-    connectWallet, 
-    logout, 
-    isReady, 
-    isAuthenticated,
-    user
-  } = usePrivyAuth();
+  const [connected, setConnected] = useState(false);
+  const [publicKey, setPublicKey] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   
-  // Handle wallet connection via Privy
+  // Check for existing wallet connections on mount
+  useEffect(() => {
+    const checkPhantomConnection = async () => {
+      try {
+        // @ts-ignore - window.solana is injected by Phantom
+        const provider = window.solana;
+        if (provider?.isPhantom) {
+          // Try to reconnect if already authorized
+          const response = await provider.connect({ onlyIfTrusted: true });
+          setPublicKey(response.publicKey.toString());
+          setConnected(true);
+          console.log('Phantom wallet auto-connected:', response.publicKey.toString());
+        }
+      } catch (error) {
+        console.log('Auto-connect error or user has not authorized yet:', error);
+      }
+    };
+
+    const checkSolflareConnection = async () => {
+      try {
+        // @ts-ignore - window.solflare is injected by Solflare
+        const provider = window.solflare;
+        if (provider?.isSolflare) {
+          // Try to reconnect if already authorized
+          const response = await provider.connect({ onlyIfTrusted: true });
+          setPublicKey(response.publicKey.toString());
+          setConnected(true);
+          console.log('Solflare wallet auto-connected:', response.publicKey.toString());
+        }
+      } catch (error) {
+        console.log('Solflare auto-connect error or user has not authorized yet:', error);
+      }
+    };
+
+    checkPhantomConnection();
+    checkSolflareConnection();
+  }, []);
+
+  // Connect to any available wallet
   const handleConnectWallet = async () => {
     setIsConnecting(true);
     try {
-      await connectWallet();
+      // Try Phantom first
+      // @ts-ignore - window.solana is injected by Phantom
+      if (window.solana?.isPhantom) {
+        const response = await window.solana.connect();
+        setPublicKey(response.publicKey.toString());
+        setConnected(true);
+        console.log('Connected to Phantom wallet:', response.publicKey.toString());
+        return;
+      }
+      
+      // Try Solflare next
+      // @ts-ignore - window.solflare is injected by Solflare
+      if (window.solflare?.isSolflare) {
+        const response = await window.solflare.connect();
+        setPublicKey(response.publicKey.toString());
+        setConnected(true);
+        console.log('Connected to Solflare wallet:', response.publicKey.toString());
+        return;
+      }
+      
+      // No wallet available
+      alert('Please install Phantom or Solflare wallet to continue');
+      window.open('https://phantom.app/', '_blank');
     } catch (error) {
-      console.error("Failed to connect wallet via Privy:", error);
+      console.error("Failed to connect wallet:", error);
     } finally {
       setIsConnecting(false);
     }
   };
 
-  // Handle wallet disconnection
+  // Disconnect wallet
   const handleDisconnect = async () => {
     try {
-      await logout();
+      // @ts-ignore - window.solana is injected by Phantom
+      if (window.solana?.isPhantom) {
+        await window.solana.disconnect();
+      }
+      // @ts-ignore - window.solflare is injected by Solflare
+      if (window.solflare?.isSolflare) {
+        await window.solflare.disconnect();
+      }
     } catch (error) {
-      console.error("Failed to disconnect wallet:", error);
+      console.error('Error disconnecting wallet:', error);
+    } finally {
+      setPublicKey(null);
+      setConnected(false);
     }
   };
 
@@ -62,15 +124,14 @@ export const SolanaWalletConnectButton: FC<SolanaWalletConnectButtonProps> = ({
   // Determine button label based on connection state
   const getButtonLabel = () => {
     if (isConnecting) return 'Connecting...';
-    if (walletConnected && walletAddress) {
-      const displayAddress = `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`;
-      return `Connected: ${displayAddress}`;
+    if (connected && publicKey) {
+      return `Connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
     }
     return 'Connect Wallet';
   };
 
   // If already connected, show the connected state with option to disconnect
-  if (walletConnected && walletAddress) {
+  if (connected && publicKey) {
     return (
       <Button
         variant={variant}
@@ -84,12 +145,12 @@ export const SolanaWalletConnectButton: FC<SolanaWalletConnectButtonProps> = ({
     );
   }
 
-  // If not connected, show connect button that uses Privy's wallet modal
+  // If not connected, show connect button
   return (
     <Button 
       variant={variant} 
       className={getButtonStyles()}
-      disabled={isConnecting || !isReady}
+      disabled={isConnecting}
       onClick={handleConnectWallet}
     >
       <Wallet className="h-5 w-5" />

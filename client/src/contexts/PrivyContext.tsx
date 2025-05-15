@@ -136,8 +136,8 @@ export const PrivyAuthProvider = ({ children }: { children: ReactNode }) => {
     return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
 
-  // We'll enable Solana wallets without custom connectors
-  // Privy will handle the wallet connections internally
+  // We'll just rely on Privy's built-in wallet support
+  // Creating custom connectors may be causing compatibility issues
 
   return (
     <PrivyProvider
