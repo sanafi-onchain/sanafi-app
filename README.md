@@ -2,6 +2,16 @@
 
 **Sanafi - Halal Onchain Banking** is a Sharia-compliant financial platform built on the Solana blockchain, designed to empower Muslim and ethical investors with transparent, secure, and halal financial services. With a tagline of "100% Onchain, 100% Halal," Sanafi provides a unified ecosystem for managing finances in alignment with Islamic principles.
 
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Roadmap](#roadmap)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Overview
 Sanafi - Halal Onchain Banking leverages Solana’s high-speed, low-cost blockchain to offer a comprehensive suite of financial services that adhere to Sharia principles. The platform addresses the challenges faced by Muslim and ethical investors, such as limited halal financial options, high fees, and lack of transparency in traditional systems. By combining Islamic finance with modern technology, Sanafi empowers users to save, invest, spend, and learn responsibly.
 
@@ -26,3 +36,65 @@ Sanafi - Halal Onchain Banking is on a mission to expand its ecosystem with new 
 - **Q3 2026**: Launch microfinance platform, pilot Solana L2 rollups (e.g., Mantis).
 - **Q4 2026**: Pilot halal supply chain transparency platform.
 - **2027**: Scale globally, $100M AUM goal, integrate network extensions (e.g., Termina).
+
+## Installation
+
+To set up the project locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/sanafi-onchain.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd sanafi-onchain
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Usage
+
+- Run the development server:
+  ```bash
+  npm run dev
+  ```
+- Build the project for production:
+  ```bash
+  npm run build
+  ```
+- Start the production server:
+  ```bash
+  npm start
+  ```
+
+## Deployment
+
+The application is deployed and accessible at [https://www.sanafi.xyz/](https://www.sanafi.xyz/).
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add your message here"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
